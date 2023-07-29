@@ -294,7 +294,7 @@ input, select, textarea {
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		color: #ffffff;
+		color: #eeeeee;
 	}
 
 	blockquote {
@@ -3317,24 +3317,24 @@ input, select, textarea {
 			}
 
 		#intro strong, #intro b {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#intro h1, #intro h2, #intro h3, #intro h4, #intro h5, #intro h6 {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#intro blockquote {
-			border-left-color: #ffffff;
+			border-left-color: #eeeeee;
 		}
 
 		#intro code {
 			background: rgba(255, 255, 255, 0.075);
-			border-color: #ffffff;
+			border-color: #eeeeee;
 		}
 
 		#intro hr {
-			border-bottom-color: #ffffff;
+			border-bottom-color: #eeeeee;
 		}
 
 		#intro input[type="submit"],
@@ -3343,8 +3343,8 @@ input, select, textarea {
 		#intro button,
 		#intro .button {
 			background-color: transparent;
-			box-shadow: inset 0 0 0 2px #ffffff;
-			color: #ffffff !important;
+			box-shadow: inset 0 0 0 2px #eeeeee;
+			color: #eeeeee !important;
 		}
 
 			#intro input[type="submit"]:hover,
@@ -3361,7 +3361,7 @@ input, select, textarea {
 			#intro input[type="button"].primary,
 			#intro button.primary,
 			#intro .button.primary {
-				background-color: #ffffff;
+				background-color: #eeeeee;
 				box-shadow: none;
 				color: #1e252d !important;
 			}
@@ -3482,7 +3482,7 @@ input, select, textarea {
 /* Header */
 
 	#header {
-		color: #ffffff;
+		color: #eeeeee;
 		-moz-align-items: center;
 		-webkit-align-items: center;
 		-ms-align-items: center;
@@ -3512,11 +3512,11 @@ input, select, textarea {
 	}
 
 		#header input, #header select, #header textarea {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#header a {
-			color: #ffffff;
+			color: #eeeeee;
 			border-bottom-color: rgba(255, 255, 255, 0.5);
 		}
 
@@ -3526,24 +3526,24 @@ input, select, textarea {
 			}
 
 		#header strong, #header b {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#header h1, #header h2, #header h3, #header h4, #header h5, #header h6 {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#header blockquote {
-			border-left-color: #ffffff;
+			border-left-color: #eeeeee;
 		}
 
 		#header code {
 			background: rgba(255, 255, 255, 0.075);
-			border-color: #ffffff;
+			border-color: #eeeeee;
 		}
 
 		#header hr {
-			border-bottom-color: #ffffff;
+			border-bottom-color: #eeeeee;
 		}
 
 		#header .logo {
@@ -3553,7 +3553,7 @@ input, select, textarea {
 			transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
 			pointer-events: auto;
 			border-style: solid;
-			border-color: #ffffff;
+			border-color: #eeeeee;
 			border-width: 5px !important;
 			font-family: "Source Sans Pro", Helvetica, sans-serif;
 			font-size: 2.25rem;
@@ -3595,7 +3595,7 @@ input, select, textarea {
 /* Nav */
 
 	#nav {
-		color: #ffffff;
+		color: #eeeeee;
 		display: -moz-flex;
 		display: -webkit-flex;
 		display: -ms-flex;
@@ -3618,7 +3618,7 @@ input, select, textarea {
 	}
 
 		#nav ul.divided li {
-			border-top-color: #ffffff;
+			border-top-color: #eeeeee;
 		}
 
 		#nav ul.icons li a.icon:hover:before {
@@ -3626,7 +3626,7 @@ input, select, textarea {
 		}
 
 		#nav ul.icons.alt li .icon:before {
-			box-shadow: inset 0 0 0 2px #ffffff;
+			box-shadow: inset 0 0 0 2px #eeeeee;
 		}
 
 		#nav ul.icons.alt li a.icon:hover:before {
@@ -3634,7 +3634,7 @@ input, select, textarea {
 		}
 
 		#nav input, #nav select, #nav textarea {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#nav a {
@@ -3648,24 +3648,24 @@ input, select, textarea {
 			}
 
 		#nav strong, #nav b {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#nav h1, #nav h2, #nav h3, #nav h4, #nav h5, #nav h6 {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#nav blockquote {
-			border-left-color: #ffffff;
+			border-left-color: #eeeeee;
 		}
 
 		#nav code {
 			background: rgba(255, 255, 255, 0.075);
-			border-color: #ffffff;
+			border-color: #eeeeee;
 		}
 
 		#nav hr {
-			border-bottom-color: #ffffff;
+			border-bottom-color: transparent;
 		}
 
 		#nav ul.links {
@@ -3716,7 +3716,7 @@ input, select, textarea {
 				}
 
 					#nav ul.links li.active a {
-						color: #ffffff;
+						color: #eeeeee;
 					}
 
 						#nav ul.links li.active a:hover {
@@ -3736,11 +3736,9 @@ input, select, textarea {
 		}
 
 		@media screen and (max-width: 980px) {
-
 			#nav {
 				display: none;
 			}
-
 		}
 
 /* Main */
@@ -3972,7 +3970,7 @@ input, select, textarea {
 		}
 
 		#footer h1, #footer h2, #footer h3, #footer h4, #footer h5, #footer h6 {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#footer blockquote {
@@ -4189,7 +4187,7 @@ input, select, textarea {
 			-ms-flex-shrink: 1;
 			flex-shrink: 1;
 			padding: 4rem 4rem 2rem 4rem ;
-			border-left: solid 2px #dddddd;
+			border-left: solid 2px transparent;
 		}
 
 			#footer > section:first-child {
@@ -4373,7 +4371,7 @@ input, select, textarea {
 		}
 
 	#copyright {
-		color: #ffffff;
+		color: #eeeeee;
 		position: relative;
 		color: rgba(255, 255, 255, 0.7);
 		cursor: default;
@@ -4391,11 +4389,11 @@ input, select, textarea {
 	}
 
 		#copyright input, #copyright select, #copyright textarea {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#copyright a {
-			color: #ffffff;
+			color: #eeeeee;
 			border-bottom-color: rgba(255, 255, 255, 0.5);
 		}
 
@@ -4405,24 +4403,24 @@ input, select, textarea {
 			}
 
 		#copyright strong, #copyright b {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#copyright h1, #copyright h2, #copyright h3, #copyright h4, #copyright h5, #copyright h6 {
-			color: #ffffff;
+			color: #eeeeee;
 		}
 
 		#copyright blockquote {
-			border-left-color: #ffffff;
+			border-left-color: #eeeeee;
 		}
 
 		#copyright code {
 			background: rgba(255, 255, 255, 0.075);
-			border-color: #ffffff;
+			border-color: #eeeeee;
 		}
 
 		#copyright hr {
-			border-bottom-color: #ffffff;
+			border-bottom-color: #eeeeee;
 		}
 
 		#copyright a {
@@ -4486,7 +4484,7 @@ input, select, textarea {
 		top: 0.75rem;
 		right: 0.75rem;
 		border: 0;
-		color: #ffffff;
+		color: #eeeeee;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 0.9rem;
 		font-weight: 900;
@@ -4521,7 +4519,7 @@ input, select, textarea {
 		}
 
 			#navPanelToggle.alt:hover {
-				background-color: #ffffff;
+				background-color: #eeeeee;
 			}
 
 		@media screen and (max-width: 980px) {
@@ -4552,9 +4550,10 @@ input, select, textarea {
 		transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
 		display: none;
 		-webkit-overflow-scrolling: touch;
-		background: #ffffff;
+		background: #141416;
 		box-shadow: none;
-		color: #212931;
+
+		color: #eeeeee;
 		height: 100%;
 		max-width: 80%;
 		overflow-y: auto;
