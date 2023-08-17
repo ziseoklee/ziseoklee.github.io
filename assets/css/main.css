@@ -311,7 +311,16 @@ input, select, textarea {
 	}
 
 /* Row */
-
+	.alert {
+		width: 100%;
+		background: rgb(5, 102, 5);
+		padding: 10px 20px;
+		border-radius: 5px;
+		text-align: center;
+		font-size: 18px;
+		font-weight: 900;
+		display: none;
+	}
 	.row {
 		display: flex;
 		flex-wrap: wrap;
