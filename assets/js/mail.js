@@ -22,9 +22,8 @@ function submitForm(e){
 
     var name = getElementVal('name');
     var email = getElementVal('email');
-    var message = getElementVal('message');
 
-    saveMessages(name, email, message);
+    saveMessages(name, email);
 
     // enable alert
     document.querySelector('.alert').style.display = 'block';
@@ -39,13 +38,12 @@ function submitForm(e){
 }
 
 
-const saveMessages = (name, email, message) => {
+const saveMessages = (name, email) => {
     var newForm = spawtestDB.push();
 
     newForm.set({
         name : name,
         email : email,
-        message : message,
     })
 };
 
