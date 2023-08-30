@@ -21,9 +21,23 @@ function submitForm(e){
     e.preventDefault();
 
     var name = getElementVal('name');
+    var sex = getElementVal('sex');
+    var age = getElementVal('age');
+    var length = getElementVal('length');
     var email = getElementVal('email');
+    let response = [];
 
-    saveMessages(name, email);
+    for(let query of [...Array(71).keys()]) {
+        let item = document.querySelector("input[name='Q"+query+"R']:checked");
+        if (item) {
+            response[query] = parseInt(item.value);
+        }
+        else {
+            throw ErrorEvent;
+        }
+    }
+
+    saveMessages(name, sex, age, length, email, response);
 
     // enable alert
     document.querySelector('.alert').style.display = 'block';
@@ -37,13 +51,16 @@ function submitForm(e){
     document.getElementById("spawtest").reset()
 }
 
-
-const saveMessages = (name, email) => {
+const saveMessages = (name, sex, age, length, email, response) => {
     var newForm = spawtestDB.push();
 
     newForm.set({
         name : name,
+        sex : sex,
+        age : age,
+        length : length,
         email : email,
+        response : response
     })
 };
 
