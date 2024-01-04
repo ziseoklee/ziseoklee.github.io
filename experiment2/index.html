@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Choice Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Question 1</h2>
+    <div class="col-12 col-12">
+        <h3>
+            나는 편안함과 안전하다는 느낌을 포함한 많은 것들을 연인에게서 얻으려 한다.
+        </h3>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R1" name="Q34R" value="1">
+        <label for="Q34R1">1</label>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R2" name="Q34R" value="2">
+        <label for="Q34R2">2</label>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R3" name="Q34R" value="3">
+        <label for="Q34R3">3</label>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R4" name="Q34R" value="4">
+        <label for="Q34R4">4</label>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R5" name="Q34R" value="5">
+        <label for="Q34R5">5</label>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R6" name="Q34R" value="6">
+        <label for="Q34R6">6</label>
+    </div>
+    <div class="col-1 col-12-small">
+        <input type="radio" id="Q34R7" name="Q34R" value="7">
+        <label for="Q34R7">7</label>
+    </div>
+
+    <!-- Add more questions using a similar structure -->
+
+    <button onclick="submitForm()">Submit</button>
+
+    <script>
+        function submitForm() {
+            // Collect user selections and redirect to results.html
+            var q34Selection = document.querySelector('input[name="Q34R"]:checked').value;
+            // Collect selections for other questions here
+
+            // Redirect to results.html with the selected values as query parameters
+            window.location.href = "results.html?q34=" + encodeURIComponent(q34Selection) /* + Add other query parameters here */;
+        }
+    </script>
+
+</body>
+</html>

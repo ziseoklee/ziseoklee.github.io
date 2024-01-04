@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Results</h2>
+    
+    <p id="results"></p>
+
+    <script>
+        // Get the values from the query parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var q34Selection = parseInt(urlParams.get('q34'), 10);
+        // Parse values for other questions here
+
+        // Display the results
+        document.getElementById("results").innerHTML = `
+            <p>Question 1: ${isOdd(q34Selection) ? 'Yes' : 'No'}</p>
+            <!-- Display results for other questions here -->
+        `;
+
+        function isOdd(number) {
+            return number % 2 !== 0;
+        }
+    </script>
+
+</body>
+</html>
