@@ -12,34 +12,49 @@
 				<header id="header">
 					<a class="logo"><b>SPAW 연인관계 검사 결과</b></a>
 				</header>
+				<nav id="nav">
+					<ul class="links">
+						<li><a href="#spaw">SPAW 유형</a></li>
+						<li><a href="#mimara">애착 유형</a></li>
+						<li><a href="#roci-ii">갈등 해결 유형</a></li>
+						<li><a href="#bigfive">Big Five 성격요소</a></li>
+					</ul>
+				</nav>
 				<div id="main">
 					<section class="post">
 						<p id="results"></p>
+						
 					</section>
 				</div>
+
+				<footer id="footer">
+					<section>
+						<h3>2023년 하계 학생자율연구</h3>
+						<p>
+							Topological Analysis of Romantic Relationship Types of University Students<br>
+							ziseoklee@snu.ac.kr<br>
+							skjung2034@snu.ac.kr
+						</p>
+					</section>
+				</footer>
 			</div>
 
 		<!-- Scripts -->
 		<script>
 			// Get the values from the query parameters
 			var urlParams = new URLSearchParams(window.location.search);
-
-			var query = decodeURIComponent(urlParams.get('query')).split(',');
-            var name = urlParams.get('name');
-            var sex = urlParams.get('sex');
-            var age = parseInt(urlParams.get('age'), 10);
-            var email = urlParams.get('email');
+			var q34Selection = parseInt(urlParams.get('q34'), 10);
 			// Parse values for other questions here
-
+	
 			// Display the results
 			document.getElementById("results").innerHTML = `
-				<p>
-                    name = ${name} <br>
-                    age = ${age} <br>
-                    sex = ${sex} <br>
-                    email = ${email} <br>
-                </p>
+				<p>Question 1: ${isOdd(q34Selection) ? 'Yes' : 'No'}</p>
+				<!-- Display results for other questions here -->
 			`;
+	
+			function isOdd(number) {
+				return number % 2 !== 0;
+			}
 		</script>
 		
 		<script src="assets/js/jquery.min.js"></script>
