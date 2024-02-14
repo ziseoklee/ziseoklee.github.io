@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html>
+	
 	<head>
 		<title>연인관계 검사 결과</title>
 		<meta charset="utf-8" />
@@ -7,6 +8,7 @@
 		<link rel="stylesheet" href="assets/css/main_SPAW_PUBLIC.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
+	
 	<body class="is-preload">
 			<div id="wrapper">
 				<header id="header">
@@ -20,7 +22,9 @@
 						<li><a href="#bigfive">Big Five 성격요소</a></li>
 					</ul>
 				</nav>
+				<div id="pdfDiv">
 				<div id="main">
+					
 					<section class="post">
 						<p id = "hello"></p>
 						<p>
@@ -33,7 +37,7 @@
 							응답자 성비는 남성:여성 = 1:1.26 으로 여성 응답자가 조금 더 많습니다.
 						</p>
 						<ul class="actions special">
-							<li><a href="https://pdf-ace.com/pdfme/" target= "_blank" class="button">PDF로 저장</a></li>
+							<li><button onclick="savePDF()" id="savePdf" >PDF 저장</button></li>
 						</ul>
 						<hr>
 						
@@ -114,7 +118,9 @@
 							</li>
 						</ul>
 					</section>
+					
 				</div>
+			</div>
 				<footer id="footer">
 					<section>
 						<h3>2023년 하계 학생자율연구</h3>
@@ -446,6 +452,36 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
+		<script src="assets/js/html2canvas.js"></script>
+		<script src="assets/js/jspdf.min.js"></script>
+		<script>
+			function savePDF() {
+					html2canvas($('#pdfDiv')[0]).then(function(canvas) { //저장 영역 div id
+					// 캔버스를 이미지로 변환
+					var imgData = canvas.toDataURL('image/png');
+					var imgWidth = 210; // 이미지 가로 길이(mm) / A4 기준 210mm
+					var pageHeight = imgWidth * 1.4;  // 출력 페이지 세로 길이 계산 A4 기준
+					var imgHeight = canvas.height * imgWidth / canvas.width;
+					var heightLeft = imgHeight;
+					var margin = 0; // 출력 페이지 여백설정
+					var doc = new jsPDF('p', 'mm');
+					var position = 0;
 
+					// 첫 페이지 출력
+					doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+					heightLeft -= pageHeight;
+					
+					// 한 페이지 이상일 경우 루프 돌면서 출력
+					while (heightLeft > -pageHeight) {
+						position = heightLeft - imgHeight;
+						doc.addPage();
+						doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+						heightLeft -= pageHeight;
+					}
+					// 파일 저장
+					doc.save('SPAW-results.pdf');
+				});
+			};
+		</script>
 	</body>
 </html>
