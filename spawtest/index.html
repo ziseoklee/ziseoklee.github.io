@@ -4,7 +4,7 @@
 		<title>SPAW 연인관계 검사</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main_SPAW_PUBLIC.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -23,7 +23,7 @@
 
 						<!-- Post -->
 							<section class="post">
-								<form method="post" action="#" id = "spawtest">
+								<form method="post" action="results.html" id = "spawtest">
 									<header>
 										<h2>
 											기본 정보
@@ -34,24 +34,24 @@
 									</p>
 									   
 									<div class="row gtr-uniform">
-										<div class="col-3 col-12-xsmall">
-											<input type="text" name="name" id="name" value="" placeholder="이름" />
+										<div class="col-4 col-12-xsmall">
+											<input type="text" name="name" id="name" value="" placeholder="이름" autocomplete="cc-name"/>
 										</div>
 
-										<div class="col-3 col-12-xsmall">
+										<div class="col-4 col-12-xsmall">
 											<select name="sex" id="sex">
-												<option value="-1">성별</option>
-												<option value="1">남성</option>
-												<option value="7">여성</option>
+												<option value="unselected">성별</option>
+												<option value="male">남성</option>
+												<option value="female">여성</option>
 											</select>
 										</div>
 									
-										<div class="col-3 col-12-xsmall">
-											<input type="text" name="age" id="age" value="" placeholder="나이" />
+										<div class="col-4 col-12-xsmall">
+											<input type="text" name="age" id="age" value="" placeholder="나이" autocomplete="cc-number"/>
 										</div>
 										
 										<div class="col-12">
-											<input type="email" name="email" id="email" value="" placeholder="이메일 주소" />
+											<input type="email" name="email" id="email" value="" placeholder="이메일 주소" autocomplete="email"/>
 										</div>
 									</div>
 								<hr>
@@ -2501,13 +2501,15 @@
 											<input type="radio" id="Q64R7" name="Q64R" value = 7>
 											<label for="Q64R7">7</label>
 										</div>
-								
-										<div class="col-12">
-											<button onclick="submitForm()">검사 완료</button>
-										</div>
 									</div>
 								</form>
+                                
 							<hr />
+                            <header class="major">
+                                <button onclick="submitForm()">검사 완료</button>
+                            </header>
+							
+                            
 						</section>
 					</div>
 
@@ -2544,90 +2546,565 @@
 			<script src="assets/js/main.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
 			<script src="assets/js/mail.js"></script>
-			
-			
+            <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+			<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <script>
+				function getResponse(query){
+					if (document.querySelector('input[name="Q1R"]:checked'))
+                        query.push(document.querySelector('input[name="Q1R"]:checked').value);
+                    else 
+                        query.push("0");
 
-			<script>
+                    if (document.querySelector('input[name="Q2R"]:checked'))
+                        query.push(document.querySelector('input[name="Q2R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q3R"]:checked'))
+                        query.push(document.querySelector('input[name="Q3R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q4R"]:checked'))
+                        query.push(document.querySelector('input[name="Q4R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q5R"]:checked'))
+                        query.push(document.querySelector('input[name="Q5R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q6R"]:checked'))
+                        query.push(document.querySelector('input[name="Q6R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q7R"]:checked'))
+                        query.push(document.querySelector('input[name="Q7R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q8R"]:checked'))
+                        query.push(document.querySelector('input[name="Q8R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q9R"]:checked'))
+                        query.push(document.querySelector('input[name="Q9R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q10R"]:checked'))
+                        query.push(document.querySelector('input[name="Q10R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q11R"]:checked'))
+                        query.push(document.querySelector('input[name="Q11R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q12R"]:checked'))
+                        query.push(document.querySelector('input[name="Q12R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q13R"]:checked'))
+                        query.push(document.querySelector('input[name="Q13R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q14R"]:checked'))
+                        query.push(document.querySelector('input[name="Q14R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q15R"]:checked'))
+                        query.push(document.querySelector('input[name="Q15R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q16R"]:checked'))
+                        query.push(document.querySelector('input[name="Q16R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q17R"]:checked'))
+                        query.push(document.querySelector('input[name="Q17R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q18R"]:checked'))
+                        query.push(document.querySelector('input[name="Q18R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q19R"]:checked'))
+                        query.push(document.querySelector('input[name="Q19R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q20R"]:checked'))
+                        query.push(document.querySelector('input[name="Q20R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q21R"]:checked'))
+                        query.push(document.querySelector('input[name="Q21R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q22R"]:checked'))
+                        query.push(document.querySelector('input[name="Q22R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q23R"]:checked'))
+                        query.push(document.querySelector('input[name="Q23R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q24R"]:checked'))
+                        query.push(document.querySelector('input[name="Q24R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q25R"]:checked'))
+                        query.push(document.querySelector('input[name="Q25R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q26R"]:checked'))
+                        query.push(document.querySelector('input[name="Q26R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q27R"]:checked'))
+                        query.push(document.querySelector('input[name="Q27R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q28R"]:checked'))
+                        query.push(document.querySelector('input[name="Q28R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q29R"]:checked'))
+                        query.push(document.querySelector('input[name="Q29R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q30R"]:checked'))
+                        query.push(document.querySelector('input[name="Q30R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q31R"]:checked'))
+                        query.push(document.querySelector('input[name="Q31R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q32R"]:checked'))
+                        query.push(document.querySelector('input[name="Q32R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q33R"]:checked'))
+                        query.push(document.querySelector('input[name="Q33R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q34R"]:checked'))
+                        query.push(document.querySelector('input[name="Q34R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q35R"]:checked'))
+                        query.push(document.querySelector('input[name="Q35R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q36R"]:checked'))
+                        query.push(document.querySelector('input[name="Q36R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q37R"]:checked'))
+                        query.push(document.querySelector('input[name="Q37R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q38R"]:checked'))
+                        query.push(document.querySelector('input[name="Q38R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q39R"]:checked'))
+                        query.push(document.querySelector('input[name="Q39R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q40R"]:checked'))
+                        query.push(document.querySelector('input[name="Q40R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q41R"]:checked'))
+                        query.push(document.querySelector('input[name="Q41R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q42R"]:checked'))
+                        query.push(document.querySelector('input[name="Q42R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q43R"]:checked'))
+                        query.push(document.querySelector('input[name="Q43R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q44R"]:checked'))
+                        query.push(document.querySelector('input[name="Q44R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q45R"]:checked'))
+                        query.push(document.querySelector('input[name="Q45R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q46R"]:checked'))
+                        query.push(document.querySelector('input[name="Q46R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q47R"]:checked'))
+                        query.push(document.querySelector('input[name="Q47R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q48R"]:checked'))
+                        query.push(document.querySelector('input[name="Q48R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q49R"]:checked'))
+                        query.push(document.querySelector('input[name="Q49R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q50R"]:checked'))
+                        query.push(document.querySelector('input[name="Q50R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q51R"]:checked'))
+                        query.push(document.querySelector('input[name="Q51R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q52R"]:checked'))
+                        query.push(document.querySelector('input[name="Q52R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q53R"]:checked'))
+                        query.push(document.querySelector('input[name="Q53R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q54R"]:checked'))
+                        query.push(document.querySelector('input[name="Q54R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q55R"]:checked'))
+                        query.push(document.querySelector('input[name="Q55R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q56R"]:checked'))
+                        query.push(document.querySelector('input[name="Q56R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q57R"]:checked'))
+                        query.push(document.querySelector('input[name="Q57R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q58R"]:checked'))
+                        query.push(document.querySelector('input[name="Q58R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q59R"]:checked'))
+                        query.push(document.querySelector('input[name="Q59R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q60R"]:checked'))
+                        query.push(document.querySelector('input[name="Q60R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q61R"]:checked'))
+                        query.push(document.querySelector('input[name="Q61R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q62R"]:checked'))
+                        query.push(document.querySelector('input[name="Q62R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q63R"]:checked'))
+                        query.push(document.querySelector('input[name="Q63R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q64R"]:checked'))
+                        query.push(document.querySelector('input[name="Q64R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q65R"]:checked'))
+                        query.push(document.querySelector('input[name="Q65R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q66R"]:checked'))
+                        query.push(document.querySelector('input[name="Q66R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q67R"]:checked'))
+                        query.push(document.querySelector('input[name="Q67R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q68R"]:checked'))
+                        query.push(document.querySelector('input[name="Q68R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q69R"]:checked'))
+                        query.push(document.querySelector('input[name="Q69R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q70R"]:checked'))
+                        query.push(document.querySelector('input[name="Q70R"]:checked').value);
+                    else 
+                        query.push("0");
+
+                    if (document.querySelector('input[name="Q71R"]:checked'))
+                        query.push(document.querySelector('input[name="Q71R"]:checked').value);
+                    else 
+                        query.push("0");
+				}
+
+				function fetchTextFiles() {
+					var data_files = [
+						'data/responseRecord.txt', 
+						'data/filter.txt', 
+						'data/bias.txt', 
+						'data/filterBig5.txt', 
+						'data/consensusDims.txt', 
+						'data/spawMeanVals.txt'];
+					var fetch_results = [];
+					data_files.forEach(it => {
+						fetch(it)
+						.then(it => it.text())
+						.then(it => {
+							var item = [];
+							var lines = it.split("\n");
+							lines.forEach(line => {
+								item.push(line.split("\t").map(Number));
+							})
+							fetch_results.push(item);
+						})
+					})
+					console.log(fetch_results)
+				}
+
+				// Function to find SPaW type
+				function spawTypeFinder(data) {
+					var consensusDims = consensusDims_d; // Provide the consensusDims array here
+					var spawMeanVals = spawMeanVals_d; // Provide the spawMeanVals array here
+
+					var scoreS = norm1((data - spawMeanVals[0]) * consensusDims[0]) / 35;
+					var scoreP = norm1((data - spawMeanVals[1]) * consensusDims[1]) / 29;
+					var scoreA = norm1((data - spawMeanVals[2]) * consensusDims[2]) / 21;
+					var scoreW = norm1((data - spawMeanVals[3]) * consensusDims[3]) / 18;
+
+					var types = [["안정형", "Stable"], ["상대맞춤형", "Pleaser"], ["애정추구형", "Affection Seeker"], ["철회형", "Withdrawer"]];
+					return types.reduce((min, type, i) => (i === 0 || scores[i] < scores[min]) ? i : min, 0);
+				}
+
+				// Function to calculate L1 norm
+				function norm1(arr) {
+					return arr.reduce((sum, val) => sum + Math.abs(val), 0);
+				}
+
+				function attachOrdinal(num) {
+					const suffixes = { '0': 'th', '1': 'st', '2': 'nd', '3': 'rd' };
+
+					const v = String(num);
+					const suffix = v in { '11': true, '12': true, '13': true } ? 'th' : suffixes[v.slice(-1)] || 'th';
+
+					return v + suffix;
+				}
+
+				function plotStudentResults(client, type) {
+					let testNames, title;
+					var dims = ["회피형 애착", "불안형 애착", "통합형", "회피형", "지배형", "순종형", "절충형", "외향성", "성실성", "개방성", "우호성", "신경성"];
+
+					if (type === 0) {
+					testNames = dims.slice(0, 2);
+					title = "애착 유형";
+					} else if (type === 1) {
+					testNames = dims.slice(2, 7);
+					title = "갈등 해결 유형";
+					} else if (type === 2) {
+					testNames = dims.slice(7);
+					title = "Big Five 성격요소";
+					}
+
+					const data = [{
+					type: 'bar',
+					orientation: 'h',
+					x: testNames.map(dim => client[dim]),
+					y: testNames,
+					marker: { color: 'yellow' },
+					}];
+
+					const layout = {
+					title: `${client['name']}님의 ${title} 결과`,
+					font: { size: 20, color: 'white' },
+					xaxis: {
+						title: '백분위수',
+						color: 'white',
+						gridcolor: 'white',
+					},
+					yaxis: { color: 'white' },
+					margin: { l: 150, r: 20, b: 50, t: 70, pad: 0 },
+					showlegend: false,
+					paper_bgcolor: 'black',
+					plot_bgcolor: 'black',
+					};
+
+					Plotly.newPlot('graph-container', data, layout);
+				}
+
 				function submitForm() {
 					// Collect user selections and redirect to results.html
-					var q1Selection = document.querySelector('input[name="Q1R"]:checked').value;
-					var q2Selection = document.querySelector('input[name="Q2R"]:checked').value;
-					var q3Selection = document.querySelector('input[name="Q3R"]:checked').value;
-					var q4Selection = document.querySelector('input[name="Q4R"]:checked').value;
-					var q5Selection = document.querySelector('input[name="Q5R"]:checked').value;
-					var q6Selection = document.querySelector('input[name="Q6R"]:checked').value;
-					var q7Selection = document.querySelector('input[name="Q7R"]:checked').value;
-					var q8Selection = document.querySelector('input[name="Q8R"]:checked').value;
-					var q9Selection = document.querySelector('input[name="Q9R"]:checked').value;
-					var q10Selection = document.querySelector('input[name="Q10R"]:checked').value;
-					var q11Selection = document.querySelector('input[name="Q11R"]:checked').value;
-					var q12Selection = document.querySelector('input[name="Q12R"]:checked').value;
-					var q13Selection = document.querySelector('input[name="Q13R"]:checked').value;
-					var q14Selection = document.querySelector('input[name="Q14R"]:checked').value;
-					var q15Selection = document.querySelector('input[name="Q15R"]:checked').value;
-					var q16Selection = document.querySelector('input[name="Q16R"]:checked').value;
-					var q17Selection = document.querySelector('input[name="Q17R"]:checked').value;
-					var q18Selection = document.querySelector('input[name="Q18R"]:checked').value;
-					var q19Selection = document.querySelector('input[name="Q19R"]:checked').value;
-					var q20Selection = document.querySelector('input[name="Q20R"]:checked').value;
-					var q21Selection = document.querySelector('input[name="Q21R"]:checked').value;
-					var q22Selection = document.querySelector('input[name="Q22R"]:checked').value;
-					var q23Selection = document.querySelector('input[name="Q23R"]:checked').value;
-					var q24Selection = document.querySelector('input[name="Q24R"]:checked').value;
-					var q25Selection = document.querySelector('input[name="Q25R"]:checked').value;
-					var q26Selection = document.querySelector('input[name="Q26R"]:checked').value;
-					var q27Selection = document.querySelector('input[name="Q27R"]:checked').value;
-					var q28Selection = document.querySelector('input[name="Q28R"]:checked').value;
-					var q29Selection = document.querySelector('input[name="Q29R"]:checked').value;
-					var q30Selection = document.querySelector('input[name="Q30R"]:checked').value;
-					var q31Selection = document.querySelector('input[name="Q31R"]:checked').value;
-					var q32Selection = document.querySelector('input[name="Q32R"]:checked').value;
-					var q33Selection = document.querySelector('input[name="Q33R"]:checked').value;
-					var q34Selection = document.querySelector('input[name="Q34R"]:checked').value;
-					var q35Selection = document.querySelector('input[name="Q35R"]:checked').value;
-					var q36Selection = document.querySelector('input[name="Q36R"]:checked').value;
-					var q37Selection = document.querySelector('input[name="Q37R"]:checked').value;
-					var q38Selection = document.querySelector('input[name="Q38R"]:checked').value;
-					var q39Selection = document.querySelector('input[name="Q39R"]:checked').value;
-					var q40Selection = document.querySelector('input[name="Q40R"]:checked').value;
-					var q41Selection = document.querySelector('input[name="Q41R"]:checked').value;
-					var q42Selection = document.querySelector('input[name="Q42R"]:checked').value;
-					var q43Selection = document.querySelector('input[name="Q43R"]:checked').value;
-					var q44Selection = document.querySelector('input[name="Q44R"]:checked').value;
-					var q45Selection = document.querySelector('input[name="Q45R"]:checked').value;
-					var q46Selection = document.querySelector('input[name="Q46R"]:checked').value;
-					var q47Selection = document.querySelector('input[name="Q47R"]:checked').value;
-					var q48Selection = document.querySelector('input[name="Q48R"]:checked').value;
-					var q49Selection = document.querySelector('input[name="Q49R"]:checked').value;
-					var q50Selection = document.querySelector('input[name="Q50R"]:checked').value;
-					var q51Selection = document.querySelector('input[name="Q51R"]:checked').value;
-					var q52Selection = document.querySelector('input[name="Q52R"]:checked').value;
-					var q53Selection = document.querySelector('input[name="Q53R"]:checked').value;
-					var q54Selection = document.querySelector('input[name="Q54R"]:checked').value;
-					var q55Selection = document.querySelector('input[name="Q55R"]:checked').value;
-					var q56Selection = document.querySelector('input[name="Q56R"]:checked').value;
-					var q57Selection = document.querySelector('input[name="Q57R"]:checked').value;
-					var q58Selection = document.querySelector('input[name="Q58R"]:checked').value;
-					var q59Selection = document.querySelector('input[name="Q59R"]:checked').value;
-					var q60Selection = document.querySelector('input[name="Q60R"]:checked').value;
-					var q61Selection = document.querySelector('input[name="Q61R"]:checked').value;
-					var q62Selection = document.querySelector('input[name="Q62R"]:checked').value;
-					var q63Selection = document.querySelector('input[name="Q63R"]:checked').value;
-					var q64Selection = document.querySelector('input[name="Q64R"]:checked').value;
-					var q65Selection = document.querySelector('input[name="Q65R"]:checked').value;
-					var q66Selection = document.querySelector('input[name="Q66R"]:checked').value;
-					var q67Selection = document.querySelector('input[name="Q67R"]:checked').value;
-					var q68Selection = document.querySelector('input[name="Q68R"]:checked').value;
-					var q69Selection = document.querySelector('input[name="Q69R"]:checked').value;
-					var q70Selection = document.querySelector('input[name="Q70R"]:checked').value;
-					var q71Selection = document.querySelector('input[name="Q71R"]:checked').value;
-					var name = document.getElementById('name').value;
-					var sex = document.getElementById('sex').value;
-					var age = document.getElementById('age').value;
+					var client = {}; // dictionary
+                    client['name'] = document.getElementById('name').value;
+					client['sex'] = document.getElementById('sex').value;
+					client['age'] = document.getElementById('age').value;
+                    client['email'] = document.getElementById('email').value;
+                    var query = [];
+					// fetchTextFiles();
+					getResponse(query);
+                    console.log('Response Submission: ', query.length==71)
+
+					// Sampled Data (r x 71)
+					var data, r, filter, bias;
+					sample_data = [[1, 5, 7, 5, 1, 5, 1, 5, 1, 1, 1, 4, 4, 4, 6, 2, 1, 6, 7, 3, 1, 3, 1, 6, 6, 1, 5, 1, 4, 4, 6, 4, 5, 5, 4, 4, 6, 7, 5, 7, 2, 6, 4, 5, 7, 3, 2, 7, 7, 3, 7, 7, 7, 4, 7, 5, 7, 7, 1, 3, 6, 5, 2, 3, 7, 7, 2, 7, 7, 7, 5], [4, 4, 6, 5, 3, 5, 2, 3, 2, 3, 2, 2, 2, 5, 5, 2, 4, 4, 5, 3, 2, 3, 3, 5, 5, 2, 6, 2, 6, 2, 6, 4, 5, 5, 5, 4, 5, 6, 3, 5, 3, 5, 2, 3, 6, 4, 2, 5, 2, 4, 4, 6, 4, 2, 2, 4, 5, 2, 1, 4, 5, 3, 3, 3, 5, 6, 2, 2, 5, 3, 6], [3, 2, 5, 3, 2, 2, 2, 2, 3, 1, 1, 1, 2, 2, 5, 2, 1, 4, 5, 3, 1, 6, 2, 2, 3, 2, 5, 3, 3, 2, 5, 2, 6, 2, 4, 1, 5, 3, 3, 6, 2, 5, 3, 2, 6, 2, 2, 5, 3, 5, 6, 5, 5, 4, 4, 5, 6, 2, 1, 2, 6, 5, 2, 4, 6, 5, 2, 4, 5, 5, 6], [3, 1, 6, 4, 2, 5, 4, 1, 2, 1, 1, 3, 2, 2, 6, 3, 2, 5, 6, 3, 5, 6, 3, 4, 3, 2, 5, 1, 4, 4, 5, 2, 6, 4, 3, 3, 6, 6, 3, 6, 5, 6, 6, 6, 6, 4, 4, 6, 4, 6, 5, 6, 6, 3, 3, 5, 6, 3, 3, 3, 6, 5, 4, 3, 5, 6, 3, 5, 5, 5, 4], [1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 7, 1, 1, 7, 1, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 7, 7, 7, 1, 7, 1, 1, 7, 1, 1, 7, 7, 1, 7, 7, 7, 1, 7, 7, 7, 7, 1, 7, 7, 7, 1, 7, 7, 7, 1, 7, 7, 7, 7], [1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 3, 1, 1, 7, 1, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 4, 7, 1, 7, 7, 1, 7, 1, 7, 1, 1, 7, 1, 1, 7, 1, 1, 7, 7, 6, 4, 7, 7, 7, 3, 1, 1, 7, 1, 2, 7, 7, 7, 1, 2, 7, 7, 7], [2, 5, 4, 2, 2, 5, 5, 5, 2, 2, 2, 2, 4, 2, 2, 2, 2, 5, 5, 2, 2, 5, 5, 2, 2, 5, 6, 2, 2, 2, 2, 2, 5, 5, 5, 2, 5, 6, 2, 6, 2, 5, 2, 2, 6, 2, 2, 6, 6, 6, 6, 6, 7, 2, 6, 6, 6, 7, 1, 6, 6, 6, 1, 2, 6, 6, 2, 2, 2, 5, 5], [2, 7, 7, 7, 5, 7, 2, 7, 2, 2, 2, 2, 2, 7, 6, 6, 2, 7, 7, 5, 2, 1, 2, 6, 7, 4, 6, 5, 6, 5, 6, 7, 6, 7, 7, 4, 3, 6, 1, 3, 4, 3, 2, 6, 4, 6, 5, 5, 3, 3, 5, 2, 3, 6, 3, 3, 3, 2, 1, 4, 5, 3, 6, 6, 5, 7, 5, 1, 1, 1, 5], [2, 3, 6, 4, 2, 5, 2, 4, 4, 2, 2, 2, 2, 6, 5, 2, 4, 3, 6, 4, 4, 5, 2, 4, 7, 4, 6, 5, 6, 5, 5, 5, 5, 5, 5, 3, 5, 5, 4, 6, 5, 5, 3, 5, 6, 3, 3, 5, 3, 4, 4, 5, 5, 4, 5, 4, 5, 5, 2, 2, 5, 5, 4, 5, 6, 5, 3, 5, 5, 4, 5], [2, 3, 6, 2, 2, 3, 2, 2, 2, 2, 2, 1, 1, 3, 7, 2, 2, 5, 7, 3, 5, 6, 2, 6, 6, 2, 7, 4, 4, 2, 6, 2, 6, 6, 6, 2, 6, 6, 6, 6, 6, 6, 2, 6, 6, 4, 1, 6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 5, 2, 6, 6, 6, 5, 5, 5, 6, 1, 2, 2, 1, 7], [1, 3, 7, 4, 4, 5, 1, 4, 1, 1, 1, 1, 1, 1, 7, 1, 1, 4, 6, 2, 1, 5, 1, 6, 7, 1, 7, 1, 7, 2, 6, 1, 6, 5, 4, 1, 7, 7, 1, 7, 5, 7, 1, 3, 7, 4, 2, 4, 2, 4, 7, 6, 3, 2, 5, 7, 7, 2, 1, 3, 4, 4, 5, 6, 7, 5, 3, 1, 1, 1, 6], [3, 2, 4, 5, 2, 4, 5, 5, 3, 3, 2, 2, 5, 5, 3, 2, 4, 6, 5, 4, 5, 5, 2, 5, 3, 3, 4, 3, 3, 5, 3, 4, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 3, 5, 2, 4, 3, 5, 5, 5, 4, 5, 5, 4, 2, 5, 5, 5, 3, 3, 5, 5, 3, 6, 6, 6, 6], [5, 4, 6, 4, 2, 5, 1, 4, 6, 2, 3, 3, 2, 2, 2, 3, 4, 5, 5, 3, 6, 5, 1, 4, 2, 3, 5, 3, 2, 3, 5, 2, 5, 6, 3, 2, 6, 6, 3, 5, 3, 6, 2, 3, 5, 3, 2, 5, 5, 5, 6, 6, 6, 3, 6, 6, 6, 6, 3, 4, 6, 5, 4, 3, 6, 6, 2, 2, 5, 5, 6], [6, 3, 4, 5, 3, 5, 4, 5, 7, 5, 3, 3, 7, 1, 1, 5, 4, 5, 1, 2, 7, 5, 4, 5, 1, 5, 1, 6, 1, 1, 3, 2, 3, 6, 3, 2, 2, 7, 7, 4, 2, 4, 6, 4, 4, 3, 3, 5, 3, 4, 5, 4, 6, 4, 5, 5, 4, 6, 2, 4, 5, 4, 4, 3, 4, 6, 3, 7, 7, 7, 4], [1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 7, 7, 1, 1, 7, 1, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 1, 1, 7, 6, 4, 7, 1, 7, 1, 5, 7, 3, 1, 7, 4, 2, 7, 5, 3, 5, 5, 4, 7, 2, 1, 5, 6, 5, 6, 6, 7, 5, 1, 1, 4, 2, 7], [1, 3, 7, 3, 2, 4, 1, 3, 2, 2, 2, 3, 6, 4, 6, 4, 2, 3, 5, 4, 3, 5, 2, 5, 6, 2, 6, 2, 5, 4, 5, 4, 6, 2, 5, 3, 6, 5, 2, 6, 2, 6, 2, 4, 6, 2, 2, 6, 4, 6, 5, 5, 5, 3, 4, 6, 6, 6, 2, 2, 6, 6, 3, 5, 5, 6, 4, 2, 2, 3, 5], [2, 2, 7, 2, 3, 2, 5, 2, 2, 5, 2, 2, 3, 2, 5, 2, 4, 5, 2, 2, 1, 5, 2, 3, 5, 1, 5, 1, 7, 2, 6, 4, 6, 5, 7, 6, 5, 6, 5, 5, 5, 6, 4, 5, 5, 3, 4, 5, 3, 3, 6, 6, 4, 5, 6, 2, 5, 6, 4, 3, 6, 5, 5, 5, 6, 5, 6, 6, 5, 5, 6], [2, 2, 7, 3, 1, 2, 2, 2, 2, 1, 1, 4, 1, 6, 6, 2, 2, 6, 6, 7, 2, 5, 2, 6, 7, 1, 6, 5, 6, 7, 6, 7, 6, 5, 6, 6, 5, 4, 3, 5, 5, 5, 3, 5, 5, 3, 3, 4, 5, 3, 5, 4, 3, 7, 5, 2, 3, 5, 2, 2, 5, 3, 6, 5, 5, 5, 3, 5, 5, 5, 5], [3, 3, 6, 5, 2, 5, 4, 5, 3, 2, 3, 3, 3, 2, 5, 5, 2, 5, 5, 3, 3, 5, 3, 5, 3, 5, 2, 3, 5, 2, 2, 2, 5, 7, 5, 1, 6, 6, 2, 6, 2, 6, 2, 6, 6, 5, 2, 6, 4, 6, 6, 6, 5, 5, 3, 5, 5, 2, 2, 2, 6, 5, 5, 5, 6, 6, 2, 2, 2, 2, 6], [2, 4, 6, 3, 1, 2, 1, 2, 3, 1, 1, 1, 3, 2, 6, 1, 1, 6, 6, 3, 3, 7, 2, 6, 5, 1, 7, 1, 4, 3, 5, 2, 6, 6, 2, 1, 7, 2, 2, 7, 2, 6, 4, 6, 6, 2, 1, 7, 5, 7, 6, 7, 6, 6, 3, 5, 6, 2, 1, 1, 7, 2, 5, 6, 7, 7, 1, 4, 5, 1, 7], [1, 2, 6, 2, 1, 2, 1, 2, 1, 2, 3, 3, 4, 2, 6, 3, 1, 6, 5, 1, 2, 7, 1, 3, 7, 1, 6, 2, 6, 2, 6, 2, 6, 5, 6, 2, 6, 7, 3, 6, 2, 6, 1, 2, 6, 2, 2, 7, 7, 3, 6, 6, 6, 3, 5, 6, 5, 6, 1, 2, 6, 5, 2, 5, 6, 7, 2, 2, 6, 6, 6], [2, 1, 6, 2, 4, 3, 2, 1, 5, 2, 1, 1, 1, 2, 6, 1, 5, 2, 2, 5, 6, 7, 2, 6, 5, 3, 6, 1, 3, 6, 4, 6, 6, 7, 6, 2, 6, 5, 3, 7, 1, 7, 6, 5, 5, 6, 6, 4, 1, 1, 4, 6, 4, 7, 6, 7, 6, 6, 3, 6, 5, 2, 5, 6, 5, 4, 1, 6, 5, 4, 2], [3, 6, 4, 6, 5, 7, 4, 6, 5, 2, 6, 4, 4, 5, 3, 5, 5, 6, 4, 5, 3, 2, 3, 5, 2, 5, 5, 5, 3, 5, 5, 5, 5, 7, 6, 4, 5, 6, 4, 5, 5, 5, 3, 4, 6, 3, 3, 4, 3, 5, 5, 5, 6, 5, 4, 5, 5, 4, 2, 4, 5, 5, 3, 3, 5, 6, 3, 5, 5, 5, 5], [2, 1, 7, 2, 2, 2, 4, 2, 2, 1, 1, 2, 2, 2, 6, 2, 2, 4, 6, 5, 2, 6, 2, 5, 6, 2, 6, 2, 6, 5, 6, 6, 6, 2, 4, 2, 6, 5, 4, 5, 4, 5, 3, 4, 6, 4, 3, 5, 1, 5, 5, 4, 2, 5, 5, 6, 6, 5, 2, 2, 4, 5, 4, 5, 5, 5, 2, 2, 2, 2, 5], [3, 5, 6, 5, 6, 6, 3, 5, 2, 3, 5, 3, 4, 1, 3, 1, 2, 7, 2, 3, 5, 2, 3, 7, 3, 1, 3, 2, 2, 7, 3, 7, 5, 7, 6, 5, 5, 7, 2, 5, 1, 3, 2, 3, 5, 2, 1, 6, 6, 5, 3, 5, 6, 5, 6, 4, 4, 5, 1, 1, 6, 3, 3, 2, 4, 7, 6, 5, 5, 2, 4], [5, 2, 5, 2, 2, 2, 2, 6, 5, 1, 1, 1, 1, 2, 4, 1, 1, 2, 6, 1, 6, 6, 5, 2, 2, 1, 1, 1, 2, 1, 1, 1, 3, 5, 2, 1, 6, 5, 5, 5, 1, 6, 2, 1, 6, 4, 1, 5, 5, 6, 5, 2, 5, 5, 3, 6, 6, 6, 1, 3, 4, 5, 3, 4, 5, 5, 1, 5, 5, 5, 5], [7, 5, 3, 7, 7, 4, 7, 5, 5, 3, 5, 4, 6, 3, 4, 2, 5, 6, 1, 3, 5, 5, 6, 5, 2, 1, 3, 3, 2, 1, 3, 2, 4, 7, 4, 1, 5, 6, 6, 5, 4, 4, 6, 4, 4, 5, 3, 6, 4, 7, 4, 6, 4, 4, 5, 4, 5, 6, 3, 1, 6, 3, 5, 4, 5, 7, 2, 6, 7, 7, 5], [5, 3, 6, 4, 4, 3, 5, 5, 5, 5, 5, 2, 5, 5, 6, 6, 5, 2, 5, 6, 6, 6, 6, 3, 2, 2, 5, 3, 4, 3, 3, 2, 5, 5, 3, 2, 6, 7, 6, 6, 2, 6, 2, 5, 6, 2, 2, 6, 5, 6, 6, 6, 6, 5, 5, 6, 5, 5, 1, 4, 6, 6, 2, 5, 5, 6, 2, 5, 7, 3, 6], [2, 5, 7, 6, 1, 5, 6, 5, 3, 2, 1, 6, 2, 6, 6, 5, 2, 7, 5, 2, 1, 3, 2, 6, 5, 6, 6, 6, 6, 7, 2, 6, 4, 6, 6, 7, 5, 6, 3, 5, 6, 6, 2, 5, 6, 3, 2, 5, 6, 4, 4, 6, 6, 6, 6, 6, 5, 2, 2, 3, 6, 3, 5, 6, 6, 6, 2, 4, 2, 3, 5], [2, 2, 7, 5, 1, 5, 1, 4, 1, 1, 1, 1, 1, 6, 7, 1, 3, 6, 7, 1, 1, 5, 1, 5, 3, 1, 7, 5, 7, 3, 7, 3, 7, 5, 5, 1, 7, 5, 3, 7, 1, 7, 2, 3, 7, 3, 2, 7, 4, 2, 7, 7, 5, 5, 5, 5, 4, 3, 1, 2, 5, 7, 3, 2, 7, 5, 2, 2, 5, 5, 7], [2, 4, 6, 6, 6, 5, 2, 6, 2, 1, 3, 4, 3, 4, 6, 4, 3, 6, 5, 6, 2, 2, 3, 6, 6, 4, 7, 1, 5, 5, 6, 6, 6, 5, 5, 2, 6, 6, 3, 6, 4, 6, 2, 6, 6, 6, 3, 5, 5, 6, 3, 5, 4, 3, 3, 5, 5, 3, 1, 2, 6, 4, 4, 5, 4, 5, 4, 4, 4, 2, 6], [1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 6, 1, 1, 2, 6, 1, 1, 7, 1, 2, 6, 1, 6, 1, 5, 1, 6, 1, 6, 2, 5, 1, 6, 6, 2, 7, 7, 6, 1, 2, 6, 1, 1, 5, 1, 1, 7, 6, 6, 2, 4, 6, 6, 4, 1, 1, 6, 5, 1, 7, 6, 7, 1, 1, 1, 2, 7], [5, 7, 5, 7, 5, 7, 2, 6, 5, 1, 2, 5, 3, 6, 5, 3, 2, 7, 3, 3, 2, 1, 1, 4, 5, 4, 5, 3, 2, 4, 3, 4, 5, 5, 6, 4, 5, 7, 7, 5, 4, 5, 5, 2, 5, 1, 1, 6, 7, 3, 2, 7, 7, 2, 1, 3, 3, 7, 1, 1, 7, 4, 2, 1, 4, 7, 1, 5, 7, 7, 3], [2, 5, 7, 4, 3, 5, 2, 5, 2, 3, 2, 5, 2, 2, 7, 2, 2, 5, 5, 2, 2, 3, 2, 4, 5, 2, 5, 2, 5, 2, 5, 5, 6, 5, 5, 2, 6, 6, 6, 6, 2, 6, 2, 2, 6, 3, 1, 6, 5, 5, 6, 6, 6, 2, 5, 6, 6, 6, 1, 1, 6, 2, 2, 5, 6, 6, 2, 5, 5, 5, 5], [1, 1, 7, 3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 5, 7, 1, 1, 2, 6, 2, 1, 7, 2, 3, 3, 1, 4, 4, 6, 1, 6, 5, 7, 3, 3, 1, 7, 7, 1, 7, 3, 7, 1, 1, 7, 1, 1, 5, 1, 1, 6, 3, 5, 4, 2, 7, 7, 2, 1, 1, 1, 7, 2, 7, 7, 5, 1, 1, 1, 1, 7], [3, 5, 5, 6, 2, 6, 3, 5, 2, 1, 2, 3, 2, 3, 5, 2, 3, 5, 5, 3, 2, 4, 2, 3, 2, 3, 5, 4, 4, 5, 6, 3, 4, 5, 5, 1, 5, 5, 4, 5, 2, 5, 3, 2, 5, 4, 2, 4, 3, 4, 5, 5, 5, 4, 4, 5, 6, 5, 2, 2, 6, 5, 3, 5, 4, 5, 6, 5, 6, 5, 5], [2, 5, 4, 4, 3, 5, 4, 4, 3, 3, 3, 1, 3, 2, 3, 1, 2, 4, 4, 2, 2, 2, 2, 5, 2, 2, 5, 2, 5, 3, 4, 4, 5, 3, 4, 1, 4, 4, 2, 4, 2, 4, 2, 2, 4, 3, 1, 4, 2, 2, 5, 4, 3, 2, 4, 3, 3, 2, 2, 2, 4, 4, 2, 3, 4, 4, 2, 1, 1, 1, 4], [5, 5, 5, 6, 4, 6, 5, 5, 4, 5, 4, 3, 4, 5, 4, 3, 4, 6, 5, 5, 5, 4, 5, 5, 3, 4, 4, 5, 4, 6, 3, 5, 4, 5, 4, 4, 3, 6, 4, 3, 4, 3, 5, 4, 3, 4, 4, 5, 4, 4, 4, 4, 4, 4, 3, 3, 3, 5, 4, 2, 4, 3, 3, 5, 4, 5, 4, 4, 5, 4, 3], [4, 3, 6, 3, 2, 5, 2, 6, 2, 4, 3, 3, 2, 3, 6, 4, 3, 4, 6, 2, 4, 5, 2, 2, 3, 2, 5, 2, 5, 2, 6, 2, 5, 2, 2, 1, 5, 6, 4, 5, 2, 5, 2, 5, 5, 5, 3, 6, 3, 4, 6, 5, 3, 5, 4, 5, 5, 3, 2, 3, 5, 4, 4, 3, 5, 3, 5, 2, 5, 5, 5], [2, 2, 6, 3, 5, 2, 2, 2, 2, 3, 3, 2, 2, 5, 2, 2, 2, 2, 3, 5, 2, 6, 2, 6, 5, 2, 6, 2, 5, 5, 5, 6, 6, 5, 6, 3, 6, 5, 2, 5, 5, 6, 3, 5, 6, 5, 5, 5, 2, 4, 5, 3, 4, 5, 5, 4, 6, 3, 2, 2, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 5], [2, 6, 7, 7, 1, 7, 1, 4, 2, 1, 2, 6, 2, 6, 6, 2, 2, 7, 7, 6, 2, 5, 2, 7, 6, 6, 3, 6, 6, 6, 5, 7, 2, 7, 6, 1, 5, 7, 2, 7, 2, 7, 2, 5, 5, 5, 2, 6, 2, 5, 7, 6, 7, 6, 6, 7, 7, 3, 1, 1, 7, 6, 6, 7, 7, 7, 3, 3, 2, 2, 7], [7, 1, 7, 1, 3, 1, 4, 1, 2, 2, 1, 1, 2, 1, 5, 1, 1, 2, 5, 1, 2, 1, 2, 2, 3, 1, 2, 1, 1, 1, 2, 4, 1, 1, 1, 1, 7, 5, 2, 6, 1, 6, 1, 1, 7, 5, 2, 5, 3, 5, 7, 6, 5, 3, 5, 5, 6, 2, 1, 2, 5, 7, 5, 4, 7, 5, 3, 1, 2, 3, 7], [3, 2, 6, 2, 1, 2, 2, 2, 2, 3, 1, 1, 2, 3, 6, 1, 2, 6, 6, 6, 3, 5, 4, 3, 5, 2, 5, 2, 4, 3, 6, 3, 6, 2, 7, 2, 6, 6, 6, 5, 2, 6, 2, 3, 5, 2, 2, 6, 2, 4, 5, 6, 6, 3, 2, 6, 6, 6, 1, 2, 6, 3, 3, 3, 6, 6, 2, 5, 5, 4, 5], [6, 5, 4, 5, 3, 7, 3, 4, 5, 1, 4, 4, 2, 4, 2, 2, 3, 5, 6, 3, 7, 3, 2, 5, 1, 3, 2, 5, 1, 3, 1, 1, 3, 5, 4, 5, 1, 5, 6, 5, 5, 1, 3, 6, 4, 2, 1, 1, 5, 5, 2, 5, 5, 4, 4, 4, 4, 5, 1, 1, 5, 4, 2, 1, 4, 5, 4, 5, 6, 6, 2], [3, 5, 5, 5, 2, 5, 3, 6, 3, 4, 2, 2, 4, 5, 6, 2, 3, 4, 4, 3, 2, 5, 4, 6, 3, 5, 4, 4, 5, 5, 4, 5, 5, 6, 6, 4, 5, 6, 5, 5, 2, 5, 4, 3, 6, 2, 2, 6, 5, 4, 5, 6, 6, 4, 5, 5, 5, 5, 3, 2, 6, 5, 4, 6, 6, 7, 2, 5, 6, 6, 6], [5, 2, 7, 2, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 7, 1, 1, 6, 4, 3, 5, 5, 1, 6, 4, 1, 6, 1, 3, 2, 6, 2, 6, 6, 6, 2, 6, 7, 4, 6, 1, 7, 2, 4, 6, 2, 2, 7, 5, 5, 5, 7, 6, 5, 6, 6, 5, 5, 1, 1, 6, 5, 5, 3, 6, 6, 1, 5, 5, 5, 7], [3, 1, 6, 2, 1, 2, 2, 1, 1, 3, 1, 1, 4, 1, 6, 1, 2, 6, 5, 1, 2, 7, 2, 1, 5, 1, 5, 1, 4, 1, 6, 1, 6, 2, 6, 1, 7, 6, 6, 6, 1, 6, 2, 1, 7, 2, 1, 7, 2, 6, 6, 7, 5, 2, 6, 5, 6, 5, 1, 4, 6, 6, 4, 5, 6, 6, 6, 3, 6, 6, 6], [2, 3, 5, 5, 3, 5, 5, 4, 2, 3, 3, 3, 2, 3, 5, 3, 3, 5, 5, 2, 3, 5, 3, 5, 4, 3, 5, 3, 5, 5, 5, 5, 3, 5, 5, 4, 5, 3, 3, 3, 2, 3, 2, 5, 5, 3, 2, 5, 2, 5, 5, 5, 4, 5, 3, 4, 5, 3, 2, 3, 5, 5, 5, 3, 5, 5, 3, 2, 2, 3, 3], [6, 3, 7, 3, 5, 7, 3, 3, 3, 3, 4, 5, 5, 1, 6, 3, 2, 5, 4, 2, 3, 6, 5, 3, 5, 4, 5, 1, 5, 2, 6, 2, 5, 2, 5, 2, 6, 6, 6, 6, 2, 6, 5, 2, 6, 3, 1, 5, 3, 4, 5, 6, 5, 3, 5, 6, 5, 5, 1, 3, 6, 6, 5, 3, 5, 6, 2, 5, 5, 6, 6], [5, 2, 7, 3, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 5, 1, 1, 3, 4, 1, 1, 2, 1, 2, 6, 1, 4, 1, 5, 1, 5, 1, 5, 4, 2, 1, 4, 5, 6, 5, 1, 6, 1, 1, 6, 1, 1, 6, 4, 1, 4, 5, 7, 1, 4, 5, 5, 6, 1, 1, 7, 5, 1, 1, 6, 3, 1, 4, 5, 5, 6], [4, 1, 6, 2, 2, 2, 5, 2, 2, 2, 2, 2, 5, 1, 6, 2, 2, 2, 6, 6, 1, 6, 6, 2, 2, 2, 6, 6, 6, 5, 6, 6, 6, 2, 6, 2, 6, 6, 2, 6, 6, 6, 2, 6, 6, 6, 2, 6, 2, 6, 5, 2, 2, 6, 6, 6, 6, 7, 2, 7, 6, 6, 6, 2, 6, 6, 2, 7, 7, 6, 6], [2, 5, 6, 4, 2, 4, 3, 5, 1, 1, 2, 2, 2, 2, 5, 2, 2, 5, 4, 3, 2, 3, 1, 5, 4, 2, 5, 1, 5, 2, 5, 5, 5, 5, 5, 2, 6, 4, 5, 5, 3, 5, 3, 2, 5, 2, 1, 5, 3, 4, 5, 5, 4, 3, 4, 4, 5, 5, 1, 1, 6, 5, 2, 4, 5, 5, 2, 4, 5, 5, 5], [2, 5, 6, 6, 2, 6, 2, 4, 3, 2, 2, 2, 2, 5, 5, 2, 2, 6, 6, 3, 3, 5, 2, 6, 5, 2, 5, 2, 6, 5, 5, 6, 6, 5, 6, 4, 5, 5, 3, 3, 3, 5, 2, 5, 4, 1, 2, 6, 5, 6, 2, 5, 6, 2, 3, 3, 3, 5, 2, 2, 6, 5, 6, 3, 4, 6, 2, 6, 5, 5, 4], [4, 5, 5, 3, 2, 4, 2, 4, 2, 3, 2, 2, 4, 3, 5, 2, 2, 6, 4, 5, 3, 3, 2, 4, 5, 3, 3, 2, 4, 3, 5, 5, 5, 5, 5, 3, 5, 6, 5, 6, 3, 5, 2, 3, 6, 4, 2, 4, 4, 4, 4, 6, 4, 3, 4, 5, 5, 6, 1, 2, 6, 5, 2, 2, 6, 6, 3, 6, 5, 5, 4], [2, 5, 6, 5, 1, 4, 2, 6, 1, 1, 1, 3, 1, 7, 7, 5, 2, 7, 6, 6, 2, 3, 2, 6, 7, 1, 7, 4, 6, 6, 5, 7, 6, 7, 7, 4, 5, 1, 2, 6, 3, 5, 1, 3, 6, 3, 2, 4, 4, 5, 5, 4, 5, 6, 3, 6, 6, 3, 1, 5, 6, 4, 5, 6, 6, 5, 4, 2, 2, 2, 5], [2, 7, 3, 6, 5, 6, 5, 6, 6, 2, 5, 3, 2, 2, 5, 2, 2, 7, 6, 6, 5, 2, 5, 7, 5, 2, 6, 2, 1, 5, 2, 6, 6, 6, 6, 3, 6, 6, 2, 6, 3, 6, 1, 2, 6, 5, 2, 7, 2, 5, 6, 6, 3, 6, 5, 6, 7, 2, 1, 1, 6, 2, 3, 6, 7, 6, 1, 1, 1, 1, 6], [3, 2, 3, 4, 3, 2, 5, 4, 3, 5, 2, 3, 2, 2, 3, 2, 6, 3, 4, 3, 4, 3, 5, 5, 2, 2, 5, 1, 1, 5, 5, 2, 5, 4, 3, 1, 6, 5, 5, 6, 2, 5, 2, 2, 6, 2, 1, 6, 5, 6, 6, 2, 4, 3, 5, 5, 5, 3, 3, 3, 6, 5, 3, 3, 5, 5, 2, 5, 5, 5, 5], [7, 4, 4, 7, 5, 6, 7, 7, 7, 4, 4, 2, 6, 1, 1, 1, 5, 1, 4, 4, 7, 3, 6, 5, 2, 4, 2, 2, 2, 3, 3, 4, 5, 7, 5, 1, 7, 4, 7, 5, 1, 6, 7, 7, 4, 7, 7, 5, 2, 3, 6, 6, 5, 7, 4, 4, 6, 7, 1, 7, 5, 5, 7, 7, 4, 3, 4, 3, 4, 5, 3], [6, 5, 6, 5, 5, 6, 2, 3, 5, 2, 3, 2, 2, 4, 6, 2, 2, 5, 6, 3, 2, 3, 3, 5, 5, 2, 4, 2, 4, 5, 6, 5, 3, 5, 3, 3, 6, 2, 2, 6, 4, 5, 3, 3, 5, 2, 2, 5, 3, 3, 5, 5, 4, 4, 5, 5, 5, 5, 3, 3, 5, 5, 4, 6, 6, 5, 3, 2, 3, 2, 5], [3, 1, 5, 4, 2, 5, 2, 3, 3, 2, 1, 2, 2, 1, 4, 2, 2, 6, 5, 5, 4, 5, 2, 5, 1, 1, 3, 1, 3, 4, 3, 5, 3, 3, 4, 3, 4, 6, 2, 4, 3, 5, 2, 4, 6, 6, 3, 5, 3, 2, 3, 3, 4, 3, 5, 3, 3, 5, 1, 2, 3, 2, 4, 2, 5, 4, 5, 4, 3, 3, 4], [3, 2, 5, 4, 4, 4, 3, 4, 3, 3, 2, 3, 3, 2, 5, 4, 3, 3, 5, 3, 3, 5, 3, 3, 4, 3, 5, 2, 5, 2, 5, 3, 4, 2, 4, 2, 5, 5, 5, 5, 2, 5, 2, 3, 4, 3, 3, 5, 4, 4, 4, 5, 5, 3, 4, 5, 5, 3, 2, 3, 5, 5, 3, 4, 5, 5, 3, 5, 5, 3, 5], [6, 3, 4, 2, 6, 3, 3, 1, 5, 1, 2, 5, 3, 2, 2, 1, 1, 4, 5, 6, 1, 6, 2, 3, 1, 3, 5, 1, 2, 3, 4, 5, 5, 6, 5, 1, 7, 6, 5, 7, 1, 6, 1, 2, 7, 2, 1, 5, 6, 5, 3, 6, 5, 4, 3, 6, 6, 3, 2, 1, 7, 6, 1, 5, 6, 6, 3, 2, 3, 5, 7], [5, 5, 3, 6, 5, 2, 6, 5, 5, 2, 5, 1, 5, 5, 3, 1, 5, 5, 2, 1, 6, 3, 5, 4, 2, 2, 6, 6, 2, 2, 7, 1, 2, 5, 6, 2, 3, 6, 6, 3, 1, 3, 2, 2, 6, 2, 2, 5, 2, 7, 3, 2, 7, 2, 6, 7, 7, 7, 3, 2, 5, 5, 4, 1, 5, 6, 5, 6, 6, 7, 6], [6, 2, 5, 3, 2, 2, 2, 3, 2, 1, 1, 1, 4, 5, 5, 4, 2, 4, 5, 2, 4, 5, 3, 5, 5, 2, 6, 2, 5, 5, 6, 4, 6, 2, 4, 3, 6, 6, 3, 6, 2, 5, 2, 4, 5, 5, 5, 5, 4, 3, 6, 6, 5, 5, 5, 5, 5, 4, 3, 3, 5, 5, 5, 5, 5, 5, 2, 3, 4, 3, 5], [2, 6, 6, 6, 2, 6, 2, 6, 6, 2, 2, 6, 6, 2, 7, 6, 2, 7, 5, 6, 6, 6, 6, 6, 6, 7, 2, 1, 2, 6, 2, 5, 6, 6, 6, 1, 7, 6, 1, 6, 6, 6, 1, 2, 7, 2, 2, 6, 2, 6, 6, 6, 2, 6, 6, 7, 7, 2, 2, 5, 6, 6, 6, 7, 7, 6, 2, 1, 2, 2, 7], [5, 5, 5, 4, 4, 5, 4, 5, 4, 3, 3, 4, 4, 5, 5, 4, 4, 4, 4, 4, 3, 3, 4, 4, 5, 4, 5, 3, 5, 3, 5, 4, 5, 4, 4, 3, 5, 5, 4, 5, 4, 5, 3, 4, 4, 3, 3, 5, 3, 4, 4, 4, 4, 4, 5, 4, 4, 5, 4, 3, 5, 4, 4, 4, 5, 5, 3, 3, 4, 4, 5], [1, 3, 7, 3, 2, 5, 1, 4, 2, 2, 1, 3, 1, 2, 6, 1, 1, 5, 5, 4, 2, 5, 2, 5, 4, 3, 6, 3, 5, 5, 6, 5, 5, 7, 5, 4, 5, 7, 2, 6, 2, 6, 3, 5, 5, 5, 3, 5, 4, 5, 5, 6, 5, 5, 3, 5, 5, 5, 1, 5, 6, 3, 4, 5, 5, 6, 3, 3, 5, 4, 5], [3, 2, 4, 5, 6, 5, 3, 3, 4, 3, 5, 2, 4, 5, 5, 5, 5, 3, 6, 3, 4, 6, 5, 4, 2, 5, 3, 6, 6, 5, 5, 5, 5, 5, 5, 5, 6, 5, 6, 6, 3, 5, 2, 3, 5, 5, 5, 5, 3, 5, 5, 4, 5, 5, 5, 5, 5, 5, 2, 5, 4, 5, 6, 6, 5, 5, 5, 5, 5, 5, 5], [3, 2, 6, 4, 3, 6, 2, 2, 3, 1, 3, 1, 6, 1, 6, 1, 3, 6, 6, 4, 5, 5, 2, 4, 5, 4, 5, 1, 7, 2, 4, 6, 6, 7, 6, 1, 6, 6, 5, 6, 5, 5, 5, 5, 6, 5, 2, 6, 4, 5, 5, 5, 5, 4, 5, 6, 5, 5, 2, 5, 6, 5, 7, 7, 6, 6, 2, 4, 5, 4, 6], [6, 5, 5, 5, 4, 7, 4, 6, 6, 2, 3, 2, 4, 2, 5, 3, 3, 7, 4, 5, 1, 1, 3, 7, 6, 6, 5, 5, 7, 5, 5, 4, 5, 6, 6, 5, 5, 7, 7, 7, 1, 7, 3, 1, 7, 4, 2, 5, 6, 3, 5, 7, 7, 3, 7, 6, 7, 7, 1, 1, 7, 5, 1, 7, 7, 7, 1, 4, 7, 7, 7], [3, 2, 6, 2, 5, 3, 6, 3, 3, 5, 5, 2, 5, 5, 3, 2, 5, 2, 5, 5, 5, 6, 5, 5, 2, 2, 3, 6, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 5, 6, 5, 5, 3, 2, 5, 5, 6, 6, 6, 7, 6, 5, 6, 6, 6, 2, 5, 5, 6, 5, 5, 5, 6, 3, 5, 7, 5, 5], [4, 6, 4, 3, 2, 6, 4, 5, 3, 1, 1, 1, 3, 6, 5, 1, 2, 7, 3, 1, 2, 2, 1, 5, 2, 2, 2, 1, 4, 4, 2, 2, 5, 6, 5, 2, 6, 6, 7, 5, 2, 5, 1, 1, 6, 1, 1, 5, 2, 4, 4, 3, 5, 5, 2, 5, 5, 3, 1, 1, 6, 6, 2, 5, 5, 5, 3, 2, 5, 5, 5], [3, 2, 3, 5, 5, 6, 5, 3, 5, 3, 5, 3, 5, 5, 3, 3, 5, 6, 3, 1, 5, 5, 5, 2, 2, 3, 3, 2, 2, 3, 3, 2, 5, 5, 3, 2, 3, 6, 5, 5, 2, 5, 3, 5, 5, 2, 2, 3, 5, 5, 3, 6, 5, 3, 5, 5, 6, 5, 4, 3, 6, 3, 3, 2, 6, 6, 2, 6, 5, 5, 5], [4, 1, 6, 3, 5, 3, 5, 2, 2, 2, 1, 2, 3, 3, 6, 2, 6, 3, 2, 2, 2, 6, 4, 2, 5, 2, 5, 3, 5, 3, 5, 4, 6, 3, 5, 2, 5, 6, 6, 6, 4, 6, 4, 5, 6, 4, 3, 6, 3, 3, 5, 6, 4, 3, 4, 5, 5, 6, 2, 2, 5, 5, 5, 5, 5, 6, 2, 4, 5, 5, 6], [1, 2, 6, 3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 4, 7, 1, 1, 6, 6, 6, 1, 5, 1, 6, 6, 4, 7, 1, 7, 3, 7, 4, 7, 1, 7, 3, 7, 6, 2, 5, 3, 6, 6, 5, 6, 6, 3, 5, 2, 1, 7, 7, 5, 4, 2, 5, 5, 2, 1, 5, 5, 5, 5, 7, 6, 7, 1, 1, 1, 2, 6], [6, 6, 4, 5, 6, 6, 6, 4, 6, 2, 3, 2, 1, 2, 2, 1, 2, 6, 3, 2, 6, 2, 6, 5, 1, 2, 2, 2, 2, 1, 3, 1, 2, 2, 3, 1, 5, 5, 5, 3, 1, 2, 3, 5, 4, 3, 2, 6, 6, 6, 2, 6, 7, 6, 5, 5, 6, 7, 3, 2, 7, 2, 2, 2, 6, 7, 1, 6, 6, 6, 6], [1, 4, 7, 3, 1, 7, 1, 2, 1, 1, 1, 1, 1, 5, 7, 4, 1, 7, 7, 7, 2, 3, 1, 6, 5, 1, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 7, 7, 7, 1, 2, 7, 7, 6, 6, 2, 7, 7, 6, 5, 7, 7, 7, 7, 1, 1, 3, 4, 6, 6, 6, 7, 7, 7, 1, 1, 1, 6], [2, 5, 7, 5, 1, 5, 5, 6, 1, 1, 1, 3, 1, 1, 4, 4, 1, 7, 5, 1, 1, 1, 1, 2, 5, 1, 7, 1, 6, 2, 5, 5, 6, 1, 5, 1, 7, 7, 3, 7, 2, 7, 1, 3, 7, 2, 1, 7, 4, 4, 6, 7, 7, 6, 6, 7, 7, 1, 1, 6, 7, 5, 1, 7, 7, 7, 4, 4, 7, 6, 7], [1, 1, 7, 5, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 4, 7, 7, 5, 7, 2, 3, 5, 5, 7, 1, 1, 1, 5, 1, 7, 3, 6, 1, 5, 7, 6, 7, 5, 5, 1, 1, 7, 3, 1, 4, 6, 6, 6, 7, 7, 5, 5, 5, 5, 7, 1, 1, 7, 5, 1, 5, 5, 7, 1, 5, 7, 7, 7], [7, 7, 1, 7, 1, 7, 1, 1, 7, 1, 1, 1, 1, 1, 2, 1, 1, 7, 7, 7, 7, 7, 1, 7, 1, 1, 1, 1, 1, 7, 1, 1, 7, 7, 1, 1, 7, 7, 7, 7, 7, 7, 1, 7, 7, 7, 6, 7, 4, 7, 7, 4, 5, 7, 7, 7, 7, 7, 1, 7, 5, 7, 5, 7, 7, 7, 5, 5, 7, 6, 7], [3, 5, 7, 4, 1, 5, 1, 3, 2, 1, 1, 1, 1, 3, 5, 1, 1, 5, 7, 1, 1, 3, 1, 4, 6, 2, 7, 1, 4, 2, 6, 2, 7, 6, 6, 1, 7, 6, 6, 2, 1, 6, 4, 1, 6, 1, 1, 7, 6, 5, 7, 7, 7, 2, 6, 5, 2, 6, 1, 1, 7, 2, 1, 5, 7, 6, 1, 5, 6, 6, 5], [5, 7, 3, 6, 3, 7, 2, 5, 6, 1, 4, 2, 2, 3, 2, 2, 3, 7, 2, 2, 6, 3, 3, 5, 3, 6, 5, 5, 2, 6, 3, 3, 3, 5, 5, 1, 3, 7, 6, 3, 5, 3, 7, 2, 5, 2, 2, 6, 6, 5, 3, 5, 6, 3, 5, 5, 5, 7, 3, 2, 7, 3, 3, 5, 3, 6, 2, 6, 7, 5, 3], [2, 2, 6, 3, 2, 2, 4, 4, 3, 1, 1, 1, 2, 1, 6, 1, 1, 5, 5, 2, 4, 6, 5, 3, 4, 3, 5, 1, 1, 2, 4, 1, 5, 2, 5, 1, 6, 5, 3, 5, 2, 5, 3, 3, 6, 3, 1, 5, 2, 6, 4, 5, 5, 5, 5, 5, 5, 3, 2, 2, 6, 5, 4, 4, 5, 5, 2, 2, 5, 5, 6], [2, 4, 7, 5, 2, 4, 1, 4, 2, 1, 1, 5, 2, 4, 6, 2, 2, 6, 6, 6, 2, 3, 2, 5, 7, 1, 7, 2, 7, 5, 7, 5, 7, 6, 7, 2, 7, 7, 2, 6, 2, 7, 1, 5, 5, 5, 3, 7, 2, 5, 5, 6, 4, 6, 4, 6, 6, 6, 2, 2, 4, 4, 5, 6, 6, 6, 5, 2, 2, 2, 6], [4, 6, 7, 5, 1, 6, 1, 6, 2, 1, 1, 1, 5, 7, 3, 2, 1, 7, 5, 6, 1, 1, 1, 6, 1, 6, 5, 6, 7, 5, 5, 5, 6, 6, 6, 5, 6, 6, 5, 6, 6, 6, 5, 2, 6, 5, 3, 6, 6, 7, 6, 6, 6, 6, 3, 6, 6, 5, 1, 5, 7, 7, 6, 3, 6, 6, 5, 2, 5, 6, 6], [4, 3, 4, 6, 3, 6, 2, 4, 5, 2, 2, 2, 2, 5, 3, 2, 2, 6, 2, 2, 6, 3, 2, 4, 2, 4, 2, 2, 2, 6, 2, 6, 6, 6, 5, 6, 4, 5, 5, 3, 3, 4, 7, 6, 5, 3, 2, 2, 2, 6, 5, 6, 6, 3, 2, 2, 2, 6, 2, 2, 6, 4, 6, 2, 5, 5, 2, 6, 6, 6, 4], [1, 2, 6, 2, 2, 2, 5, 2, 1, 2, 1, 1, 1, 1, 7, 2, 2, 2, 6, 2, 1, 7, 2, 2, 6, 2, 7, 2, 7, 1, 7, 2, 6, 6, 2, 1, 6, 5, 2, 6, 2, 6, 1, 2, 6, 1, 1, 6, 2, 2, 7, 5, 2, 4, 2, 2, 4, 1, 1, 3, 5, 6, 3, 6, 7, 6, 1, 2, 2, 2, 6], [5, 5, 7, 5, 2, 4, 5, 6, 2, 2, 2, 3, 2, 6, 5, 3, 3, 5, 6, 5, 4, 3, 3, 5, 4, 2, 4, 4, 4, 3, 6, 3, 2, 6, 5, 3, 5, 6, 4, 5, 4, 5, 3, 5, 5, 6, 5, 5, 4, 7, 4, 5, 5, 6, 4, 5, 5, 5, 4, 3, 5, 5, 6, 3, 5, 5, 2, 5, 6, 4, 5], [7, 3, 7, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 3, 7, 2, 1, 5, 6, 2, 1, 3, 1, 2, 6, 1, 7, 4, 7, 3, 7, 3, 7, 5, 6, 2, 6, 7, 4, 5, 4, 6, 1, 1, 6, 5, 5, 6, 4, 5, 4, 4, 5, 5, 6, 7, 7, 7, 1, 2, 6, 5, 2, 7, 7, 6, 1, 1, 4, 1, 5], [3, 2, 5, 4, 3, 4, 3, 4, 2, 1, 2, 2, 1, 4, 2, 2, 2, 4, 5, 2, 3, 5, 2, 2, 3, 2, 4, 3, 4, 3, 5, 3, 5, 3, 6, 2, 6, 6, 5, 6, 2, 7, 2, 1, 6, 2, 2, 6, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 1, 3, 6, 4, 3, 5, 5, 5, 1, 4, 5, 5, 6], [6, 5, 5, 6, 4, 6, 6, 6, 4, 3, 2, 3, 6, 5, 3, 1, 5, 6, 3, 3, 6, 2, 5, 5, 2, 2, 3, 5, 2, 5, 5, 6, 6, 6, 5, 3, 5, 7, 5, 5, 3, 5, 5, 2, 6, 2, 2, 3, 6, 5, 2, 6, 6, 5, 5, 6, 6, 6, 2, 2, 6, 5, 3, 1, 5, 6, 2, 5, 6, 6, 3], [2, 5, 7, 1, 1, 1, 1, 7, 1, 1, 1, 1, 1, 6, 7, 1, 1, 6, 7, 1, 1, 1, 1, 2, 3, 1, 7, 1, 6, 2, 7, 1, 7, 1, 7, 1, 7, 7, 1, 7, 2, 7, 1, 3, 7, 1, 1, 6, 5, 7, 6, 7, 6, 2, 3, 7, 6, 5, 1, 5, 6, 6, 3, 2, 7, 7, 2, 5, 5, 6, 7], [5, 6, 6, 6, 5, 5, 3, 6, 3, 3, 3, 5, 4, 4, 5, 3, 3, 6, 6, 3, 6, 3, 3, 6, 3, 3, 4, 6, 3, 5, 4, 6, 6, 6, 5, 3, 6, 6, 3, 6, 2, 6, 1, 2, 7, 4, 3, 2, 2, 5, 3, 2, 3, 7, 6, 7, 6, 6, 1, 1, 5, 6, 6, 5, 6, 6, 3, 1, 1, 1, 6], [2, 2, 6, 3, 2, 2, 6, 6, 2, 1, 1, 1, 2, 5, 6, 2, 2, 7, 6, 5, 2, 7, 5, 6, 3, 2, 5, 2, 6, 6, 6, 7, 5, 2, 7, 3, 6, 1, 3, 5, 6, 6, 2, 4, 6, 7, 6, 6, 2, 5, 5, 2, 2, 6, 6, 5, 6, 5, 2, 6, 6, 6, 6, 2, 6, 6, 6, 2, 2, 2, 6], [5, 3, 5, 3, 3, 3, 3, 3, 5, 3, 3, 3, 3, 2, 5, 3, 3, 4, 4, 3, 5, 5, 4, 3, 3, 3, 4, 3, 3, 3, 4, 3, 5, 3, 3, 3, 5, 5, 3, 5, 3, 5, 4, 3, 5, 5, 3, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 4, 4, 5, 5, 5, 4, 4, 5, 4, 4, 4]];
+					r = sample_data.length;
+
+					filter = [[1, 0, -1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, -1, 0, 1, 0, -1, 0, 1, 0, 1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, -1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+					bias_template = [64, 8, 0, 0, 0, 0, 0];
+					bias = [];
+					for(var i=0; i<r; i++){bias.push(bias_template);}
+					norm_template = [126, 126, 49, 49, 49, 49, 49];
+					norm = [];
+					for(var i=0; i<r; i++){norm.push(norm_template);}
+					var filterBig5_d = [[-1, 0, 1, 0, -1, 0, -1, 0, -1, -1, 0, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 0, -1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, -1, 1, 0, 1, -1, 1, 1, 1, 1, 1, -1, 0, 1, 1, 0, 1, 1, 1, 1, -1, 0, 1, 0, 1, 1, 1, 1, 0, 1, -1, -1, -1, 1], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, -1, 1, 1, 1, -1, 1, 0, 1, 0, 0, -1, 1, 1, 0, 0, 1, 0, 0, 1, -1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1], [0, 0, 0, 0, -1, 0, -1, 0, -0.5, 0, 0, 1, -1, 0, 1, 1, -1, 0, 1, 0, 0, 0, -1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, -1, 1, 0, 1, -1, -1, 1, -1, -1, 0, 0, 0, 1, 0, 0, 0.5, 0.5, 1, 1, -1, 0, 0, 0, 0, -1, 1, 1, 0, -1, -1, -1, -1, 1], [-0.5, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 1, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 1, 1, 1, 0, -1, 1, 0, -1, 1, -1, -1, 1, 1, -1, 1, 1, 1, 0, 1, 1, 1, 1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 1, 1, 1], [0, 1, -1, 1, 0, 1, 0.5, 1, 0, 0, 0, 0, 0, 1, -1, 0, 0, 1, 0, 0.5, 0, -1, 0, 1, 0, 0, 0, 1, -1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0]];
+					var consensusDims_d = [[0.00, 1.00, 1.00, 0.00, 1.00, 0.00, 0.00, 0.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.00, 1.00, 1.00, 1.00, 0.00, 1.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 1.00, 0.00, 1.00, 0.00, 0.00, 1.00, 1.00, 1.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 1.00, 1.00, 1.00, 0.00, 0.00, 1.00], [0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 1.00, 1.00, 0.00, 1.00, 1.00, 1.00, 0.00, 0.00, 1.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 0.00, 1.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 1.00, 0.00, 0.00, 1.00, 1.00, 1.00], [0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 0.00, 1.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 1.00, 0.00, 1.00, 1.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 0.00, 1.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 0.00, 1.00, 1.00, 0.00, 0.00, 0.00, 0.00, 1.00], [0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 1.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 0.00, 0.00, 1.00, 1.00, 0.00, 1.00, 1.00, 0.00, 0.00]];
+                    var spawMeanVals_d = [[1.875, 1.875, 6.75, 2.5, 1.5, 2.5, 1.5, 2.125, 1, 1.125, 1, 1.125, 1, 2.75, 6.875, 1.25, 1.375, 4.25, 6.25, 2.125, 1, 5.75, 1.25, 3.375, 5.5, 1.5, 6.5, 2.375, 6.625, 1.875, 6.625, 2.5, 6.625, 3.5, 4.125, 1.375, 6.625, 6.125, 2.375, 6.375, 3.25, 6.5, 1.75, 2.75, 6.5, 3, 2, 5.625, 2.5, 2.25, 6.5, 5.375, 4.25, 3.875, 3.875, 5.375, 5.875, 2.875, 1, 2.75, 4.75, 5.5, 3.375, 6, 6.75, 5.75, 1.375, 1.25, 2.375, 2, 6.375], [3.333333333, 3.148148148, 5.777777778, 3.222222222, 2.333333333, 3.703703704, 2.555555556, 3.740740741, 2.518518519, 1.925925926, 1.851851852, 2.296296296, 2.555555556, 2.592592593, 5.185185185, 2.111111111, 2.111111111, 4.740740741, 5.074074074, 2.851851852, 3.037037037, 4.851851852, 2.592592593, 3.222222222, 3.740740741, 2.333333333, 4.925925926, 1.814814815, 3.740740741, 2.518518519, 4.851851852, 2.592592593, 5.37037037, 3.925925926, 4.740740741, 1.814814815, 5.814814815, 5.851851852, 4.555555556, 5.62962963, 2.259259259, 5.703703704, 2.518518519, 2.703703704, 5.888888889, 2.740740741, 1.814814815, 5.592592593, 4.222222222, 4.814814815, 5.296296296, 5.666666667, 5.407407407, 3.481481481, 4.481481481, 5.407407407, 5.37037037, 4.962962963, 1.444444444, 2.592592593, 5.851851852, 4.851851852, 2.888888889, 3.962962963, 5.555555556, 5.666666667, 2.481481481, 4.111111111, 5.148148148, 5.111111111, 5.518518519], [2.884615385, 3.653846154, 5.846153846, 4.423076923, 2.923076923, 4.5, 2.807692308, 4.076923077, 2.846153846, 1.961538462, 2.192307692, 2.653846154, 2.692307692, 4.153846154, 5.153846154, 2.730769231, 2.576923077, 5.038461538, 5.192307692, 4.153846154, 3.038461538, 4.115384615, 2.692307692, 5.307692308, 4.5, 2.846153846, 5.230769231, 3, 5.076923077, 4.615384615, 4.807692308, 5.153846154, 5.153846154, 5.076923077, 5.307692308, 3.269230769, 5.5, 5, 3, 5.384615385, 3.423076923, 5.423076923, 2.5, 4.115384615, 5.461538462, 4.230769231, 3.076923077, 5.115384615, 3.346153846, 4.5, 4.576923077, 4.769230769, 4.346153846, 4.769230769, 4.346153846, 4.884615385, 5.038461538, 4.230769231, 1.961538462, 3.115384615, 5.269230769, 4.346153846, 4.769230769, 4.615384615, 5.346153846, 5.346153846, 3.153846154, 3.115384615, 3.423076923, 3.115384615, 5.038461538], [4.933333333, 4.666666667, 4.2, 5.6, 4.6, 5.6, 4.533333333, 4.866666667, 4.933333333, 2.8, 3.933333333, 2.866666667, 4.133333333, 3.733333333, 2.8, 2.266666667, 3.8, 5.4, 3.066666667, 2.933333333, 5.4, 3.266666667, 4.066666667, 4.733333333, 2.2, 3.2, 3.266666667, 3.933333333, 2.266666667, 3.866666667, 3.266666667, 3.6, 4.2, 5.533333333, 4.666666667, 3.066666667, 4.066666667, 5.933333333, 5.4, 4.266666667, 3.066666667, 3.866666667, 4.666666667, 4.066666667, 4.733333333, 2.933333333, 2.466666667, 4.533333333, 4.4, 5.066666667, 3.666666667, 5.266666667, 5.8, 4.2, 4.333333333, 4.533333333, 4.8, 5.933333333, 2.266666667, 2.6, 5.666666667, 3.933333333, 3.666666667, 2.933333333, 4.6, 5.866666667, 2.933333333, 5.333333333, 5.933333333, 5.533333333, 4.066666667]];
+
+					const df_data = nj.array(sample_data); // r x 71
+					const df_filter = nj.array(filter); // 7 x 71
+					const df_bias = nj.array(bias); // r x 7
+					const normalizer = nj.array(norm); // r x 7
+					const test_results = df_data.dot(df_filter.T).add(df_bias).multiply(7);
+                    const response_data = test_results.divide(normalizer);
+                    const filterBig5 = nj.array(filterBig5_d); // 5 x 71
+                    const big5_data = df_data.dot(filterBig5.T); // r x 5
+                    const responseColor = nj.concatenate([response_data, big5_data]); // r x 12
+                    console.log("Data Import: ", responseColor);
+
+					// LET THE CCOMPUTATIONS BEGIN~!
+					const clientData = nj.array(query); // 71
+					const clientResponse_data = clientData.dot(df_filter.T).add(nj.array(bias_template)).divide(nj.array(norm_template)).multiply(7); // 7
+                    const clientBig5_data = clientData.dot(filterBig5.T); // 5
+                    const clientColor = nj.concatenate([clientResponse_data, clientBig5_data]); // 12
+                   
+					const queryData = nj.array(query).reshape([1, 71]); // 1 x 71
+					const consensusDims = nj.array(consensusDims_d); // 4 x 71
+					const spawMeanVals = nj.array(spawMeanVals_d); // 4 x 71
+
+					
+					temp_S = (queryData.subtract(spawMeanVals.slice([0,1], null)).multiply(consensusDims.slice([0,1], null)));
+					temp_P = (queryData.subtract(spawMeanVals.slice([1,2], null)).multiply(consensusDims.slice([1,2], null)));
+					temp_A = (queryData.subtract(spawMeanVals.slice([2,3], null)).multiply(consensusDims.slice([2,3], null)));
+					temp_W = (queryData.subtract(spawMeanVals.slice([3,4], null)).multiply(consensusDims.slice([3,4], null)));
+					
+					const score_S = nj.sum(nj.abs(temp_S))/(35);
+					const score_P = nj.sum(nj.abs(temp_P))/(29);
+					const score_A = nj.sum(nj.abs(temp_A))/(21);
+					const score_W = nj.sum(nj.abs(temp_W))/(18);
+
+					const argFact = (compareFn) => (array) => array.map((el, idx) => [el, idx]).reduce(compareFn)[1]
+					const argMax = argFact((min, el) => (el[0] > min[0] ? el : min))
+					const argMin = argFact((max, el) => (el[0] < max[0] ? el : max))
+
+					const types = [["안정형", "Stable"], ["상대맞춤형", "Pleaser"], ["애정추구형", "Affection Seeker"], ["철회형", "Withdrawer"]];
+					client['spaw'] = types[argMin([score_S, score_P, score_A, score_W])];
+
+                    // Percentile calculations
+                    const percentile = (arr, val) => {
+						let count = 0;
+						arr.forEach(v => {
+							if (v < val) {
+							count++;
+							} else if (v == val) {
+							count += 0.5;
+							}
+						});
+						return 100 * count / arr.length;
+					}
+					
+                    var dims = ["회피형 애착", "불안형 애착", "통합형", "회피형", "지배형", "순종형", "절충형", "외향성", "성실성", "개방성", "우호성", "신경성"];
+                    var percentiles = [];
+					for (var i = 0; i < 12; i++) {
+						arr = responseColor.slice(null, [i,i+1]).reshape(r).tolist(); // r
+						val = clientColor.get(i);
+                        percentiles.push(Math.round(percentile(arr, val)));
+                    }
+					client['percentiles'] = percentiles;
+					console.log(client);
+
+					var age = client['age'];
+					var email = client['email'];
+					var name = client['name'];
+					var sex = client['sex'];
+					var spaw_Kor = client['spaw'][0];
+					var spaw_Eng = client['spaw'][1];
 
 					// Redirect to results.html with the selected values as query parameters
-					window.location.href = "results.html";
-					//"results.html?" + "q1=" + encodeURIComponent(q1Selection) + "&q2=" + encodeURIComponent(q2Selection) + "&q3=" + encodeURIComponent(q3Selection) + "&q4=" + encodeURIComponent(q4Selection) + "&q5=" + encodeURIComponent(q5Selection) + "&q6=" + encodeURIComponent(q6Selection) + "&q7=" + encodeURIComponent(q7Selection) + "&q8=" + encodeURIComponent(q8Selection) + "&q9=" + encodeURIComponent(q9Selection) + "&q10=" + encodeURIComponent(q10Selection) + "&q11=" + encodeURIComponent(q11Selection) + "&q12=" + encodeURIComponent(q12Selection) + "&q13=" + encodeURIComponent(q13Selection) + "&q14=" + encodeURIComponent(q14Selection) + "&q15=" + encodeURIComponent(q15Selection) + "&q16=" + encodeURIComponent(q16Selection) + "&q17=" + encodeURIComponent(q17Selection) + "&q18=" + encodeURIComponent(q18Selection) + "&q19=" + encodeURIComponent(q19Selection) + "&q20=" + encodeURIComponent(q20Selection) + "&q21=" + encodeURIComponent(q21Selection) + "&q22=" + encodeURIComponent(q22Selection) + "&q23=" + encodeURIComponent(q23Selection) + "&q24=" + encodeURIComponent(q24Selection) + "&q25=" + encodeURIComponent(q25Selection) + "&q26=" + encodeURIComponent(q26Selection) + "&q27=" + encodeURIComponent(q27Selection) + "&q28=" + encodeURIComponent(q28Selection) + "&q29=" + encodeURIComponent(q29Selection) + "&q30=" + encodeURIComponent(q30Selection) + "&q31=" + encodeURIComponent(q31Selection) + "&q32=" + encodeURIComponent(q32Selection) + "&q33=" + encodeURIComponent(q33Selection) + "&q34=" + encodeURIComponent(q34Selection) + "&q35=" + encodeURIComponent(q35Selection) + "&q36=" + encodeURIComponent(q36Selection) + "&q37=" + encodeURIComponent(q37Selection) + "&q38=" + encodeURIComponent(q38Selection) + "&q39=" + encodeURIComponent(q39Selection) + "&q40=" + encodeURIComponent(q40Selection) + "&q41=" + encodeURIComponent(q41Selection) + "&q42=" + encodeURIComponent(q42Selection) + "&q43=" + encodeURIComponent(q43Selection) + "&q44=" + encodeURIComponent(q44Selection) + "&q45=" + encodeURIComponent(q45Selection) + "&q46=" + encodeURIComponent(q46Selection) + "&q47=" + encodeURIComponent(q47Selection) + "&q48=" + encodeURIComponent(q48Selection) + "&q49=" + encodeURIComponent(q49Selection) + "&q50=" + encodeURIComponent(q50Selection) + "&q51=" + encodeURIComponent(q51Selection) + "&q52=" + encodeURIComponent(q52Selection) + "&q53=" + encodeURIComponent(q53Selection) + "&q54=" + encodeURIComponent(q54Selection) + "&q55=" + encodeURIComponent(q55Selection) + "&q56=" + encodeURIComponent(q56Selection) + "&q57=" + encodeURIComponent(q57Selection) + "&q58=" + encodeURIComponent(q58Selection) + "&q59=" + encodeURIComponent(q59Selection) + "&q60=" + encodeURIComponent(q60Selection) + "&q61=" + encodeURIComponent(q61Selection) + "&q62=" + encodeURIComponent(q62Selection) + "&q63=" + encodeURIComponent(q63Selection) + "&q64=" + encodeURIComponent(q64Selection) + "&q65=" + encodeURIComponent(q65Selection) + "&q66=" + encodeURIComponent(q66Selection) + "&q67=" + encodeURIComponent(q67Selection) + "&q68=" + encodeURIComponent(q68Selection) + "&q69=" + encodeURIComponent(q69Selection) + "&q70=" + encodeURIComponent(q70Selection) + "&q71=" + encodeURIComponent(q71Selection) + "&name=${encodeURIComponent(name)}&sex=${encodeURIComponent(sex)}&age=${encodeURIComponent(age)}&email=${encodeURIComponent(email)}";
+					window.location.href = "results.html?" 
+					+ "age=" + encodeURIComponent(age)
+					+ "&email=" + encodeURIComponent(email)
+					+ "&name=" + encodeURIComponent(name)
+					+ "&sex=" + encodeURIComponent(sex)
+					+ "&spaw_Kor=" + encodeURIComponent(spaw_Kor)
+					+ "&spaw_Eng=" + encodeURIComponent(spaw_Eng)
+					+ "&percentiles=" + encodeURIComponent(percentiles);
 				}
 			</script>
 	</body>

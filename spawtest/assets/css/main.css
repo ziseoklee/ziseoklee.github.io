@@ -4679,5 +4679,24 @@ input, select, textarea {
 			box-shadow: 0 0 1.5rem 0 rgba(0, 0, 0, 0.2);
 			visibility: visible;
 		}
-
+	}
+	#graph-container {
+		display: flex;
+		flex-direction: column;
+		align-items: left;
+		margin-top: 20px;
+	}
+	
+	.bar {
+		width: 0;
+		height: 40px;
+		background-color: #eacaa0;
+		margin: 20px 0;
+		transition: width 1s;
+	}
+	
+	.label {
+		font-weight: bold;
+		margin-bottom: 20px;
+		text-align: center;
 	}
