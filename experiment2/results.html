@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/style.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -15,29 +16,98 @@
 				<div id="main">
 					<section class="post">
 						<p id="results"></p>
+						<div id="graph-container"></div>
 					</section>
 				</div>
 			</div>
 
 		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 		<script>
+			function attachOrdinal(num) {
+				const suffixes = { '0': 'th', '1': 'st', '2': 'nd', '3': 'rd' };
+
+				const v = String(num);
+				const suffix = v in { '11': true, '12': true, '13': true } ? 'th' : suffixes[v.slice(-1)] || 'th';
+
+				return v + suffix;
+			}
+
+			function plotStudentResults(client, type) {
+				let testNames, title;
+
+				if (type === 0) {
+				testNames = dims.slice(0, 2);
+				title = "애착 유형";
+				} else if (type === 1) {
+				testNames = dims.slice(2, 7);
+				title = "갈등 해결 유형";
+				} else if (type === 2) {
+				testNames = dims.slice(7);
+				title = "Big Five 성격요소";
+				}
+
+				const data = [{
+				type: 'bar',
+				orientation: 'h',
+				x: testNames.map(dim => client[dim]),
+				y: testNames,
+				marker: { color: 'yellow' },
+				}];
+
+				const layout = {
+				title: `${client['name']}님의 ${title} 결과`,
+				font: { size: 20, color: 'white' },
+				xaxis: {
+					title: '백분위수',
+					color: 'white',
+					gridcolor: 'white',
+				},
+				yaxis: { color: 'white' },
+				margin: { l: 150, r: 20, b: 50, t: 70, pad: 0 },
+				showlegend: false,
+				paper_bgcolor: 'black',
+				plot_bgcolor: 'black',
+				};
+
+				Plotly.newPlot('graph-container', data, layout);
+			}
+
 			// Get the values from the query parameters
 			var urlParams = new URLSearchParams(window.location.search);
 
-			var query = decodeURIComponent(urlParams.get('query')).split(',');
-            var name = urlParams.get('name');
-            var sex = urlParams.get('sex');
-            var age = parseInt(urlParams.get('age'), 10);
-            var email = urlParams.get('email');
-			// Parse values for other questions here
+			var client = {};
+			var dims = ["회피형 애착", "불안형 애착", "통합형", "회피형", "지배형", "순종형", "절충형", "외향성", "성실성", "개방성", "우호성", "신경성"];
+			client['age']  = decodeURIComponent(urlParams.get('age'));
+			client['email']  = decodeURIComponent(urlParams.get('email'));
+			client['name']  = decodeURIComponent(urlParams.get('name'));
+			client['sex']  = decodeURIComponent(urlParams.get('sex'));
+			client['spaw_Kor']  = decodeURIComponent(urlParams.get('spaw_Kor'));
+			client['spaw_Eng']  = decodeURIComponent(urlParams.get('spaw_Eng'));
+			var values  = decodeURIComponent(urlParams.get('percentiles')).split(',');
+			
+			const graphContainer = document.getElementById('graph-container');
+			for (let i = 0; i < values.length; i++) {
+				const bar = document.createElement('div');
+				bar.className = 'bar';
+				bar.style.width = values[i] + '%';
+
+				const label = document.createElement('div');
+				label.className = 'label';
+				label.textContent = `Value ${i + 1}: ${values[i]}`;
+
+				graphContainer.appendChild(label);
+				graphContainer.appendChild(bar);
+			}
 
 			// Display the results
 			document.getElementById("results").innerHTML = `
 				<p>
-                    name = ${name} <br>
-                    age = ${age} <br>
-                    sex = ${sex} <br>
-                    email = ${email} <br>
+                    name = ${client['name']} <br>
+                    age = ${client['age']} <br>
+                    sex = ${client['sex']} <br>
+                    email = ${client['email']} <br>
                 </p>
 			`;
 		</script>
