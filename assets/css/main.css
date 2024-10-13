@@ -2594,7 +2594,7 @@ input, select, textarea {
 		width: 15%;
 		height: 100%;
 		left: 0;
-		padding: 8em 4em;
+		padding: 8em 0em 4em 0em;
 		position: fixed;
 		text-align: center;
 		top: 0;
@@ -3004,7 +3004,7 @@ input, select, textarea {
 		/* Header */
 
 			#header {
-				padding: 6em 3em 3em 3em;
+				padding: 6em 0em 3em 0em;
 				width: 15%;
 			}
 
@@ -3064,7 +3064,7 @@ input, select, textarea {
 				background-position: top left, center center;
 				background-size: auto,		cover;
 				left: auto;
-				padding: 6em 4em;
+				padding: 6em 0em;
 				position: relative;
 				text-align: center;
 				top: auto;
@@ -3089,13 +3089,13 @@ input, select, textarea {
 			#footer {
 				background-attachment: scroll;
 				background-color: #1c1b1a;
-				background-image: url("../images/overlay.png"), url("../images/bg.jpg");
+				/* background-image: url("../images/overlay.png"), url("../images/bg.jpg"); */
 				background-position: top left, bottom center;
 				background-repeat: repeat, no-repeat;
 				background-size: auto, cover;
 				bottom: auto;
 				left: auto;
-				padding: 4em 4em 6em 4em;
+				padding: 4em 0em 6em 0em;
 				position: relative;
 				text-align: center;
 				width: 100%;
@@ -3172,7 +3172,7 @@ input, select, textarea {
 		/* Header */
 
 			#header {
-				padding: 2.25em 1.5em;
+				padding: 2.25em 0em;
 			}
 
 				#header h1 {
@@ -3182,7 +3182,7 @@ input, select, textarea {
 		/* Footer */
 
 			#footer {
-				padding: 2.25em 1.5em;
+				padding: 2.25em 0em;
 			}
 
 		/* Main */
@@ -3216,7 +3216,7 @@ input, select, textarea {
 		/* Header */
 
 			#header {
-				padding: 4.5em 1.5em;
+				padding: 4.5em 0em;
 			}
 
 				#header h1 br {
@@ -3224,7 +3224,7 @@ input, select, textarea {
 				}
 			
 			.major h1 {
-				font-size: 2.2em;
+				font-size: 2.5em;
 			}
 
 			#main img {
