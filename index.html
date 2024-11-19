@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Zi-Seok Lee</title>
+		<title>Ziseok Lee</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -17,13 +17,23 @@
 		<header id="header">
 			<div class="inner">
 				<a href="./blog/"><img src="assets/images/lovebulb_rounded.svg" /></a>
-				<p><a href="#home"><strong>HOME</strong></a></p>
-				<p><a href="#bio">BIO</a></p>
-				<p><a href="#news">NEWS</a></p>
-				<p><a href="#publications">PUBLICATIONS</a></p>
+				<p><a href="index.html"><strong>HOME</strong></a></p>
+				<p><a href="bio.html">BIO</a></p>
+				<p><a href="news.html">NEWS</a></p>
+				<p><a href="publications.html">PUBLICATIONS</a></p>
 				<!-- <p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p> -->
 			</div>
+			<!-- <a id="expand-button">☰</a> -->
 		</header>
+		<!-- <script src="./assets/js-strata/header.js"></script>
+		<style>
+			.header {
+				z-index: 1000;
+				overflow: hidden;
+				transition: max-height 0.3s ease-in-out;
+				max-height: 60px; /* Collapsed height */
+			}
+		</style> -->
 
 
 
@@ -36,17 +46,17 @@
 			<section id="home">
 				<style>
 					#home .image.avatar {
-						width: 8rem;
+						width: 10rem;
 					}
-				
+
 					#home h1 {
 						margin: 0;
 					}
 				</style>
 				<div>
-					<span class="image right"><a class="image avatar"><img src="assets/images/profile_photo.jpg" alt="" /></a></span>
+					<span class="image right"><a class="image avatar"><img src="assets/images/profile_photo_3.jpg" alt="" /></a></span>
 					<header class="major">
-						<h1><b>Zi-Seok Lee</b></h1>
+						<h1>Ziseok Lee</h1>
 					</header>
 					<p>
 						Undergraduate Student<br>
@@ -54,39 +64,54 @@
 						Seoul National University
 					</p>
 				</div>
-				
 				<hr>
 
 				<div>
 					<header>
-						<h1><b>Research Interests</b></h1>
+						<h1>Research Interests</h1>
 					</header>
 					<p>Probabilistic Generative Models</p>
 				</div>
-				
 				<hr>
 
 				<div>
 					<header>
-						<h1><b>Education & Experience</b></h1>
+						<h1>Education & Experience</h1>
 					</header>
-					<p>[placeholder]</p>
+					<style>
+						#education tbody tr {
+							background-color: transparent;
+						}
+					</style>
+					<table id="education">
+						<tbody>
+							<tr>
+								<td>
+									<header>
+										<h2>Seoul National University</h2>
+										<p>Undergraduate Student in Mathematical Sciences</p>
+									</header>
+								</td>
+								<td>March 2021 - </td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-
 				<hr>
 
-				<div>
+				<!-- <div>
 					<header>
-						<h1><b>Awards & Scholarships</b></h1>
-						<p>[placeholder]</p>
+						<h1>Awards & Scholarships</h1>
 					</header>
+					<ul>
+						<li>__name__, __year__</li>
+					</ul>
 				</div>
-				
-				<hr>
+				<hr> -->
 
 				<div id="email">
-					<h1><b>Contact</b></h1>
-					<p>Leave a message for Zi-Seok Lee!</p>
+					<h1>Contact (Not functional yet)</h1>
+					<p>Leave a message for Ziseok Lee!</p>
 					<div class="row">
 						<div class="column">
 							<form method="post" action="#">
@@ -116,10 +141,10 @@
 			<div class="inner">
 				<ul class="icons">
 					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="#email" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					<li><a href="index.html#email" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
 				<ul class="copyright">
-					<li>&copy; Zi-Seok Lee</li>
+					<li>&copy; Ziseok Lee</li>
 					<li><a href="http://html5up.net">HTML5 UP</a></li>
 				</ul>
 			</div>

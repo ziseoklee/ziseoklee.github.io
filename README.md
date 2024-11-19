@@ -1,4 +1,4 @@
-# Zi-Seok Lee
+# Ziseok Lee
 Undergraduate Student \
 Department of Mathematical Sciences \
 Seoul National Univeristy
