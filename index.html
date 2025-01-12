@@ -109,21 +109,21 @@
 				</div>
 				<hr> -->
 
-				<div id="email">
-					<h1>Contact (Not functional yet)</h1>
+				<div id="contact">
+					<h1>Contact</h1>
 					<p>Leave a message for Ziseok Lee!</p>
 					<div class="row">
 						<div class="column">
-							<form method="post" action="#">
+							<form onsubmit="sendEmail(event)">
 								<div class="row gtr-uniform gtr-50">
 									<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
 									<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
 									<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
 								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
 							</form>
-							<ul class="actions">
-								<li><input type="submit" value="Send Message" /></li>
-							</ul>
 						</div>
 					</div>
 				</div>
@@ -141,7 +141,7 @@
 			<div class="inner">
 				<ul class="icons">
 					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="index.html#email" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					<li><a href="index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
 				<ul class="copyright">
 					<li>&copy; Ziseok Lee</li>
@@ -156,6 +156,7 @@
 		<script src="assets/js-strata/breakpoints.min.js"></script>
 		<script src="assets/js-strata/util.js"></script>
 		<script src="assets/js-strata/main.js"></script>
-
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+		<script src="assets/js-strata/emailjs.js"></script>
 	</body>
 </html>
