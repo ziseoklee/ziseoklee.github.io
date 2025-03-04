@@ -1,7 +1,8 @@
 # Ziseok Lee
-Undergraduate Student \
-Department of Mathematical Sciences \
+Integrated MS-PhD Student \
+Department of Biomedical Sciences \
 Seoul National Univeristy
 
 # Research Interests
-Probabilistic Generative Models
+Probabilistic Generative Models \
+Large Molecule Generation and Design
