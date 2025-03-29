@@ -38,7 +38,7 @@
 					<header>
 						<h1>Publications</h1>
 					</header>
-					<ul>
+					<ul id="publicationsList">
 						<!-- 
 						<li><a href="__link__">__title__</a>, __authors__, <i>__publisher__</i>, __year__.</li>
 						-->
@@ -75,6 +75,51 @@
 		<script src="assets/js-strata/breakpoints.min.js"></script>
 		<script src="assets/js-strata/util.js"></script>
 		<script src="assets/js-strata/main.js"></script>
+		<script>
+			async function loadPublications() {
+				try {
+					const response = await fetch('mypapers.bib');
+					const text = await response.text();
+					const publications = parseBibFile(text);
+					displayPublications(publications);
+				} catch (error) {
+					console.error("Error loading the publications:", error);
+				}
+			}
+
+			function parseBibFile(bibText) {
+				const entries = bibText.split(/@\w+{/).slice(1); // Split each entry
+				let publications = [];
+				entries.forEach(entry => {
+					let bibEntry = {};
+					entry = entry.replace(/}\s*$/, ''); // Remove trailing }
+					let lines = entry.split(/\n/);
+					for (let line of lines) {
+						let match = line.match(/(\w+)\s*=\s*\{(.+?)\},?/);
+						if (match) {
+							bibEntry[match[1].toLowerCase()] = match[2];
+						}
+					}
+					if (bibEntry.year) {
+						publications.push(bibEntry);
+					}
+				});
+				// Sort publications by year (descending order)
+				return publications.sort((a, b) => (b.year || 0) - (a.year || 0));
+			}
+
+			function displayPublications(publications) {
+				const list = document.getElementById("publicationsList");
+				list.innerHTML = "";
+				publications.forEach(pub => {
+					const item = document.createElement("li");
+					item.innerHTML = `<strong>${pub.title}</strong>, ${pub.author}, ${pub.journal} (${pub.year})`;
+					list.appendChild(item);
+				});
+			}
+
+			document.addEventListener("DOMContentLoaded", loadPublications);
+		</script>
 
 	</body>
 </html>
