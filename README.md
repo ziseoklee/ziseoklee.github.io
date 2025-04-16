@@ -5,4 +5,4 @@ Seoul National Univeristy
 
 # Research Interests
 Probabilistic Generative Models \
-Large Molecule Generation and Design
+Molecule Generation and Drug Design
