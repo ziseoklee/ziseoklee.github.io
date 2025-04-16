@@ -77,7 +77,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #F4EDE3;
+		background: #F4EDE320;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -125,14 +125,14 @@ input, select, textarea {
 	}
 
 	p {
-		margin: 0 0 2em 0;
+		margin: 0 0 1rem 0;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
 		color: #1c1b1a;
 		font-weight: 900; /*400*/
 		line-height: 1em;
-		margin: 0 0 1em 0;
+		margin: 0 0 1rem 0;
 	}
 
 	
@@ -2374,7 +2374,7 @@ input, select, textarea {
 	}
 
 		table tbody tr {
-			border: solid 1px #efefef;
+			/* border: solid 1px #efefef; */
 			border-left: 0;
 			border-right: 0;
 		}
@@ -2694,7 +2694,7 @@ input, select, textarea {
 		max-width: 54em;
 		padding: 8em 4em 4em 4em;
 		width: calc(100% - 15%);
-		background-color: #F4EDE3;
+		background-color: #F4EDE320;
 	}
 
 		#main > section {
