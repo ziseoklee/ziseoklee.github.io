@@ -43,6 +43,7 @@
 						<li><a href="__link__">__title__</a>, __authors__, <i>__publisher__</i>, __year__.</li>
 						-->
 					</ul>
+					<p>* Equal contribution</p>
 				</div>
 				<hr>
 
@@ -150,7 +151,7 @@
 				list.innerHTML = "";
 				publications.forEach(pub => {
 					const item = document.createElement("li");
-					item.innerHTML = `<strong>${pub.title}</strong>, ${pub.author}, ${pub.journal} (${pub.year})`;
+					item.innerHTML = `<strong><a href="${pub.url}">${pub.title}</a></strong>, ${pub.author}, ${pub.journal} (${pub.year})`;
 					list.appendChild(item);
 				});
 			}
