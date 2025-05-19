@@ -115,3 +115,15 @@
 			});
 
 })(jQuery);
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const openHeaderButton = document.getElementById('openHeaderButton');
+    const header = document.getElementById('header');
+
+    if (openHeaderButton && header) {
+        openHeaderButton.addEventListener('click', function() {
+            header.classList.toggle('is-open');
+        });
+    }
+});
