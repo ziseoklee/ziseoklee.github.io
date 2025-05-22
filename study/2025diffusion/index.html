@@ -54,31 +54,31 @@
 					</header>
 					<b>Part 1: Mathematical Foundation</b>
 					<ul>
-						<li>Stochastic processes, Brownian motion, Itô calculus</li>
-						<li>SDEs and Fokker–Planck equations (forward & backward)</li>
-						<li>Girsanov theorem and time reversal</li>
+						<li><a href="1.1.stochastic.html">Stochastic processes, Brownian motion, Itô calculus</a></li>
+						<li><a href="1.2.sdes.html">SDEs and Fokker–Planck equations (forward & backward)</a></li>
+						<li><a href="1.3.girsanov.html">Girsanov theorem and time reversal</a></li>
 					</ul>
 					<b>Part 2: Core Theory of Diffusion Models</b>
 					<ul>
-						<li>Score matching (denoising, score estimation)</li>
-						<li>DDPM (Ho et al.), Score-based models (Song et al.)</li>
-						<li>Reverse-time SDEs, ODE formulation</li>
-						<li>Latent diffusion, Conditional Generation</li>
+						<li><a href="2.1.scorematching.html">Score matching (denoising, score estimation)</a></li>
+						<li><a href="2.2.ddpm.html">DDPM (Ho et al.), Score-based models (Song et al.)</a></li>
+						<li><a href="2.3.reversetime.html">Reverse-time SDEs, ODE formulation</a></li>
+						<li><a href="2.4.latentdiffusion.html">Latent diffusion, Conditional Generation</a></li>
 					</ul>
 					<b>Part 3: Innovations & Acceleration</b>
 					<ul>
-						<li>Consistency models, Flow matching, stochastic interpolants</li>
-						<li>Schrödinger bridge & optimal transport formulation</li>
-						<li>Diffusion bridges, functional diffusion processes</li>
+						<li><a href="3.1.consistency.html">Consistency models, Flow matching, stochastic interpolants</a></li>
+						<li><a href="3.2.schrodingerbridge.html">Schrödinger bridge & optimal transport formulation</a></li>
+						<li><a href="3.3.functionaldiffusion.html">Diffusion bridges, functional diffusion processes</a></li>
 					</ul>
 					<b>Part 4: Applications</b>
 					<ul>
-						<li>Protein folding/design (e.g., AlphaFold, RFdiffusion)</li>
-						<li>DNA/RNA generation</li>
-						<li>Text-to-image (DALLE, Imagen, SD)</li>
-						<li>Text-to-3D, multimodal alignment with LLMs</li>
-						<li>Diffusion + LLM</li>
-						<li>Diffusion + RL (diffusion policy)</li>
+						<li><a href="4.1.protein.html\">Protein folding/design (e.g., AlphaFold, RFdiffusion)</a></li>
+						<li><a href="4.2.dnarna.html">DNA/RNA generation</a></li>
+						<li><a href="4.3.texttoimage.html">Text-to-image (DALLE, Imagen, SD)</a></li>
+						<li><a href="4.4.multimodal.html">Text-to-3D, multimodal alignment with LLMs</a></li>
+						<li><a href="4.5.diffusionllm.html">Diffusion + LLM</a></li>
+						<li><a href="4.6.diffusionpolicy.html">Diffusion + RL (diffusion policy)</a></li>
 					</ul>
 					<b>Part 5: Future Directions</b>
 					<ul>
@@ -91,8 +91,8 @@
 						<h3>Implementations</h3>
 					</header>
 					<ul>
-						<li><a href="CIFAR10.html">Training a Diffusion Model on CIFAR-10</a></li>
-						<li><a href="CIFAR10_interpolant.html">Training a General Stochastic Interpolant on CIFAR-10</a></li>
+						<li><a href="DDPM_CIFAR10.html">Train a DDPM on CIFAR-10</a></li>
+						<li><a href="FLOW_CIFAR10.html">Train a Flow Model on CIFAR-10</a></li>
 					</ul>
 				</div>
 				<hr>
@@ -132,6 +132,7 @@
 		<script src="../../assets/js-strata/breakpoints.min.js"></script>
 		<script src="../../assets/js-strata/util.js"></script>
 		<script src="../../assets/js-strata/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 	</body>
 </html>
