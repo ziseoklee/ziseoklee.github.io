@@ -35,12 +35,75 @@
 		<div id="main">
 			<!-- HOME -->
 			<section>
-                <h1>Title</h1>
+                <h1>DDPMs and Score-Based Diffusion Models</h1>
                 <hr>
 
-                <p>
-                    Contents placeholder and example equation: \(ax + by + c = 0\)
-                </p>
+                <p>This post builds upon our discussion of score matching and delves into the rigorous formulation of denoising diffusion probabilistic models (DDPMs) and their score-based SDE analogues. We'll focus on the variational objectives, derivations from first principles, and key implementation details.</p>
+
+				<h2>1. Forward Diffusion Process</h2>
+
+				<p>Let \( x_0 \sim p_{\text{data}}(x_0) \). Define a Markov chain \( x_1, \dots, x_T \) via:</p>
+
+				<p>\[ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t I) \]</p>
+
+				<p>with \( \beta_t \in (0, 1) \) small noise schedule. This gives the marginal:</p>
+				<p>\[ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) I) \]</p>
+				<p>where \( \alpha_t = 1 - \beta_t \), \( \bar{\alpha}_t = \prod_{s=1}^t \alpha_s \).</p>
+
+				<h2>2. Reverse Process and Generative Model</h2>
+
+				<p>We train a neural net \( \epsilon_\theta(x_t, t) \) to predict the noise. The reverse distribution is approximated as:</p>
+
+				<p>\[ p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t)) \]</p>
+
+				<p>In the DDPM simplification, \( \Sigma_\theta \) is fixed and \( \mu_\theta \) is derived from \( \epsilon_\theta \):</p>
+
+				<p>\[ \mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}} (x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t)) \]</p>
+
+				<h2>3. Variational Objective (ELBO)</h2>
+
+				<p>The goal is to maximize the data likelihood:</p>
+
+				<p>\[ \log p_\theta(x_0) = \log \int p_\theta(x_{0:T}) dx_{1:T} \geq \mathbb{E}_q \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T}|x_0)} \right] \]</p>
+
+				<p>Breaking this into KLs:</p>
+
+				<p>\[ \mathcal{L}_{\text{ELBO}} = \mathbb{E}_q \left[ \sum_{t=1}^T \text{KL}(q(x_{t-1}|x_t,x_0) \| p_\theta(x_{t-1}|x_t)) - \log p(x_T) \right] \]</p>
+
+				<p>Only the KL terms depend on \( \theta \), and using Gaussian identities, we get the denoising loss:</p>
+
+				<p>\[ \mathcal{L}_t(\theta) \propto \mathbb{E}_{x_0, \epsilon, t} \left[ \| \epsilon_\theta(x_t, t) - \epsilon \|^2 \right] \]</p>
+
+				<h2>4. Score-Based SDE Perspective</h2>
+
+				<p>We define a forward SDE:</p>
+
+				<p>\[ dx_t = f(x_t, t) dt + g(t) dW_t \]</p>
+
+				<p>and train \( s_\theta(x, t) \approx \nabla_x \log p_t(x) \). The reverse-time SDE is:</p>
+
+				<p>\[ dx_t = \left[ f(x_t, t) - g(t)^2 \nabla_x \log p_t(x) \right] dt + g(t) d\bar{W}_t \]</p>
+
+				<p>We use score matching to train \( s_\theta \) with DSM:</p>
+
+				<p>\[ \mathbb{E}_{x_0, t, \epsilon} \left[ \lambda(t) \| s_\theta(x_t, t) + \frac{\epsilon}{\sigma(t)} \|^2 \right] \]</p>
+
+				<p>where \( x_t = \sqrt{\alpha(t)} x_0 + \sigma(t) \epsilon \).</p>
+
+				<h2>5. Implementation Details</h2>
+
+				<ul>
+				<li>Time is discretized in DDPMs (finite steps) vs. continuous in score-based models (solving ODE/SDE).</li>
+				<li>DDIMs use a non-Markovian deterministic reverse process via learned noise predictions.</li>
+				<li>Sampling from score-SDEs often uses Predictor-Corrector or ODE solvers.</li>
+				</ul>
+
+				<h2>6. Summary</h2>
+
+				<p>DDPMs and score-based models are two views of the same core idea — learning to reverse noise. One derives from a variational perspective with parameterized transitions, the other from SDEs with score-matching. Both use the same Gaussian-noise perturbations, just viewed with different mathematical tools.</p>
+
+				<p>Future extensions include non-Gaussian noise (e.g., Cauchy, Poisson), discrete data, hybrid objectives, and more efficient samplers.</p>
+
 				
 			</section>
 		</div>
