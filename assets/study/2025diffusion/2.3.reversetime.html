@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../../assets/css/main.css" />
+		<!-- Favicon (use SVG with PNG fallback) -->
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded.svg" type="image/svg+xml">
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded_png.png" type="image/png">
+		<!-- For apple touch and Android icons, it's better to use PNG -->
+		<link rel="apple-touch-icon" href="../../../assets/images/lovebulb_rounded_png.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+				<a href="../../lovebulb/"><img src="../../../assets/images/lovebulb_rounded.svg" /></a>
+				<p><a href="../../../index.html">HOME</a></p>
+				<p><a href="../../../bio.html">BIO</a></p>
+				<p><a href="../../../news.html">NEWS</a></p>
+				<p><a href="../../../publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="../">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<!-- HOME -->
+			<section>
+                <h1>Sampling in Diffusion Models: SDEs vs. ODEs</h1>
+                <hr>
+
+				<p>
+					Once a score-based diffusion model is trained, we can sample from it using either a 
+					stochastic differential equation (SDE) or a deterministic ordinary differential equation (ODE).
+					This post explores both formulations and derives the <strong>probability flow ODE</strong> using the
+					Fokker–Planck equation. We also explain the theoretical connection between 
+					<strong>DDPM (denoising diffusion probabilistic models)</strong> and <strong>DDIM (deterministic diffusion implicit models)</strong>.
+				</p>
+
+				<h2>1. The Forward and Reverse SDE</h2>
+
+				<p>
+					We define a forward SDE that perturbs data \( \mathbf{x}_0 \sim p_{\text{data}} \) into noise:
+				</p>
+
+				\[
+				d\mathbf{x}_t = \mathbf{f}(\mathbf{x}_t, t) \, dt + g(t) \, d\mathbf{w}_t
+				\]
+
+				<p>
+					where \( \mathbf{w}_t \) is standard Brownian motion. For example, in the variance-exploding (VE) setting:
+				</p>
+
+				\[
+				d\mathbf{x}_t = \sqrt{d\sigma^2(t)} \, d\mathbf{w}_t, \quad \text{with } \sigma(t) \text{ increasing.}
+				\]
+
+				<p>
+					Under mild regularity conditions, the time-reversal of the above SDE is:
+				</p>
+
+				\[
+				d\mathbf{x}_t = \left[ \mathbf{f}(\mathbf{x}_t, t) - g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x}_t) \right] dt + g(t) d\bar{\mathbf{w}}_t
+				\]
+
+				<p>
+					where \( \bar{\mathbf{w}}_t \) is standard Brownian motion in reverse time.
+					If we have access to the score function \( \nabla_{\mathbf{x}} \log p_t(\mathbf{x}_t) \), we can simulate this reverse process.
+				</p>
+
+				<h2>2. The Fokker–Planck Equation</h2>
+
+				<p>
+					The Fokker–Planck equation describes the evolution of the density \( p_t(\mathbf{x}) \) over time for an SDE of the form:
+				</p>
+
+				\[
+				d\mathbf{x}_t = \mathbf{f}(\mathbf{x}_t, t) \, dt + g(t) \, d\mathbf{w}_t
+				\]
+
+				<p>
+					The associated Fokker–Planck PDE is:
+				</p>
+
+				\[
+				\frac{\partial p}{\partial t} = -\nabla \cdot (\mathbf{f} p) + \frac{1}{2} \nabla \cdot \left( g^2 \nabla p \right)
+				\]
+
+				<p>
+					This equation governs the forward density evolution of the stochastic process.
+				</p>
+
+				<h2>3. The Probability Flow ODE</h2>
+
+				<p>
+					Surprisingly, there exists a deterministic ODE that pushes forward the same densities \( p_t \) as the SDE. 
+					This is the <strong>Probability Flow ODE</strong> (PF-ODE).
+				</p>
+
+				<p>
+					Let \( s_\theta(\mathbf{x}, t) \approx \nabla_{\mathbf{x}} \log p_t(\mathbf{x}) \) be the learned score function. Then the PF-ODE is:
+				</p>
+
+				\[
+				\frac{d\mathbf{x}_t}{dt} = \mathbf{f}(\mathbf{x}_t, t) - \frac{1}{2} g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x}_t)
+				\]
+
+				<p>
+					<strong>Proof sketch:</strong> Assume both the SDE and the ODE induce the same marginal densities \( p_t \).
+					From the Fokker–Planck equation, the drift of the equivalent ODE must match the instantaneous probability flux:
+				</p>
+
+				\[
+				\mathbf{v}(\mathbf{x}, t) = \mathbf{f}(\mathbf{x}, t) - \frac{1}{2} g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x})
+				\]
+
+				<p>
+					This shows that both the SDE and PF-ODE induce the same dynamics of \( p_t \), even though their trajectories differ.
+				</p>
+
+				<h2>4. DDPM vs DDIM: A Special Case</h2>
+
+				<p>
+					The original <strong>DDPM</strong> model samples via a stochastic Markov chain with Gaussian noise injection. 
+					Its continuous limit is a stochastic SDE.
+				</p>
+
+				<p>
+					In contrast, <strong>DDIM</strong> introduces a non-Markovian deterministic sampling process. 
+					It turns out DDIM can be derived as a discretization of the PF-ODE.
+				</p>
+
+				<p>
+					In particular, DDIM sampling solves:
+				</p>
+
+				\[
+				d\mathbf{x}_t = \left( \mathbf{f}(\mathbf{x}_t, t) - \frac{1}{2} g(t)^2 s_\theta(\mathbf{x}_t, t) \right) dt
+				\]
+
+				<p>
+					Hence, DDIM is the ODE counterpart of DDPM. This unifies the picture: DDPM ↔ SDE, DDIM ↔ ODE.
+				</p>
+
+				<h2>5. Practical Considerations</h2>
+
+				<ul>
+					<li><strong>Stochastic sampling (SDE):</strong> generally more diverse but can be slower and harder to control.</li>
+					<li><strong>Deterministic sampling (ODE):</strong> faster and amenable to control/conditioning, but less diverse.</li>
+					<li>Advanced solvers like <code>Runge–Kutta</code> or <code>Heun’s method</code> are used to numerically integrate the ODE or SDE.</li>
+				</ul>
+
+				<h2>6. Conclusion</h2>
+
+				<p>
+					Once trained, a score-based diffusion model defines a family of evolving densities. 
+					We can sample from this family using either stochastic dynamics (SDE) or deterministic ones (ODE), both derived from the same Fokker–Planck equation. 
+					This duality underpins the connection between DDPM and DDIM, and offers flexibility in the tradeoff between diversity and speed in generative modeling.
+				</p>
+				
+			</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="../../../assets/js/jquery.min.js"></script>
+		<script src="../../../assets/js/jquery.poptrox.min.js"></script>
+		<script src="../../../assets/js/browser.min.js"></script>
+		<script src="../../../assets/js/breakpoints.min.js"></script>
+		<script src="../../../assets/js/util.js"></script>
+		<script src="../../../assets/js/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+	</body>
+</html>

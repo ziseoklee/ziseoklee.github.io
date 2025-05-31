@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../../assets/css/main.css" />
+		<!-- Favicon (use SVG with PNG fallback) -->
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded.svg" type="image/svg+xml">
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded_png.png" type="image/png">
+		<!-- For apple touch and Android icons, it's better to use PNG -->
+		<link rel="apple-touch-icon" href="../../../assets/images/lovebulb_rounded_png.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+				<a href="../../lovebulb/"><img src="../../../assets/images/lovebulb_rounded.svg" /></a>
+				<p><a href="../../../index.html">HOME</a></p>
+				<p><a href="../../../bio.html">BIO</a></p>
+				<p><a href="../../../news.html">NEWS</a></p>
+				<p><a href="../../../publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="../">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<!-- HOME -->
+			<section>
+                <h1>Schrödinger Bridges, Optimal Transport, and Diffusion Models</h1>
+                <hr>
+
+                <h2>Introduction</h2>
+				<p>
+					Many recent generative modeling techniques can be seen as solving variants of transport problems between probability distributions.
+					Two central frameworks in this space are the <strong>Optimal Transport (OT)</strong> problem and the <strong>Schrödinger Bridge (SB)</strong> problem.
+					Surprisingly, models such as diffusion models, consistency models, and flow matching can all be viewed through these lenses.
+					In this post, we unify these perspectives and highlight the key mathematical connections and modeling implications.
+				</p>
+
+				<hr />
+
+				<h2>1. Optimal Transport: Deterministic Transport</h2>
+				<p>
+					The classical <em>Optimal Transport (OT)</em> problem aims to find the most cost-efficient way to transform one distribution \( p_0(x) \) into another \( p_1(x) \).
+				</p>
+				<p>
+					Formally, it seeks a transport map \( T: \mathbb{R}^d \to \mathbb{R}^d \) that minimizes:
+					\[
+					\inf_T \mathbb{E}_{x \sim p_0} [c(x, T(x))] \quad \text{such that} \quad T_\# p_0 = p_1
+					\]
+					where \( c(x, y) \) is a cost function (e.g., squared Euclidean distance) and \( T_\# p_0 \) denotes the pushforward of \( p_0 \) under \( T \).
+				</p>
+				<p>
+					When viewed dynamically, this corresponds to finding a velocity field \( v_t(x) \) such that the probability flow satisfies:
+					\[
+					\frac{\partial p_t}{\partial t} + \nabla \cdot (p_t v_t) = 0
+					\]
+					and \( p_0 \to p_1 \) over time.
+				</p>
+
+				<hr />
+
+				<h2>2. Schrödinger Bridges: Stochastic Transport</h2>
+				<p>
+					The <strong>Schrödinger Bridge (SB)</strong> problem is a stochastic generalization of OT. It asks: among all stochastic processes that transform \( p_0 \) to \( p_1 \), which is <em>closest to a given reference process</em> (usually Brownian motion)?
+				</p>
+				<p>
+					Formally, given a reference path measure \( \mathbb{Q} \) (e.g., Brownian motion), we minimize the relative entropy:
+					\[
+					\inf_{\mathbb{P}: \mathbb{P}_0 = p_0, \mathbb{P}_1 = p_1} \mathrm{KL}(\mathbb{P} \| \mathbb{Q})
+					\]
+					This yields a stochastic process \( \mathbb{P} \) whose trajectories are close to Brownian motion but consistent with the marginals \( p_0, p_1 \).
+				</p>
+				<p>
+					The SB has both <em>forward</em> and <em>backward</em> drift components and can be represented using time-reversal of stochastic differential equations (SDEs).
+				</p>
+
+				<hr />
+
+				<h2>3. Diffusion Models as Schrödinger Bridges</h2>
+				<p>
+					Diffusion models define a <em>forward</em> process:
+					\[
+					dx = f(x, t) dt + g(t) dW_t
+					\]
+					with \( f(x, t) \) typically set to destroy structure (e.g., Ornstein–Uhlenbeck), and learn a <em>reverse</em> process:
+					\[
+					dx = [f(x, t) - g(t)^2 \nabla_x \log p_t(x)] dt + g(t) d\bar{W}_t
+					\]
+					where \( \bar{W}_t \) is reverse-time Brownian motion.
+				</p>
+				<p>
+					This backward SDE corresponds to the Schrödinger Bridge solution, with the learned score function \( \nabla \log p_t(x) \) adjusting the Brownian reference to satisfy \( p_0 \to p_1 \).
+				</p>
+				<p>
+					Hence, <strong>score-based diffusion models are approximate Schrödinger Bridges</strong>, minimizing the KL between a reference Brownian process and a generative process.
+				</p>
+
+				<hr />
+
+				<h2>4. Stochastic Interpolants: A Toolkit for Bridge Construction</h2>
+				<p>
+					A <strong>stochastic interpolant</strong> defines a path between two distributions using an interpolating SDE or stochastic map. These interpolants are useful for training shortcut models or flow matchers.
+				</p>
+				<p>
+					A classic example:
+					\[
+					x(t) = (1 - t) x_0 + t x_1 + \sqrt{t(1 - t)} \cdot \epsilon
+					\]
+					defines a stochastic curve from \( x_0 \sim p_0 \) to \( x_1 \sim p_1 \).
+				</p>
+				<p>
+					The velocity and score along this path can be computed analytically or via sampling, enabling <strong>flow matching</strong> or <strong>score distillation</strong>.
+				</p>
+
+				<hr />
+
+				<h2>5. Unifying View</h2>
+				<p>
+					Let’s summarize how these methods relate:
+				</p>
+				<ul>
+					<li><strong>Optimal Transport</strong> — deterministic path minimizing cost</li>
+					<li><strong>Schrödinger Bridge</strong> — stochastic path minimizing KL to a reference (e.g., Brownian)</li>
+					<li><strong>Diffusion Models</strong> — learn the SB backward drift via score matching</li>
+					<li><strong>Stochastic Interpolants</strong> — inject flexibility into interpolation (e.g., using controlled noise)</li>
+					<li><strong>Flow Matching</strong> — directly learn the velocity field of transport, bypassing score estimation</li>
+				</ul>
+
+				<hr />
+
+				<h2>Conclusion</h2>
+				<p>
+					The fields of stochastic control, optimal transport, and generative modeling are converging. Schrödinger bridges provide a powerful theoretical framework for understanding modern generative models, especially diffusion and flow-based ones.
+					Going forward, we can expect new models that explicitly solve Schrödinger bridge problems, use stochastic interpolants for training and sampling, and generalize flow matching to richer noise and dynamics models.
+				</p>
+
+				<hr />
+
+				<!-- <h2>Further Reading</h2>
+				<ul>
+					<li><a href="https://arxiv.org/abs/2010.02752">Score-Based Generative Modeling through SDEs (Song et al. 2021)</a></li>
+					<li><a href="https://arxiv.org/abs/2302.06567">Stochastic Interpolants (Chen et al. 2023)</a></li>
+					<li><a href="https://arxiv.org/abs/2305.08891">Flow Matching (Lipman et al. 2023)</a></li>
+					<li><a href="https://arxiv.org/abs/2305.18765">SB-GFN: Schrödinger Bridge-based Generative Flow Networks</a></li>
+				</ul> -->
+				
+			</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="../../../assets/js/jquery.min.js"></script>
+		<script src="../../../assets/js/jquery.poptrox.min.js"></script>
+		<script src="../../../assets/js/browser.min.js"></script>
+		<script src="../../../assets/js/breakpoints.min.js"></script>
+		<script src="../../../assets/js/util.js"></script>
+		<script src="../../../assets/js/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+	</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../../assets/css/main.css" />
+		<!-- Favicon (use SVG with PNG fallback) -->
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded.svg" type="image/svg+xml">
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded_png.png" type="image/png">
+		<!-- For apple touch and Android icons, it's better to use PNG -->
+		<link rel="apple-touch-icon" href="../../../assets/images/lovebulb_rounded_png.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+				<a href="../../lovebulb/"><img src="../../../assets/images/lovebulb_rounded.svg" /></a>
+				<p><a href="../../../index.html">HOME</a></p>
+				<p><a href="../../../bio.html">BIO</a></p>
+				<p><a href="../../../news.html">NEWS</a></p>
+				<p><a href="../../../publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="../">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<!-- HOME -->
+			<section>
+                <h1>Score Matching in Diffusion Models</h1>
+                <hr>
+
+                <p>
+				Score matching is a key technique in the training of diffusion-based generative models. These models learn to reverse a diffusion (noise-injection) process by estimating the gradient of the log-density of the data — a quantity known as the <em>score function</em>. This blog post explores the theory and practice of score matching, including rigorous definitions, key lemmas such as Tweedie’s formula, and comparisons with alternative approaches like DDPM/DDIMs and flow matching models.
+				</p>
+
+				<h2>1. Score Function and Score Matching</h2>
+
+				<p>
+				Let \( p(x) \) be a differentiable probability density function on \( \mathbb{R}^d \). The <strong>score function</strong> of \( p \) is defined as:
+				</p>
+
+				<p>
+				\[
+				\nabla_x \log p(x)
+				\]
+				</p>
+
+				<p>
+				The idea of score matching is to learn a model \( s_\theta(x) \) to approximate this score function. The classical objective for score matching, introduced by <a href="https://jmlr.org/papers/volume6/hyvarinen05a/hyvarinen05a.pdf">Hyvärinen (2005)</a>, minimizes:
+				</p>
+
+				<p>
+				\[
+				\mathbb{E}_{p(x)} \left[ \left\| s_\theta(x) - \nabla_x \log p(x) \right\|^2 \right]
+				\]
+
+				However, since \( \nabla_x \log p(x) \) is typically unknown, Hyvärinen proposed a reformulation that does not require access to the true score:
+				</p>
+
+				<p>
+				\[
+				\mathcal{L}_{\text{SM}}(\theta) = \mathbb{E}_{p(x)} \left[ \frac{1}{2} \| s_\theta(x) \|^2 + \nabla \cdot s_\theta(x) \right]
+				\]
+				</p>
+
+				<p>
+				where \( \nabla \cdot s_\theta(x) = \sum_{i=1}^d \frac{\partial s_\theta^{(i)}(x)}{\partial x_i} \) is the divergence of the vector field.
+				</p>
+
+				<h2>2. Score Matching in Diffusion Models</h2>
+
+				<p>
+				In denoising score matching (DSM), instead of matching the score of the data distribution directly, one matches the score of perturbed data:
+				</p>
+
+				<p>
+				\[
+				\mathcal{L}_{\text{DSM}}(\theta) = \mathbb{E}_{p(x)} \mathbb{E}_{q_t(\tilde{x}|x)} \left[ \left\| s_\theta(\tilde{x}, t) - \nabla_{\tilde{x}} \log q_t(\tilde{x} | x) \right\|^2 \right]
+				\]
+
+				where \( q_t(\tilde{x}|x) \) is the marginal distribution of the forward diffusion process, typically Gaussian:
+				</p>
+
+				<p>
+				\[
+				\tilde{x} \sim \mathcal{N}\left(\sqrt{\alpha(t)}x, (1 - \alpha(t)) I\right)
+				\]
+				</p>
+
+				<p>
+				This forms the training objective in many score-based generative models, such as those using stochastic differential equations (SDEs).
+				</p>
+
+				<h2>3. Tweedie’s Formula</h2>
+
+				<p>
+				Tweedie’s formula provides a powerful connection between the posterior mean and the score function. If \( x \sim p(x) \) and \( y = x + \varepsilon \), \( \varepsilon \sim \mathcal{N}(0, \sigma^2 I) \), then:
+				</p>
+
+				<p>
+				\[
+				\mathbb{E}[x | y] = y + \sigma^2 \nabla_y \log p(y)
+				\]
+
+				or rearranged:
+				</p>
+
+				<p>
+				\[
+				\nabla_y \log p(y) = \frac{1}{\sigma^2} \left( \mathbb{E}[x | y] - y \right)
+				\]
+
+				This formula underpins the equivalence between denoising and score estimation in DSM.
+				</p>
+
+				<h2>4. DDPM vs. Score SDEs vs. Flow Matching</h2>
+
+				<ul>
+				<li><strong>DDPM (Denoising Diffusion Probabilistic Models):</strong> Parametrize a denoising model \( \epsilon_\theta \) and train to reverse a discrete Markov chain using variational bounds.</li>
+				<li><strong>Score-based SDEs:</strong> Continuous-time analog of DDPMs, with training done via score matching and sampling done by solving reverse-time SDEs (e.g., using Predictor-Corrector samplers).</li>
+				<li><strong>Flow Matching:</strong> Trains a vector field \( v_\theta(x, t) \) to match an optimal transport flow between a prior and the data, typically using supervision from known couplings or optimal flows.</li>
+				</ul>
+
+				<h2>5. Lemma: Connection to Reverse-Time SDE</h2>
+
+				<p>
+				The reverse SDE associated with a forward Itô process:
+				</p>
+
+				<p>
+				\[
+				dX_t = f(X_t, t)dt + g(t) dW_t
+				\]
+
+				has reverse-time dynamics given by:
+				</p>
+
+				<p>
+				\[
+				dX_t = \left[f(X_t, t) - g(t)^2 \nabla_x \log p_t(x) \right]dt + g(t) d\bar{W}_t
+				\]
+
+				where \( \bar{W}_t \) is a reverse Brownian motion. This is why score matching \( \nabla_x \log p_t(x) \) allows generation by solving the reverse SDE.
+				</p>
+
+				<h2>6. Example: Score Matching for Gaussian</h2>
+
+				<p>
+				Let \( p(x) = \mathcal{N}(0, I) \). Then:
+				</p>
+
+				<p>
+				\[
+				\nabla_x \log p(x) = -x
+				\]
+
+				So the ideal score model is \( s^*(x) = -x \). If we add Gaussian noise \( \tilde{x} = x + \sigma \varepsilon \), then the perturbed score becomes:
+				</p>
+
+				<p>
+				\[
+				\nabla_{\tilde{x}} \log q(\tilde{x}) = - \frac{\tilde{x}}{1 + \sigma^2}
+				\]
+				</p>
+
+				<h2>7. Summary and Future Directions</h2>
+
+				<p>
+				Score matching plays a foundational role in generative modeling via diffusion. With tools like Tweedie’s formula and reverse SDEs, it connects denoising, density modeling, and transport-based views. Comparisons with DDPM/DDIMs and flow matching reveal the unifying structure of modern generative models through the lens of learning data gradients.
+				</p>
+
+				<p>
+				Future directions include improved score estimators (e.g., variance reduction), extensions to discrete domains, and hybrid models combining flow matching and score-based ideas.
+				</p>
+				
+			</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="../../../assets/js/jquery.min.js"></script>
+		<script src="../../../assets/js/jquery.poptrox.min.js"></script>
+		<script src="../../../assets/js/browser.min.js"></script>
+		<script src="../../../assets/js/breakpoints.min.js"></script>
+		<script src="../../../assets/js/util.js"></script>
+		<script src="../../../assets/js/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+	</body>
+</html>

@@ -2696,7 +2696,7 @@ input, select, textarea {
 		padding: 6em 3em 3em 3em;
 		/* padding: 8em 4em 4em 4em; */
 		width: 100%-10rem; /*calc(100% - 15%)*/
-		background-color: #F4EDE320;
+		/* background-color: #F4EDE320; */
 	}
 
 		#main > section {

@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../../assets/css/main.css" />
+		<!-- Favicon (use SVG with PNG fallback) -->
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded.svg" type="image/svg+xml">
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded_png.png" type="image/png">
+		<!-- For apple touch and Android icons, it's better to use PNG -->
+		<link rel="apple-touch-icon" href="../../../assets/images/lovebulb_rounded_png.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+				<a href="../../lovebulb/"><img src="../../../assets/images/lovebulb_rounded.svg" /></a>
+				<p><a href="../../../index.html">HOME</a></p>
+				<p><a href="../../../bio.html">BIO</a></p>
+				<p><a href="../../../news.html">NEWS</a></p>
+				<p><a href="../../../publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="../">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<!-- HOME -->
+			<section>
+				<div>
+					<h1>Training a Diffusion Model on CIFAR-10</h1>
+					<p>Referenced code by <a href="https://colab.research.google.com/drive/1IJkrrV-D7boSCLVKhi7t5docRYqORtm3">Katherine Crowson</a> (<a href="https://github.com/crowsonkb">Github</a>)</p>
+				</div>
+				
+				<hr>
+				<div>
+					<header>
+						<h3>Imports and Utility Functions</h3>
+					</header>
+					<pre><code>from contextlib import contextmanager
+from copy import deepcopy
+import math
+
+from IPython import display
+from matplotlib import pyplot as plt
+import torch
+from torch import optim, nn
+from torch.nn import functional as F
+from torch.utils import data
+from torchvision import datasets, transforms, utils
+from torchvision.transforms import functional as TF
+from tqdm.notebook import tqdm, trange</code></pre>
+					<p>
+						Below we define a few utility functions. 
+						<code>train_mode</code> is a context manager that sets the model to training mode and restores the previous mode on exit. 
+						<code>eval_mode</code> is a context manager that sets the model to evaluation mode and restores the previous mode on exit. 
+						<code>ema_update</code> is a function that updates the exponential moving average of the model parameters. It should be called after each optimizer step.
+					</p>
+					<pre><code>@contextmanager
+def train_mode(model, mode=True):
+    modes = [module.training for module in model.modules()]
+    try:
+        yield model.train(mode)
+    finally:
+        for i, module in enumerate(model.modules()):
+            module.training = modes[i]
+
+
+def eval_mode(model):
+    return train_mode(model, False)
+
+
+@torch.no_grad()
+def ema_update(model, averaged_model, decay):
+    model_params = dict(model.named_parameters())
+    averaged_params = dict(averaged_model.named_parameters())
+    assert model_params.keys() == averaged_params.keys()
+
+    for name, param in model_params.items():
+        averaged_params[name].mul_(decay).add_(param, alpha=1 - decay)
+
+    model_buffers = dict(model.named_buffers())
+    averaged_buffers = dict(averaged_model.named_buffers())
+    assert model_buffers.keys() == averaged_buffers.keys()
+
+    for name, buf in model_buffers.items():
+        averaged_buffers[name].copy_(buf)</code></pre>
+				<hr>
+				<header>
+					<h3>Model Architecture: Residual U-Net</h3>
+				</header>
+				<p>We will define the model architecture as a residual u-net. 
+					<code>ResidualBlock</code> composes of a main network and a skip network, where the skip is the identity unless specified. 
+					<code>ResConvBlock</code> is a convolutional block with two convolutional layers and a skip connection.
+					<code>SkipBlock</code> is a block that concatenates the output of the main network and the skip network.
+					<code>FourierFeatures</code> is a layer that computes the Fourier features of the input.
+					<code>expand_to_planes</code> is a function that expands the input to the same shape as the output of the model.
+					<code>Diffusion</code> is the main model class that defines the architecture of the diffusion model. <code>timestep_embed</code> are the Fourier features of the timestep, and <code>class_embed</code> is the class embedding. 
+					The network taks the input image (3 channels, RGB), the timestep embedding (16 channels), and the class (4 channels) as input, resulting in an input tensor of shape (3+16+4)*32*32 (spatial dimensions). 
+					The convolutional layers of <code>ResConvBlock</code> make the channel count <code>(3+16+4) -> c -> c -> c -> c</code>. 
+					<code>AvgPool2d(2)</code> reduces the spatial dimensions by a factor of 2, and <code>Upsample(scale_factor=2)</code> increases the spatial dimensions by a factor of 2.
+					The final output of the model is a tensor of shape 3*32*32, which is the same shape as the input image.
+				</p>
+				<pre><code>class ResidualBlock(nn.Module):
+    def __init__(self, main, skip=None):
+        super().__init__()
+        self.main = nn.Sequential(*main)
+        self.skip = skip if skip else nn.Identity()
+
+    def forward(self, input):
+        return self.main(input) + self.skip(input)
+
+
+class ResConvBlock(ResidualBlock):
+    def __init__(self, c_in, c_mid, c_out, dropout_last=True):
+        skip = None if c_in == c_out else nn.Conv2d(c_in, c_out, 1, bias=False)
+        super().__init__([
+            nn.Conv2d(c_in, c_mid, 3, padding=1),
+            nn.Dropout2d(0.1, inplace=True),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(c_mid, c_out, 3, padding=1),
+            nn.Dropout2d(0.1, inplace=True) if dropout_last else nn.Identity(),
+            nn.ReLU(inplace=True),
+        ], skip)
+
+
+class SkipBlock(nn.Module):
+    def __init__(self, main, skip=None):
+        super().__init__()
+        self.main = nn.Sequential(*main)
+        self.skip = skip if skip else nn.Identity()
+
+    def forward(self, input):
+        return torch.cat([self.main(input), self.skip(input)], dim=1)
+
+
+class FourierFeatures(nn.Module):
+    def __init__(self, in_features, out_features, std=1.):
+        super().__init__()
+        assert out_features % 2 == 0
+        self.weight = nn.Parameter(torch.randn([out_features // 2, in_features]) * std)
+
+    def forward(self, input):
+        f = 2 * math.pi * input @ self.weight.T
+        return torch.cat([f.cos(), f.sin()], dim=-1)
+
+
+def expand_to_planes(input, shape):
+    return input[..., None, None].repeat([1, 1, shape[2], shape[3]])
+
+
+class Diffusion(nn.Module):
+    def __init__(self):
+        super().__init__()
+        c = 64  # The base channel count
+
+        # The inputs to timestep_embed will approximately fall into the range
+        # -10 to 10, so use std 0.2 for the Fourier Features.
+        self.timestep_embed = FourierFeatures(1, 16, std=0.2)
+        self.class_embed = nn.Embedding(10, 4)
+
+        self.net = nn.Sequential(   # 32x32
+            ResConvBlock(3 + 16 + 4, c, c),
+            ResConvBlock(c, c, c),
+            SkipBlock([
+                nn.AvgPool2d(2),  # 32x32 -> 16x16
+                ResConvBlock(c, c * 2, c * 2),
+                ResConvBlock(c * 2, c * 2, c * 2),
+                SkipBlock([
+                    nn.AvgPool2d(2),  # 16x16 -> 8x8
+                    ResConvBlock(c * 2, c * 4, c * 4),
+                    ResConvBlock(c * 4, c * 4, c * 4),
+                    SkipBlock([
+                        nn.AvgPool2d(2),  # 8x8 -> 4x4
+                        ResConvBlock(c * 4, c * 8, c * 8),
+                        ResConvBlock(c * 8, c * 8, c * 8),
+                        ResConvBlock(c * 8, c * 8, c * 8),
+                        ResConvBlock(c * 8, c * 8, c * 4),
+                        nn.Upsample(scale_factor=2),
+                    ]),  # 4x4 -> 8x8
+                    ResConvBlock(c * 8, c * 4, c * 4),
+                    ResConvBlock(c * 4, c * 4, c * 2),
+                    nn.Upsample(scale_factor=2),
+                ]),  # 8x8 -> 16x16
+                ResConvBlock(c * 4, c * 2, c * 2),
+                ResConvBlock(c * 2, c * 2, c),
+                nn.Upsample(scale_factor=2),
+            ]),  # 16x16 -> 32x32
+            ResConvBlock(c * 2, c, c),
+            ResConvBlock(c, c, 3, dropout_last=False),
+        )
+
+    def forward(self, input, log_snrs, cond):
+        timestep_embed = expand_to_planes(self.timestep_embed(log_snrs[:, None]), input.shape)
+        class_embed = expand_to_planes(self.class_embed(cond), input.shape)
+        return self.net(torch.cat([input, class_embed, timestep_embed], dim=1))</code></pre>
+		<hr>
+		<header>
+			<h3>The Noise Schedule</h3>
+		</header>
+		<p>
+			The noise schedule is defined by alphas and sigmas, which are the scaling factors for the clean image and the noise, respectively.
+			<code>get_alphas_sigmas</code> takes the log SNR for a timestep as input and returns the scaling factors for the clean image (alpha) and for the noise (sigma).
+			<code>get_ddpm_schedule</code> returns the log SNRs for the noise schedule from the DDPM paper.
+		</p>
+		<pre><code>def get_alphas_sigmas(log_snrs):
+    return log_snrs.sigmoid().sqrt(), log_snrs.neg().sigmoid().sqrt()
+
+
+def get_ddpm_schedule(t):
+    return -torch.special.expm1(1e-4 + 10 * t**2).log()</code></pre>
+		<p>
+			We may also visualize the noise schedule.
+		</p>
+		<pre><code>plt.rcParams['figure.dpi'] = 100
+
+t_vis = torch.linspace(0, 1, 1000)
+log_snrs_vis = get_ddpm_schedule(t_vis)
+alphas_vis, sigmas_vis = get_alphas_sigmas(log_snrs_vis)
+
+print('The noise schedule:')
+
+plt.plot(t_vis, alphas_vis, label='alpha (signal level)')
+plt.plot(t_vis, sigmas_vis, label='sigma (noise level)')
+plt.legend()
+plt.xlabel('timestep')
+plt.grid()
+plt.show()
+
+plt.plot(t_vis, log_snrs_vis, label='log SNR')
+plt.legend()
+plt.xlabel('timestep')
+plt.grid()
+plt.show()</code></pre>
+					<img src="figures/fig_alphas_sigmas.png" alt="Noise schedule" width="450">
+					<img src="figures/fig_ddpm_logSNR.png" alt="Log SNR" width="450">
+				<hr>
+				<header>
+					<h3>Preparing the Dataset (CIFAR-10)</h3>
+				</header>
+				<p>We load the CIFAR-10 dataset (170MB) with a batch size of 100.</p>
+				<pre><code>batch_size = 100
+
+tf = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize([0.5], [0.5]),
+])
+train_set = datasets.CIFAR10('data', train=True, download=True, transform=tf)
+train_dl = data.DataLoader(train_set, batch_size, shuffle=True,
+                           num_workers=4, persistent_workers=True, pin_memory=True)
+val_set = datasets.CIFAR10('data', train=False, download=True, transform=tf)
+val_dl = data.DataLoader(val_set, batch_size,
+                         num_workers=4, persistent_workers=True, pin_memory=True)</code></pre>
+<hr>
+<header>
+	<h3>Create the Model and Optimizer</h3>
+</header>
+<p>We use the Adam optimizer with learning rate <code>2e-4</code>. <code>rng</code> is a low discrepancy quasi-random sequence to sample uniformly distributed timesteps. This considerably reduces the between-batch variance of the loss.</p>
+<pre><code>seed = 0
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Using device:', device)
+torch.manual_seed(0)
+
+model = Diffusion().to(device)
+model_ema = deepcopy(model)
+print('Model parameters:', sum(p.numel() for p in model.parameters()))
+
+opt = optim.Adam(model.parameters(), lr=2e-4)
+scaler = torch.cuda.amp.GradScaler()
+epoch = 0
+
+rng = torch.quasirandom.SobolEngine(1, scramble=True)</code></pre>
+
+
+
+				<hr>
+				<header>
+					<h3>Sampling an Image from a Model given the Initial Noise</h3>
+				</header>
+				<p>
+					When sampling, we use <code>@torch.no_grad()</code> to disable gradient tracking, which is not needed during inference.
+					<code>sample</code> takes the model, the initial noise, the number of steps, the amount of additional noise to add (eta), and the class as input.
+					In this implementation, we use the velocity prediction, <code>v</code>, which is used to predict the noise <code>eps</code> and the denoised image <code>pred</code>.
+					Until the last step, the sampling loop computes the noisy image for the next timestep. 
+					If <code>eta > 0</code>, adjust the scaling factor for the predicted noise downward according to the amount of additional noise to add.
+					Then, recombine the predicted noise and predicted denoised image in the correct proportions for the next step.
+					Note that <code>eta = 0</code> is equivalent to the DDIM sampling algorithm where the initial noise is the only source of randomness.
+					Finally, if we are on the last timestep, we return the denoised image.
+				</p>
+				<pre><code>@torch.no_grad()
+def sample(model, x, steps, eta, classes):
+    ts = x.new_ones([x.shape[0]])
+
+    # Create the noise schedule
+    t = torch.linspace(1, 0, steps + 1)[:-1]
+    log_snrs = get_ddpm_schedule(t)
+    alphas, sigmas = get_alphas_sigmas(log_snrs)
+
+    # The sampling loop
+    for i in trange(steps):
+
+        # Get the model output (v, the predicted velocity)
+        with torch.cuda.amp.autocast():
+            v = model(x, ts * log_snrs[i], classes).float()
+
+        # Predict the noise and the denoised image
+        pred = x * alphas[i] - v * sigmas[i]
+        eps = x * sigmas[i] + v * alphas[i]
+
+        if i < steps - 1:
+            ddim_sigma = eta * (sigmas[i + 1]**2 / sigmas[i]**2).sqrt() * (1 - alphas[i]**2 / alphas[i + 1]**2).sqrt()
+            adjusted_sigma = (sigmas[i + 1]**2 - ddim_sigma**2).sqrt()
+
+            x = pred * alphas[i + 1] + eps * adjusted_sigma
+
+            # Add the correct amount of fresh noise
+            if eta:
+                x += torch.randn_like(x) * ddim_sigma
+
+    # If we are on the last timestep, output the denoised image
+    return pred</code></pre>
+
+	<hr>
+				<header>
+					<h3>Training the Model</h3>
+				</header>
+				<p>
+					We train the model with <code>ema_decay = 0.998</code> and sample with <code>500 steps</code>. The code below implements DDPM sampling where <code>eta = 1</code>.
+					<code>eval_loss</code> computes the loss for a batch of images and the corresponding classes.
+					<code>train</code> trains the model for one epoch, and <code>val</code> validates the model on the validation set.
+					<code>demo</code> samples an image from the model and saves it to a file.
+					<code>save</code> saves the model parameters, optimizer state, and epoch number to a file.
+				</p>
+				<pre><code>ema_decay = 0.998
+
+# The number of timesteps to use when sampling
+steps = 500
+
+# The amount of noise to add each timestep when sampling
+# 0 = no noise (DDIM) / 1 = full noise (DDPM)
+eta = 1.
+
+
+def eval_loss(model, rng, reals, classes):
+    # Draw uniformly distributed continuous timesteps
+    t = rng.draw(reals.shape[0])[:, 0].to(device)
+
+    # Calculate the noise schedule parameters for those timesteps
+    log_snrs = get_ddpm_schedule(t)
+    alphas, sigmas = get_alphas_sigmas(log_snrs)
+    weights = log_snrs.exp() / log_snrs.exp().add(1)
+
+    # Combine the ground truth images and the noise
+    alphas = alphas[:, None, None, None]
+    sigmas = sigmas[:, None, None, None]
+    noise = torch.randn_like(reals)
+    noised_reals = reals * alphas + noise * sigmas
+    targets = noise * alphas - reals * sigmas
+
+    # Compute the model output and the loss.
+    with torch.cuda.amp.autocast():
+        v = model(noised_reals, log_snrs, classes)
+        return (v - targets).pow(2).mean([1, 2, 3]).mul(weights).mean()
+
+
+def train():
+    for i, (reals, classes) in enumerate(tqdm(train_dl)):
+        opt.zero_grad()
+        reals = reals.to(device)
+        classes = classes.to(device)
+
+        # Evaluate the loss
+        loss = eval_loss(model, rng, reals, classes)
+
+        # Do the optimizer step and EMA update
+        scaler.scale(loss).backward()
+        scaler.step(opt)
+        ema_update(model, model_ema, 0.95 if epoch < 20 else ema_decay)
+        scaler.update()
+
+        if i % 50 == 0:
+            tqdm.write(f'Epoch: {epoch}, iteration: {i}, loss: {loss.item():g}')
+
+
+@torch.no_grad()
+@torch.random.fork_rng()
+@eval_mode(model_ema)
+def val():
+    tqdm.write('\nValidating...')
+    torch.manual_seed(seed)
+    rng = torch.quasirandom.SobolEngine(1, scramble=True)
+    total_loss = 0
+    count = 0
+    for i, (reals, classes) in enumerate(tqdm(val_dl)):
+        reals = reals.to(device)
+        classes = classes.to(device)
+
+        loss = eval_loss(model_ema, rng, reals, classes)
+
+        total_loss += loss.item() * len(reals)
+        count += len(reals)
+    loss = total_loss / count
+    tqdm.write(f'Validation: Epoch: {epoch}, loss: {loss:g}')
+
+
+@torch.no_grad()
+@torch.random.fork_rng()
+@eval_mode(model_ema)
+def demo():
+    from IPython.display import clear_output
+    clear_output(wait=True)
+    tqdm.write('\nSampling...')
+    torch.manual_seed(seed)
+
+    noise = torch.randn([100, 3, 32, 32], device=device)
+    fakes_classes = torch.arange(10, device=device).repeat_interleave(10, 0)
+    fakes = sample(model_ema, noise, steps, eta, fakes_classes)
+
+    grid = utils.make_grid(fakes, 10).cpu()
+    filename = f'demo_{epoch:05}.png'
+    TF.to_pil_image(grid.add(1).div(2).clamp(0, 1)).save(filename)
+    display.display(display.Image(filename))
+    tqdm.write('')
+
+
+def save():
+    filename = 'cifar_diffusion.pth'
+    obj = {
+        'model': model.state_dict(),
+        'model_ema': model_ema.state_dict(),
+        'opt': opt.state_dict(),
+        'scaler': scaler.state_dict(),
+        'epoch': epoch,
+    }
+    torch.save(obj, filename)</code></pre>
+<hr>
+<header>
+	<h3>Run the Training Loop</h3>
+</header>
+<pre><code>try:
+    val()
+    demo()
+    while epoch < 10:
+        print('Epoch', epoch)
+        train()
+        epoch += 1
+        val()
+        demo()
+        save()
+except KeyboardInterrupt:
+    pass</code></pre>
+<img src="figures/demo_00000.png" alt="CIFAR-10 (Epoch 0)" width="450">
+<img src="figures/demo_00005.png" alt="CIFAR-10 (Epoch 5)" width="450">
+<img src="figures/demo_00100.png" alt="CIFAR-10 (Epoch 100)" width="450">
+				</div>
+			</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="../../../assets/js/jquery.min.js"></script>
+		<script src="../../../assets/js/jquery.poptrox.min.js"></script>
+		<script src="../../../assets/js/browser.min.js"></script>
+		<script src="../../../assets/js/breakpoints.min.js"></script>
+		<script src="../../../assets/js/util.js"></script>
+		<script src="../../../assets/js/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+	</body>
+</html>
