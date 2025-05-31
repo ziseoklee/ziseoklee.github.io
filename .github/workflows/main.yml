@@ -1,12 +1,37 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  deployments: write
+
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     permissions: write-all
 
     steps:
-      - name: 🗑 Delete deployment
+      - name: 🗑 Delete existing deployments
         uses: strumwolf/delete-deployment-environment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: github-pages
           onlyRemoveDeployments: true
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: cleanup
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and Deploy
+        # Replace with your actual deploy steps
+        run: |
+          echo "Build your site here"
+          echo "Deploy to GitHub Pages"
