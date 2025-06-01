@@ -1,0 +1,1226 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../../assets/css/main.css" />
+		<!-- Favicon (use SVG with PNG fallback) -->
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded.svg" type="image/svg+xml">
+		<link rel="icon" href="../../../assets/images/lovebulb_rounded_png.png" type="image/png">
+		<!-- For apple touch and Android icons, it's better to use PNG -->
+		<link rel="apple-touch-icon" href="../../../assets/images/lovebulb_rounded_png.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+				<a href="../../lovebulb/"><img src="../../../assets/images/lovebulb_rounded.svg" /></a>
+				<p><a href="../../../index.html">HOME</a></p>
+				<p><a href="../../../bio.html">BIO</a></p>
+				<p><a href="../../../news.html">NEWS</a></p>
+				<p><a href="../../../publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="../">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<!-- HOME -->
+			<section>
+                <h1>Deep Reinforcement Learning: Overview</h1>
+                <p class="text-gray-600">Referenced from a lecture by Professor Ernest Ryu</p>
+
+                <hr class="my-8">
+
+                <h2 class="text-2xl font-bold mb-4">Table of Contents</h2>
+                <div class="table-of-contents">
+                    <ul>
+                        <li><a href="#mdp-basics">1. MDP Basics</a>
+                            <ul>
+                                <li><a href="#mdp-definition">1.1. Markov Decision Process Definition</a></li>
+                                <li><a href="#mdp-base-definitions">1.2. MDP Base Definitions</a></li>
+                                <li><a href="#state-vs-observation">1.3. State vs. Observation</a></li>
+                                <li><a href="#mdp-generalizations">1.4. MDP Generalizations</a></li>
+                                <li><a href="#terminal-time-notation">1.5. Terminal Time Notation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#imitation-learning">2. Imitation Learning and Behavior Cloning</a>
+                            <ul>
+                                <li><a href="#behavior-cloning">2.1. Behavior Cloning</a></li>
+                                <li><a href="#distribution-shift">2.2. Distribution Shift in Behavior Cloning</a></li>
+                                <li><a href="#off-on-policy">2.3. Off-policy vs. On-policy Learning</a></li>
+                                <li><a href="#dagger">2.4. DAgger (Dataset Aggregation)</a></li>
+                                <li><a href="#causal-confusion">2.5. Causal Confusion</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#mdp-objective">3. MDP Objective and Value Functions</a>
+                            <ul>
+                                <li><a href="#expected-discounted-return">3.1. Maximizing Expected Discounted Return</a></li>
+                                <li><a href="#state-value-functions">3.2. State Value Function $V^\pi$ and State-Action Value Function $Q^\pi$</a></li>
+                                <li><a href="#banach-fixed-point">3.3. Preliminaries: Banach Fixed Point Theorem</a></li>
+                                <li><a href="#bellman-v-pi">3.4. Bellman Equation for $V^\pi$</a></li>
+                                <li><a href="#bellman-q-pi">3.5. Bellman Equation for $Q^\pi$</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#optimal-policies">4. Optimal Policies and Value Functions</a>
+                            <ul>
+                                <li><a href="#optimal-policy-definitions">4.1. Optimal Policy and Value Functions</a></li>
+                                <li><a href="#bellman-optimality-v-star">4.2. Bellman Optimality Equation for $V^\star$</a></li>
+                                <li><a href="#bellman-optimality-q-star">4.3. Bellman Optimality Equation for $Q^\star$</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#policy-evaluation-optimization">5. Policy Evaluation vs. Optimization</a>
+                            <ul>
+                                <li><a href="#mc-policy-evaluation">5.1. Policy Evaluation: Monte Carlo (MC)</a></li>
+                                <li><a href="#td-policy-evaluation">5.2. Policy Evaluation: Temporal Difference (TD)</a></li>
+                                <li><a href="#stop-gradient">5.3. Stop-Gradient Operator</a></li>
+                                <li><a href="#semi-gradient">5.4. Semi-Gradient Method</a></li>
+                                <li><a href="#k-step-td">5.5. k-step TD Policy Evaluation</a></li>
+                                <li><a href="#mc-vs-td">5.6. MC vs. TD (Bootstrapping)</a></li>
+                                <li><a href="#q-phi-mc">5.7. $Q_\phi \approx Q^\pi$ with MC</a></li>
+                                <li><a href="#q-phi-td">5.8. $Q_\phi \approx Q^\pi$ with TD + (Approx) SGD</a></li>
+                                <li><a href="#q-phi-k-step-td">5.9. $Q_\phi \approx Q^\pi$ with k-step TD + (Approx) SGD</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#deep-policy-gradient">6. Deep Policy Gradient Methods</a>
+                            <ul>
+                                <li><a href="#policy-optimization">6.1. Policy Optimization</a></li>
+                                <li><a href="#policy-gradient-fundamentals">6.2. Policy Gradient Fundamentals</a></li>
+                                <li><a href="#stochastic-gradient">6.3. Stochastic Gradient and Variance Reduction</a></li>
+                                <li><a href="#state-dependent-baseline">6.4. Enhancement #2: State-Dependent Baseline</a></li>
+                                <li><a href="#q-estimates">6.5. Enhancement #3: Q-Estimates</a></li>
+                                <li><a href="#min-variance-estimator">6.6. Minimum-Variance Conditional Estimator</a></li>
+                                <li><a href="#advantage-estimation">6.7. Interpretation via Advantage Estimation</a></li>
+                                <li><a href="#actor-critic">6.8. Interpretation as an Actor-Critic Method</a></li>
+                                <li><a href="#approximating-q-k-step-td">6.9. Approximating Q-Values and k-step TD</a></li>
+                                <li><a href="#pg-algo-1">6.10. Policy Gradient Algorithm #1</a></li>
+                                <li><a href="#stop-gradient-g-theta">6.11. Stop-gradient Operator for $g_\theta$</a></li>
+                                <li><a href="#gamma-trick">6.12. The $\tilde{\gamma}$-trick</a></li>
+                                <li><a href="#pg-algo-2">6.13. Policy Gradient Algorithm #2</a></li>
+                                <li><a href="#sgd-non-uniform">6.14. SGD with Non-Uniform Selection Rules</a></li>
+                                <li><a href="#a2c">6.15. Advantage Actor-Critic (A2C)</a></li>
+                                <li><a href="#atari-a2c">6.16. A2C in Atari 2600</a></li>
+                                <li><a href="#a2c-architecture">6.17. A2C Architecture</a></li>
+                                <li><a href="#a2c-discrete">6.18. A2C for Discrete Action Spaces</a></li>
+                                <li><a href="#a2c-continuous">6.19. A2C for Continuous Action Spaces (MuJoCo)</a></li>
+                                <li><a href="#mujoco-architecture">6.20. MuJoCo Architecture</a></li>
+                                <li><a href="#sample-efficiency">6.21. Sample Efficiency</a></li>
+                                <li><a href="#surrogate-objectives">6.22. Surrogate Objectives and Trust Regions</a></li>
+                                <li><a href="#trpo">6.23. Trust-Region Policy Optimization (TRPO)</a></li>
+                                <li><a href="#ppo">6.24. Proximal Policy Optimization (PPO)</a></li>
+                                <li><a href="#bias-variance-tradeoff">6.25. Bias-Variance Tradeoff</a></li>
+                                <li><a href="#gae">6.26. Generalized Advantage Estimation (GAE)</a></li>
+                                <li><a href="#policy-advantage-pi">6.27. Policy Advantage and Policy Iteration</a></li>
+                                <li><a href="#approx-pi">6.28. Approximate Policy Iteration (TRPO and PPO)</a></li>
+                                <li><a href="#avoiding-baseline">6.29. Avoiding the Baseline Function</a></li>
+                                <li><a href="#grpo">6.30. Group Relative Policy Optimization (GRPO)</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#mdp-basics-ii">7. MDP Basics II: Value Iteration</a>
+                            <ul>
+                                <li><a href="#value-iteration">7.1. Value Iteration (VI)</a></li>
+                                <li><a href="#accelerated-vi">7.2. Accelerated Value Iteration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#policy-iteration">8. Policy Iteration</a>
+                            <ul>
+                                <li><a href="#pi-algorithm">8.1. Policy Iteration Algorithm</a></li>
+                                <li><a href="#pi-theorem">8.2. Policy Improvement Theorem</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#undiscounted-mdps">9. Challenges with Undiscounted MDPs ($\gamma=1$)</a></li>
+                        <li><a href="#why-ppo-rl-llm">10. Why PPO for RL-LLM?</a></li>
+                        <li><a href="#two-player-games">11. 2-Player Zero-Sum Games</a>
+                            <ul>
+                                <li><a href="#minimax-optimization">11.1. Minimax Optimization</a></li>
+                                <li><a href="#minimax-gradients">11.2. Minimax Optimization with Gradients</a></li>
+                                <li><a href="#extragradient">11.3. Extragradient (EG) Method</a></li>
+                                <li><a href="#anchoring-weight-decay">11.4. Anchoring and Weight Decay</a></li>
+                                <li><a href="#antisymmetric-payoff">11.5. Antisymmetric Payoff Games</a></li>
+                                <li><a href="#chess-go">11.6. Chess and Go</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#recent-llm-dev">12. Recent Developments in LLMs</a></li>
+                        <li><a href="#sutton-turing-award">13. Richard Sutton Wins 2025 Turing Award</a></li>
+                        <li><a href="#alphago-expert-iteration">14. AlphaGo, Test-Time Compute, and Expert Iteration</a>
+                            <ul>
+                                <li><a href="#intro-alphago">14.1. Introduction to AlphaGo</a></li>
+                                <li><a href="#alphago-training">14.2. AlphaGo Training Steps</a></li>
+                                <li><a href="#alphago-v-phi">14.3. AlphaGo Training Step 3: Value Network $V_\phi$</a></li>
+                                <li><a href="#alphago-fast-policy">14.4. AlphaGo Training Step 4: Fast Rollout Policy $\pi^\text{fast}_\psi$</a></li>
+                                <li><a href="#neural-net-only-play">14.5. Neural-Net-Only Play</a></li>
+                                <li><a href="#pure-tree-search">14.6. Pure Tree Search</a></li>
+                                <li><a href="#human-systems-1-2">14.7. Human Thinking: Systems 1 and 2</a></li>
+                                <li><a href="#mcts">14.8. Monte Carlo Tree Search (MCTS)</a></li>
+                                <li><a href="#summary-mcts">14.9. Summary of MCTS</a></li>
+                                <li><a href="#mcts-bib">14.10. MCTS Bibliography</a></li>
+                                <li><a href="#why-mcts">14.11. Why MCTS?</a></li>
+                                <li><a href="#alphago-zero-improvements">14.12. Improving AlphaGo to AlphaGo Zero</a></li>
+                                <li><a href="#alphago-zero-training">14.13. AlphaGo Zero Training: Expert Iteration</a></li>
+                                <li><a href="#alphago-zero-results">14.14. AlphaGo Zero Results</a></li>
+                                <li><a href="#poker-test-time">14.15. Computer Poker and Test-Time Scaling</a></li>
+                                <li><a href="#train-vs-test-compute">14.16. Train-time vs. Test-time Compute</a></li>
+                                <li><a href="#takeaways-games">14.17. Takeaways from Games</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#kahneman-obituary">15. Obituary: Daniel Kahneman</a></li>
+                    </ul>
+                </div>
+
+                <hr class="my-8">
+
+                <h2 id="mdp-basics">1. MDP Basics</h2>
+                <h3 id="mdp-definition">1.1. Markov Decision Process Definition</h3>
+                <p>Reinforcement Learning (RL) considers sequential decision making within a Markov Decision Process (MDP):</p>
+                <p>Time $t=0,1,...,T$</p>
+                <p>$s_{t}\longrightarrow a_{t}\rightarrow(r_{t},s_{t+1})$</p>
+                <p>Trajectory $\tau=(s_{0},a_{0},r_{0},s_{1},a_{1},r_{1},\cdot\cdot\cdot,s_{T-1},a_{T-1},r_{T-1},s_{T})$</p>
+                <ul>
+                    <li><strong>State</strong> $s_{t}\in\mathcal{S}$ Define $\delta^{+}=\delta\cup\{\langle term>\}$. (Always assume $\delta\ne\phi$.)</li>
+                    <li><strong>Action</strong> $a_{t}\in\mathcal{A}$ (Always assume $\mathcal{A}\ne\emptyset$.)</li>
+                    <li><strong>Reward</strong> $r_{t}\in\mathbb{R}$ We will choose policy to maximize sum of reward.</li>
+                    <li><strong>T</strong> is terminal time / stopping time. Defined by $s_{T}=$ &lt;term&gt; = terminal state.</li>
+                    <li>$T=\infty$ possible. If probability of transition to $s=$ &lt;term&gt; is zero, then necessarily $T=\infty$. If $T=\infty$, the MDP is said to be a continuing task and otherwise an episodic task.</li>
+                    <li><strong>Initial distribution</strong> $s_{0}\sim p_{0}$. Often $s_{0}$ is fixed.</li>
+                    <li><strong>Transition probability</strong> $p(r,s^{\prime}|s,a)$ given by environment (usually not precisely known) and $(r_{t},s_{t+1})\sim p(\cdot,\cdot|s_{t},a_{t}).$</li>
+                </ul>
+
+                <h3 id="mdp-base-definitions">1.2. MDP Base Definitions</h3>
+                <ul>
+                    <li>$r_{t}$ is sometimes a fully deterministic function of $(s_{t},a_{t})$. If so, write $r_{t}=r(s_{t},a_{t})$.</li>
+                    <li>$S_{t+1}$ is sometimes a fully deterministic function of $(s_{t},a_{t})$.</li>
+                    <li>For now, assume the dynamics is stationary. In general, $(r_{t},s_{t+1})\sim p_{t}(\cdot,\cdot|s_{t},a_{t})$. Stationarity means $p_{t}(r,s^{\prime}|s,a)=p(r,s^{\prime}|s,a)$.</li>
+                    <li>$a_{t}$ is chosen by the agent via a policy $\pi$, given $S_{t}$.</li>
+                    <li>If $\pi$ is stochastic, then $\pi(a|s)$ is a probability distribution and $a_{t}\sim\pi(\cdot|s_{t})$.</li>
+                    <li>If $\pi$ is deterministic, then $a_{t}=\pi(s_{t})$.</li>
+                    <li>Often, $\pi=\pi_{\theta}$, i.e., $\pi$ will be a neural network parameterized by $\theta$.</li>
+                </ul>
+
+                <h3 id="state-vs-observation">1.3. State vs. Observation</h3>
+                <p align="center">
+                    <img src="https://placehold.co/400x300/e0e0e0/333333?text=Tiger+Behind+Tree" alt="Tiger Behind Tree">
+                </p>
+                <p>In general, an agent may not be able to observe the full state. The system may not be Markovian with respect to the observation. E.g., if you see a tiger hide behind a tree, the past observation is relevant, and the fact that you can no longer see the tiger does not mean you are safe.</p>
+                <p>This leads to the Partially Observable Markov Decision Process (POMDP) formulation, which is much more challenging than MDPs.</p>
+                <p>For us, assume the agent has fully observes the state $S_{t}$.</p>
+                <p>In LLMs, this is not an issue since the language model has the full conversational history.</p>
+
+                <h3 id="mdp-generalizations">1.4. MDP Generalizations</h3>
+                <p>There are many generalizations of the standard MDP. We won't cover them in this course.</p>
+                <ul>
+                    <li>Non-stationary dynamics: $p_{0},p_{1},...$</li>
+                    <li>The terminal time T may be pre-determined. This is an example of non-stationary dynamics, since $p_{T-1}(s_{T}=\langle term>|s_{T-1},a_{T-1})=1$, while $p_{t}(s_{t+1}=\langle term>|s_{t},a_{t})=0$ for any $t=0,...,T-2$.</li>
+                    <li>The policy $\pi_{t}$ can be time-dependent. (Time-dependent policy is necessary only if dynamics is non-stationary.)</li>
+                    <li>Set of possible actions may depend on $S_{t}$. If so, $a_{t}\in\mathcal{A}(s_{t})$.</li>
+                </ul>
+                <p>In practice, the MDP you work with will incorporate some of these variations. You must understand the principles, and adapt the base theory to the particular MDP at hand.</p>
+
+                <h3 id="terminal-time-notation">1.5. Terminal Time Notation</h3>
+                <p>Note, terminal time T is a random variable. Therefore, $\Sigma_{t=0}^{T}$ requires caution to work with. For example, $\mathbb{E}[\Sigma_{t=0}^{T}\cdot]\ne\Sigma_{t=0}^{T}\mathbb{E}[\cdot]$ and the RHS makes no sense, since the random variable T is outside of the expectation.</p>
+                <p>For notational and theoretical convenience, define an equivalent MDP that never stops by making the terminal state an absorbing state.</p>
+                <ul>
+                    <li>The MDP nominally never stops, i.e., terminal time is T = $\infty$.</li>
+                    <li>State $s_{t}\in S \cup \{\langle term>\}$, and we view &lt;term&gt; as a normal non-terminal state.</li>
+                    <li>The transition probability $p(r,s^{\prime}|s,a)$ is defined such that if $S_{t}=$ &lt;term&gt;, then $r_{t}=0$ and $s_{t+1}=$ &lt;term&gt; with probability 1, regardless of the choice of $a_{t}$.
+                        <ul>
+                            <li>I.e., Once $s_{t}=$ &lt;term&gt;, we no longer collect rewards and never escape &lt;term&gt;. Therefore, the policy at terminal state $\pi(\cdot|<\text{term}>)$ is irrelevant.</li>
+                            <li>No matter what action you take, we never move from $s_{t}=$ &lt;term&gt;.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="imitation-learning">2. Imitation Learning and Behavior Cloning</h2>
+                <h3 id="behavior-cloning">2.1. Behavior Cloning</h3>
+                <p>In imitation learning or behavior cloning, we train a $\pi_{\theta}\approx\pi_{expert}$, where $\pi_{expert}$ is the policy of an expert agent by observing actions made by $\pi_{expert}$ (usually human demonstrations).</p>
+                <p><strong>Behavior cloning:</strong></p>
+                <p><strong>Step 1:</strong> Sample trajectories $\tau=(s_{0},a_{0},s_{1},a_{1},\cdot\cdot\cdot,s_{T-1},a_{T-1},s_{T})\sim(p_{0},\pi_{expert},p)$ and form a dataset of state-action pairs: $\mathcal{D}_{expert}=\{(s_{i},a_{i})\}$. (No rewards.)</p>
+                <p><strong>Step 2:</strong> Train the model by solving</p>
+                $$
+                \min_{\theta} \sum_{(s,a)\in\mathcal{D}_{expert}}l(\pi_{\theta}(s),a)
+                $$
+                <p>where $l$ is the cross-entropy loss. This is basically supervised learning.</p>
+                <p><strong>Observation:</strong> Next token prediction in LLMs can be thought of as behavior cloning.</p>
+                <p>Behavior cloning may serve as a good starting point (initialization) as we will see with AlphaGo and LLM pre-training.</p>
+                <p>In many RL settings, the requirement of expert demonstrations can be onerous. In the LLM setting, however, pre-training data is plentiful.</p>
+                <p>However, behavior cloning by itself does not work very well.</p>
+
+                <h3 id="distribution-shift">2.2. Distribution Shift in Behavior Cloning</h3>
+                <p>In supervised learning, a model trained on one distribution will perform when tested on the same distribution, but not on another distribution. A change of distribution from training to test is called distribution shift, distribution mismatch, covariate shift, concept drift etc.</p>
+                <p>Behavior cloning fails due to covariate shift. At test time, the trained model observes trajectories $\tau\sim(p_{0},\pi_{\theta},p)$. But recall, training was done on trajectories $\tau\sim(p_{0},\pi_{expert},p).$</p>
+                <p>As a result, $\pi_{\theta}$ will encounter states it was not trained on. Maybe $\pi_{expert}$ is very good and never drives the MDP to a "bad" state, but $\pi_{\theta}$ may be imperfect and may drift into such bad states. Although $\pi_{expert}$ may know how to recover from such a bad state, $\pi_{\theta}$ was never taught this knowledge.</p>
+
+                <h3 id="off-on-policy">2.3. Off-policy vs. On-policy Learning</h3>
+                <p><strong>Key insight:</strong> In reinforcement learning, the training data depends on the policy. This is true for both imitation learning or reward-based learning.</p>
+                <p>This observation closely relates to the distinction between off-policy and on-policy RL. (More on this later.)</p>
+                <p>Behavior cloning is off-policy learning, since it trains on data generated by another policy.</p>
+
+                <h3 id="dagger">2.4. DAgger (Dataset Aggregation)</h3>
+                <p>Dataset Aggregation (DAgger) is more on-policy imitation learning. In each round, the current policy is used to generate trajectories and the expert provides labels for the states. By retraining on this aggregated dataset, DAgger mitigates distribution shift.</p>
+                <ol>
+                    <li>Sample trajectory $\tau \sim p_{0}, \pi_{\text{expert}}, p$ and form $\mathcal{D} \leftarrow \mathcal{D}_{\text{expert}} = \{s_{i}, a_{i}\}$.</li>
+                    <li>Train $\pi_{\theta}$ from demonstration data $\mathcal{D}$.</li>
+                    <li>Sample trajectory $\tau \sim p_{0}, \pi_{\theta}, p$ and form $\mathcal{D}_{\pi_{\theta}} = \{s_{i}\}$. (No actions, no rewards.)</li>
+                    <li>Ask human to label $s_{i} \in \mathcal{D}_{\pi_{\theta}}$ with actions $a_{i}$. Then let $\mathcal{D}_{\pi_{\theta}} = \{s_{i}, a_{i}\}$.</li>
+                    <li>Aggregate $\mathcal{D} \leftarrow \mathcal{D} \cup \mathcal{D}_{\pi_{\theta}}$. Loop back to Step 1.</li>
+                </ol>
+                <p>Asking human experts to take an action on states generated by $\pi_{\theta}$ is often very unnatural. Not really something you can do with LLMs anyway.</p>
+                <p><em>Reference: S. Ross, G. Gordon, and D. Bagnell, A reduction of imitation learning and structured prediction to no-regret online learning, AISTATS, 2011.</em></p>
+
+                <h3 id="causal-confusion">2.5. Causal Confusion</h3>
+                <p>Another problematic effect of distributional shift in imitation learning is causal confusion.</p>
+                <p>In supervised learning, spurious correlations can be learned, but this may be not a problem so long as the training and test distributions are the same. E.g. If all cats are looking to the left and all dogs are looking to the right, the neural net may differentiate them with the direction of their heads. A distributional shift altering the distribution of the directions the animals face can ruin the performance of this model. If the correct causal relation were learned, the model would be robust to distributional shifts.</p>
+                <p>When the agent (LLM) act itself (on-policy learning), causal confusion is more easily revealed. This can then be corrected through negative rewards or expert supervision.</p>
+                <p><em>Reference: P. de Haan, D. Jayaraman, and S. Levine, Causal confusion in imitation learning, NeurIPS, 2019.</em></p>
+
+                <h2 id="mdp-objective">3. MDP Objective and Value Functions</h2>
+                <h3 id="expected-discounted-return">3.1. Maximizing Expected Discounted Return</h3>
+                <p>So far, we have described the dynamics of the MDP. The goal/objective of an MDP is to maximize expected discounted return:</p>
+                <ul>
+                    <li><strong>Cumulative discounted return</strong> $G_{t} = r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \cdots = \sum_{k=0}^{T-t-1} \gamma^k r_{t+k}$</li>
+                    <li>$G_0$ is (cumulative) return, $r_{t}$ is (instantaneous) reward.</li>
+                    <li><strong>Discount factor</strong> $\gamma \in (0, 1]$.</li>
+                    <li>When $T = \infty$ possible and reward is bounded, use $\gamma < 1$ to ensure return is finite.</li>
+                    <li>$\mathbb{E}_{\pi}$ means expectation over $a_{t} \sim \pi(\cdot | s_{t})$, $r_{t}, s_{t+1} \sim p(\cdot,\cdot | s_{t}, a_{t})$.</li>
+                    <li>Define the return from time $t$ as $G_{t}$.</li>
+                </ul>
+
+                <h3 id="state-value-functions">3.2. State Value Function $V^\pi$ and State-Action Value Function $Q^\pi$</h3>
+                <p>Define the (state) value function (V-value function)</p>
+                $$V^{\pi}(s) = \mathbb{E}_{\pi} [G_0 | s_0 = s]$$
+                <p>as the expected return starting at state $s$ following policy $\pi$.<br>Note, $V^{\pi}(\text{<term>}) = 0$.</p>
+                <p>Define the state-action value function (Q-value function)</p>
+                $$Q^{\pi}(s, a) = \mathbb{E}_{\pi} [G_0 | s_0 = s, a_0 = a]$$
+                <p>as the expected return starting at state $s$ taking action $a$ following policy $\pi$ thereafter.<br>Note, $Q^{\pi}(\text{<term>}, a) = 0$ for all $a \in \mathcal{A}$.</p>
+                <p><strong>Basic properties of $V^\pi$ and $Q^\pi$</strong><br>Since $\mathbb{E}_{\pi}$ denotes expectation over $a_{t} \sim \pi(\cdot | s_{t})$, $r_{t}, s_{t+1} \sim p(\cdot,\cdot | s_{t}, a_{t})$, we have</p>
+                $$V^{\pi}(s) = \mathbb{E}_{\pi} [r_t + \gamma G_{t+1} | s_t = s]$$
+                <p>and</p>
+                $$Q^{\pi}(s, a) = \mathbb{E}_{\pi} [r_t + \gamma G_{t+1} | s_t = s, a_t = a]$$
+                <p>By stationarity,</p>
+                $$V^{\pi}(s) = \mathbb{E}_{\pi} [r_t + \gamma V^{\pi}(s_{t+1}) | s_t = s]$$
+                <p>and</p>
+                $$Q^{\pi}(s, a) = \mathbb{E}_{\pi} [r_t + \gamma Q^{\pi}(s_{t+1}, a_{t+1}) | s_t = s, a_t = a]$$
+                <p><strong>1-step transition property of $V^\pi$</strong><br>by the Markovian property:</p>
+                $$V^{\pi}(s) = \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^{\pi}(s')]$$
+                <p><strong>1-step transition property of $Q^\pi$</strong><br>by the Markovian property:</p>
+                $$Q^{\pi}(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \sum_{a'} \pi(a'|s') Q^{\pi}(s', a')]$$
+
+                <h3 id="banach-fixed-point">3.3. Preliminaries: Banach Fixed Point Theorem</h3>
+                <p>Let $\mathcal{X}$ be a metric space with metric $d$. Then, we say $\mathcal{T} : \mathcal{X} \to \mathcal{X}$ is $\gamma$-contractive if</p>
+                $$d(\mathcal{T}(x), \mathcal{T}(y)) \le \gamma d(x, y) \quad \forall x, y \in \mathcal{X}$$
+                <p><strong>Theorem)</strong> Let $\mathcal{X}$ be a complete metric space with metric $d$. Let $\mathcal{T}: \mathcal{X} \to \mathcal{X}$ be a $\gamma$-contractive mapping with $\gamma < 1$. Then $\mathcal{T}$ has a fixed point and the fixed point is unique. Furthermore, for any $x \in \mathcal{X}$,</p>
+                $$\mathcal{T}^k (x) \to x^\star \quad \text{as } k \to \infty$$
+                <p>where $x^\star$ is the unique fixed point.<br>($\mathbb{R}^n$ is a complete metric space with any norm.)</p>
+
+                <h3 id="bellman-v-pi">3.4. Bellman Equation for $V^\pi$</h3>
+                <p><strong>Theorem)</strong> Let $\pi$ be a policy. Assume $\gamma \in (0,1)$, $\mathcal{S} < \infty$, and $r \le R < \infty$ almost surely. Then $V^{\pi} : \mathcal{S}^+ \to \mathbb{R}$, the value function of $\pi$, exists, and it satisfies the Bellman equation:</p>
+                $$V^{\pi}(s) = \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^{\pi}(s')]$$
+                <p>Conversely, if a function $V : \mathcal{S}^+ \to \mathbb{R}$ satisfies the Bellman equation, then $V = V^{\pi}$.</p>
+                <p><strong>Proof) Existence follows from</strong><br>$|G_t| \le \sum_{k=0}^{T-t-1} \gamma^k |r_{t+k}| \le R \sum_{k=0}^\infty \gamma^k = \frac{R}{1-\gamma}$<br>so the expectation is well defined.</p>
+                <p>Let $\mathcal{B}^{\pi}$ be the Bellman operator (for $V$) mapping from a function to a function:</p>
+                $$(\mathcal{B}^{\pi} V)(s) = \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [r + \gamma V(s')]$$
+                <p>So, $\mathcal{B}^{\pi} V^{\pi} = V^{\pi}$ by the 1-step transition property, i.e., $V^{\pi}$ is a fixed point of $\mathcal{B}^{\pi}$.</p>
+                <p>Let $||V||_\infty = \max_{s \in \mathcal{S}^+} |V(s)|$. Then $||\cdot||_\infty$ is a norm on the space of functions from $\mathcal{S}^+ \text{ to } \mathbb{R}$.</p>
+                <p>If $\mathcal{B}^{\pi}$ is a strict contraction with respect to $||\cdot||_\infty$, then $V^{\pi}$ is the unique fixed-point by Banach.</p>
+                <p><strong>Finally, we show $\mathcal{B}^{\pi}$ is a $\gamma$-contraction in the $||\cdot||_\infty$-norm:</strong></p>
+                $$|(\mathcal{B}^{\pi} U)(s) - (\mathcal{B}^{\pi} V)(s)| = \left| \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [r + \gamma U(s')] - \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [r + \gamma V(s')] \right|$$
+                $$ = \left| \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [\gamma U(s') - \gamma V(s')] \right|$$
+                $$ = \gamma \left| \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) [U(s') - V(s')] \right|$$
+                $$ \le \gamma \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) |U(s') - V(s')|$$
+                $$ \le \gamma \sum_a \pi(a|s) \sum_{r,s'} p(r,s'|s,a) ||U - V||_\infty$$
+                $$ = \gamma ||U - V||_\infty$$
+                <p>Thus, $||\mathcal{B}^{\pi} U - \mathcal{B}^{\pi} V||_\infty \le \gamma ||U - V||_\infty$.<br>$\square$</p>
+
+                <h3 id="bellman-q-pi">3.5. Bellman Equation for $Q^\pi$</h3>
+                <p><strong>Theorem)</strong> Let $\pi$ be a policy. Assume $\gamma \in (0,1)$, $\mathcal{S} < \infty$, $\mathcal{A} < \infty$, and $r \le R < \infty$ almost surely. Then the state-action value function $Q^{\pi}$ exists, and it satisfies the Bellman equation</p>
+                $$Q^{\pi}(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \sum_{a'} \pi(a'|s') Q^{\pi}(s', a')]$$
+                <p>Conversely, if a function $Q : \mathcal{S}^+ \times \mathcal{A} \to \mathbb{R}$ satisfies the Bellman equation, then $Q = Q^{\pi}$.</p>
+                <p><strong>Proof)</strong> First, $Q^{\pi}$ is well defined since $r$ is almost surely bounded.</p>
+                <p>Let $\mathcal{B}^{\pi}$ be the Bellman operator (for $Q$) mapping from a function to a function:</p>
+                $$(\mathcal{B}^{\pi} Q)(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \sum_{a'} \pi(a'|s') Q(s', a')]$$
+                <p>Clearly, $\mathcal{B}^{\pi} Q^{\pi} = Q^{\pi}$ by the 1-step transition property, i.e., $Q^{\pi}$ is a fixed point of $\mathcal{B}^{\pi}$.</p>
+                <p>Let $||Q||_\infty = \max_{s \in \mathcal{S}^+, a \in \mathcal{A}} |Q(s, a)|$.<br>Then, $||\cdot||_\infty$ is a norm on the space of functions from $\mathcal{S}^+ \times \mathcal{A} \text{ to } \mathbb{R}$.</p>
+                <p>If $\mathcal{B}^{\pi}$ is a strict contraction with respect to $||\cdot||_\infty$, then $Q^{\pi}$ is the unique fixed-point by Banach. In the hw, you will prove that $\mathcal{B}^{\pi}$ is a strict contraction.<br>$\square$</p>
+
+                <h2 id="optimal-policies">4. Optimal Policies and Value Functions</h2>
+                <h3 id="optimal-policy-definitions">4.1. Optimal Policy and Value Functions</h3>
+                <p>We say a policy $\pi^\star$ is optimal if</p>
+                $$V^{\pi^\star}(s) \ge V^{\pi}(s) \quad \forall s \in \mathcal{S}^+, \forall \text{ policy } \pi.$$
+                <p>(Optimal policy does not depend on starting state $s$.)</p>
+                <p>Write $V^\star = V^{\pi^\star}$ for the optimal value function.<br>Write $Q^\star = Q^{\pi^\star}$ for the optimal Q-value function.</p>
+                <p>As we soon establish, the optimal value functions $V^\star$ and $Q^\star$ are unique, but optimal policy $\pi^\star$ is not unique. However, all optimal policies yield the same value functions.</p>
+
+                <h3 id="bellman-optimality-v-star">4.2. Bellman Optimality Equation for $V^\star$</h3>
+                <p><strong>Theorem)</strong> Assume $\gamma \in (0,1)$, $\mathcal{S} < \infty$, $\mathcal{A} < \infty$, and $r \le R < \infty$ almost surely. Then the optimal value function $V^\star : \mathcal{S}^+ \to \mathbb{R}$ exists, and it satisfies the Bellman optimality equation:</p>
+                $$V^\star(s) = \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^\star(s')]$$
+                <p>Conversely, if a function $V : \mathcal{S}^+ \to \mathbb{R}$ satisfies the Bellman optimality equation, then $V = V^\star$.<br>Finally,</p>
+                $$\pi^\star(s) = \arg\max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^\star(s')]$$
+                <p>is an optimal deterministic policy.</p>
+                <p><strong>Quick lemma</strong><br><strong>Lemma)</strong> For any $u(s)$ and $v(s)$,</p>
+                $$\max_a (f(a) + g(a)) - \max_a f(a) \le \max_a g(a)$$
+                <p><strong>Proof)</strong><br>Let $a_u = \arg\max_a (f(a) + g(a))$ and $a_f = \arg\max_a f(a)$.<br>Then,</p>
+                $$(f(a_u) + g(a_u)) - f(a_f) \le (f(a_u) + g(a_u)) - f(a_u) = g(a_u) \le \max_a g(a)$$
+                <p>and symmetrically,</p>
+                $$(f(a_f) + g(a_f)) - f(a_u) \le (f(a_f) + g(a_f)) - f(a_f) = g(a_f) \le \max_a g(a)$$
+                <p>We conclude with</p>
+                $$|\max_a (f(a) + g(a)) - \max_a f(a)| \le \max_a |g(a)|$$
+                <p>$\square$</p>
+                <p><strong>Proof)</strong> Let $\mathcal{B}^\star$ be the Bellman optimality operator (for $V$) mapping from a function to a function:</p>
+                $$(\mathcal{B}^\star V)(s) = \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V(s')]$$
+                <p>By the following reasoning, $\mathcal{B}^\star$ is a strict contraction with respect to $||\cdot||_\infty$.</p>
+                $$|(\mathcal{B}^\star U)(s) - (\mathcal{B}^\star V)(s)| = |\max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma U(s')] - \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V(s')]|$$
+                <p>Let $f(a) = \sum_{r,s'} p(r,s'|s,a) r$ and $g(a) = \sum_{r,s'} p(r,s'|s,a) \gamma U(s') - \sum_{r,s'} p(r,s'|s,a) \gamma V(s')$.<br>Then, $|g(a)| \le \gamma ||U-V||_\infty$.<br>So $\mathcal{B}^\star$ has a unique fixed-point that we denote as $V^\star$.<br>(We don’t yet know if $V^\star$ is the optimal value function.)</p>
+                <p>Next, define $\pi^\star$ to be a deterministic policy defined by</p>
+                $$\pi^\star(s) = \arg\max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^\star(s')]$$
+                <p>where ties in the argmax are broken arbitrarily. (We don’t yet know if $\pi^\star$ is the optimal policy.)<br>Then, $V^\star = V^{\pi^\star}$ by</p>
+                $$V^\star(s) = \sum_a \pi^\star(a|s) \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^\star(s')]$$
+                <p>(This is the Bellman equation for $V^{\pi^\star}$, so $V^\star = V^{\pi^\star}$ by the uniqueness of the fixed point.)</p>
+                <p><strong>Lemma)</strong> Let $\pi$ be a policy. Let $\mathcal{B}^{\pi}$ be the Bellman operator and $\mathcal{B}^\star$ the Bellman optimality operator. For any $V : \mathcal{S}^+ \to \mathbb{R}$, we have</p>
+                $$\mathcal{B}^{\pi} V \le \mathcal{B}^\star V$$
+                <p>Moreover, for any $U : \mathcal{S}^+ \to \mathbb{R}$ and $V : \mathcal{S}^+ \to \mathbb{R}$ satisfying $U \le V$, we have</p>
+                $$\mathcal{B}^\star U \le \mathcal{B}^\star V$$
+                <p>(Here, $\le$ denotes pointwise inequality. So $U \le V$ means $U(s) \le V(s)$ for all $s \in \mathcal{S}^+$.)<br><strong>Proof)</strong> Homework.</p>
+                <p>We now show that $\pi^\star$ is optimal. Let $\pi$ be any policy. Then,</p>
+                $$V^{\pi} = \mathcal{B}^{\pi} V^{\pi} \le \mathcal{B}^\star V^{\pi} \le (\mathcal{B}^\star)^2 V^{\pi} \le \cdots \le (\mathcal{B}^\star)^k V^{\pi} \to V^\star = V^{\pi^\star}$$
+                <p>($V^{\pi} = \mathcal{B}^{\pi} V^{\pi}$ follows from the Bellman equation theorem. $\mathcal{B}^{\pi} V^{\pi} \le \mathcal{B}^\star V^{\pi}$ follows from the previous lemma. Since $V^{\pi} \le \mathcal{B}^\star V^{\pi}$, we can apply $\mathcal{B}^\star$ to both sides to get $\mathcal{B}^\star V^{\pi} \le (\mathcal{B}^\star)^2 V^{\pi}$. Convergence is due to Banach.)<br>So $V^{\pi} \le V^{\pi^\star}$ for any policy $\pi$. So $\pi^\star$ is optimal and $V^\star$ is the optimal value function.<br>Finally, since $V^\star = V^{\pi^\star}$, we have</p>
+                $$V^\star(s) = \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^\star(s')]$$
+                <p>$\square$</p>
+
+                <h3 id="bellman-optimality-q-star">4.3. Bellman Optimality Equation for $Q^\star$</h3>
+                <p><strong>Theorem)</strong> Assume $\gamma \in (0,1)$, $\mathcal{S} < \infty$, $\mathcal{A} < \infty$, and $r \le R < \infty$ almost surely. Then the optimal state-action value function $Q^\star : \mathcal{S}^+ \times \mathcal{A} \to \mathbb{R}$ exists, and it satisfies the Bellman optimality equation:</p>
+                $$Q^\star(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \max_{a'} Q^\star(s', a')]$$
+                <p>Conversely, if a function $Q : \mathcal{S}^+ \times \mathcal{A} \to \mathbb{R}$ satisfies the Bellman optimality equation, then $Q = Q^\star$. Finally,</p>
+                $$\pi^\star(s) = \arg\max_a Q^\star(s, a)$$
+                <p>is an optimal deterministic policy.</p>
+                <p><strong>Proof)</strong> Let $\mathcal{B}^\star$ be the Bellman optimality operator (for $Q$) mapping from a function to a function:</p>
+                $$(\mathcal{B}^\star Q)(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \max_{a'} Q(s', a')]$$
+                <p>In the homework assignment, you will show $\mathcal{B}^\star$ is a strict contraction with respect to $||\cdot||_\infty$. So $\mathcal{B}^\star$ has a unique fixed-point that we denote as $Q^\star$.</p>
+                <p>It remains to show that $Q^\star$ is the optimal state-value function.<br>We have $\max_{a \in \mathcal{A}} Q^\star(s, a) = V^\star(s)$ since</p>
+                $$V^\star(s) = \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^\star(s')]$$
+                $$ = \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma \max_{a''} Q^\star(s', a'')]$$
+                $$ = \max_a Q^\star(s, a)$$
+                <p>By our previous theorem, an optimal policy $\pi^\star$ exists and $V^\star = V^{\pi^\star}$.<br>We conclude $Q^\star = Q^{\pi^\star}$ with</p>
+                $$Q^{\pi^\star}(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma V^{\pi^\star}(s')]$$
+                $$ = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \max_{a'} Q^{\pi^\star}(s', a')]$$
+                <p>$\square$</p>
+
+                <h2 id="policy-evaluation-optimization">5. Policy Evaluation vs. Optimization</h2>
+                <p>The goal of RL is to find a good policy $\pi$.<br>We start by studying how to evaluate a given policy $\pi$.</p>
+                <ul>
+                    <li>Called <strong>policy evaluation</strong>.</li>
+                </ul>
+                <p>We later talk about how to optimize/improve the policy $\pi$.</p>
+                <ul>
+                    <li>Called <strong>policy optimization, policy improvement, control</strong>.</li>
+                </ul>
+
+                <h3 id="mc-policy-evaluation">5.1. Policy Evaluation: Monte Carlo (MC)</h3>
+                <p>First consider approximating the value function $V^{\pi}$ of a given policy $\pi$.<br>For a given $s \in \mathcal{S}$, Monte Carlo (MC) method is</p>
+                $$V^{\pi}(s) \approx \frac{1}{N} \sum_{i=1}^N G_0^{(i)}$$
+                <p>where $G_0^{(i)}$ is the return from the $i$-th trajectory, and $N$ independent trajectories with $s_0^{(i)} = s$.<br>If the size of $\mathcal{S}$ is small, we could do this for all $s \in \mathcal{S}$ to approximate $V^{\pi}(\cdot)$.</p>
+                <p><strong>$V_\phi \approx V^\pi$ with MC</strong><br>When the size of $\mathcal{S}$ is large or infinite, we must approximate $V^{\pi}$ via a neural network $V_\phi$:</p>
+                $$\mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} (G_t - V_\phi(s_t))^2 \right]$$
+                <p>Since $V^{\pi}(\text{<term>}) = 0$, we usually let $V_\phi : \mathcal{S} \to \mathbb{R}$, i.e., we don’t allow $V_\phi(\text{<term>})$ and hard-code the case when $V^{\pi}(\text{<term>}) = 0$ is needed.</p>
+                <p><strong>Gradient of $\mathcal{L}$:</strong></p>
+                $$\nabla_\phi \mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(G_t - V_\phi(s_t)) (-\nabla_\phi V_\phi(s_t)) \right]$$
+                $$ = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(V_\phi(s_t) - G_t) \nabla_\phi V_\phi(s_t) \right]$$
+                <p><strong>$V_\phi \approx V^\pi$ with MC + SGD</strong><br>The stochastic gradient is $g = \sum_{t=0}^{T-1} 2(V_\phi(s_t) - G_t) \nabla_\phi V_\phi(s_t)$, where $\tau$ is a single trajectory.<br>The update is $\phi \leftarrow \phi - \alpha g$.</p>
+
+                <h3 id="td-policy-evaluation">5.2. Policy Evaluation: Temporal Difference (TD)</h3>
+                <p>In Temporal Difference (TD) learning, we use the reward of one transition.</p>
+                $$\mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} (r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t))^2 \right]$$
+                <p>Exactly actionable only if $V^{\pi}$ is known.<br>$N$ independent 1-step transitions with $s_0^{(i)} = s$.</p>
+                <p><strong>$V_\phi \approx V^\pi$ with TD + (apx) SGD</strong><br><strong>Gradient of $\mathcal{L}$:</strong></p>
+                $$\nabla_\phi \mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)) (\gamma \nabla_\phi V_\phi(s_{t+1}) - \nabla_\phi V_\phi(s_t)) \right]$$
+
+                <h3 id="stop-gradient">5.3. Stop-Gradient Operator</h3>
+                <p>How should we compute the approximate stochastic gradient?<br><strong>Option 1.</strong> Compute $(r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t))$ (a scalar) and $\nabla_\phi V_\phi(s_t)$ and multiply the two.<br>This is correct, but it is cumbersome.</p>
+                <p><strong>Option 2.</strong> Forward-evaluate $r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)$ and backprop to compute $\nabla_\phi (r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t))^2$.<br>This is incorrect! If you apply the chain rule, you don’t get the same $g$.</p>
+                <p><strong>Option 3.</strong> Forward-evaluate $r_t + \gamma V_\phi(s_{t+1})$, forward-evaluate $V_\phi(s_t)$ and backprop to compute $\nabla_\phi (r_t + \gamma \overline{V_\phi(s_{t+1})} - V_\phi(s_t))^2$, where $\overline{\cdot}$ denotes the stop-gradient operator.<br>(In PyTorch, use `.detach()` to perform stop-gradient.)<br>The stop-gradient operator treats its input as a constant, and stops backpropagation, i.e., the chain rule is not invoked on the input of $\overline{\cdot}$.</p>
+                <p><strong>$V_\phi \approx V^\pi$ with TD + (apx) SGD</strong><br>Using the stop-gradient operator, express TD with approximate SGD as</p>
+                $$\phi \leftarrow \phi - \alpha (r_t + \gamma \overline{V_\phi(s_{t+1})} - V_\phi(s_t)) \nabla_\phi V_\phi(s_t)$$
+                <p>If $s_{t+1} == \text{<term>}$, then $V_\phi(s_{t+1}) = 0$.</p>
+
+                <h3 id="semi-gradient">5.4. Semi-Gradient Method</h3>
+                <p>TD + apx SGD with $\overline{V_\phi(s_{t+1})}$ is provably not an instance of gradient descent.<br>These methods are called <strong>semi-gradient methods</strong>, in the sense that it kind of resembles a gradient method.</p>
+                <p>One can replace the gradient computation with $\nabla_\phi (r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t))^2$, i.e., try to directly minimize the Bellman error.<br>This has been explored under the name <strong>gradient TD (GTD)</strong>, but GTD tends to perform worse than the semi-gradient TD.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>Appendix I, E. Barnard, Temporal-difference methods and Markov models, IEEE Transactions on Systems, Man, and Cybernetics, 1993.</em></li>
+                    <li><em>R. S. Sutton, H. Maei, C. Szepesvári, A convergent O(n) temporal-difference algorithm for off-policy learning with linear function approximation, NeurIPS, 2008.</em></li>
+                    <li><em>R. S. Sutton, H. R. Maei, D. Precup, S. Bhatnagar, D. Silver, C. Szepesvári, and E. Wiewiora, Fast gradient-descent methods for temporal-difference learning with linear function approximation, ICML, 2009.</em></li>
+                </ul>
+
+                <h3 id="k-step-td">5.5. k-step TD Policy Evaluation</h3>
+                <p>k-step TD interpolates between MC and (1-step) TD using the k-step transition property:</p>
+                $$G_t^{(k)} = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k V^{\pi}(s_{t+k})$$
+                <p>where $k \wedge T = \min(k, T)$.</p>
+                <p><strong>k-step transition property</strong></p>
+                $$V^{\pi}(s) = \mathbb{E}_{\pi} [G_t^{(k)} | s_t = s]$$
+                <p>Exactly actionable only if $V^{\pi}$ is known.<br>$N$ independent partial trajectories with $s_0^{(i)} = s$.</p>
+                <p><strong>$V^{\pi} \approx V_\phi$ with k-step TD</strong><br><strong>Gradient of $\mathcal{L}$:</strong></p>
+                $$\nabla_\phi \mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(G_t^{(k)} - V_\phi(s_t)) (-\nabla_\phi V_\phi(s_t)) \right]$$
+                $$ = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(V_\phi(s_t) - G_t^{(k)}) \nabla_\phi V_\phi(s_t) \right]$$
+                <p><strong>$V^{\pi} \approx V_\phi$ with k-step TD + (apx) SGD</strong><br>Approximate SGD implementation ($g$ is no longer an unbiased estimate of $\nabla\mathcal{L}$)</p>
+                $$\phi \leftarrow \phi - \alpha (G_t^{(k)} - V_\phi(s_t)) \nabla_\phi V_\phi(s_t)$$
+                <p>If $s_{k \wedge T} == \text{<term>}$, then $V_\phi(s_{k \wedge T}) = 0$.</p>
+                <p>Using the stop-gradient operator, express k-step TD with approximate SGD as</p>
+                $$\phi \leftarrow \phi - \alpha (\overline{G_t^{(k)}} - V_\phi(s_t)) \nabla_\phi V_\phi(s_t)$$
+                <p>If $s_{k \wedge T} == \text{<term>}$, then $V_\phi(s_{k \wedge T}) = 0$.<br>(Here, the random sampling of $r_t$ does not depend on $\phi$, so $\partial r_t / \partial \phi = 0$. This will change when we perform policy optimization.)</p>
+
+                <h3 id="mc-vs-td">5.6. MC vs. TD (Bootstrapping)</h3>
+                <p>The goal is to train $V_\phi \approx V^{\pi}$. When we need to use $V^{\pi}$, we replace it with $V_\phi$.<br>This is called <strong>bootstrapping</strong>.</p>
+                <ul>
+                    <li><strong>MC evaluation</strong> updates $V_\phi$ by waiting for the episode to terminate.</li>
+                    <li><strong>TD evaluation</strong> updates $V_\phi$ without waiting for the episode to terminate; they instead bootstrap and use $V_\phi$.</li>
+                    <li>Initially, when $V_\phi$ is inaccurate, bootstrapping may cause instabilities.</li>
+                    <li>Later, when $V_\phi$ is accurate, waiting for the episode to terminate may be wasteful.</li>
+                    <li>As a rule of thumb, an intermediate value of $k = 5$ is a good compromise.</li>
+                </ul>
+
+                <h3 id="q-phi-mc">5.7. $Q_\phi \approx Q^\pi$ with MC</h3>
+                <p>Policy evaluation for $Q^{\pi}$ follows the same principles.<br>For MC,</p>
+                $$Q^{\pi}(s, a) \approx \frac{1}{N} \sum_{i=1}^N G_0^{(i)}$$
+                <p>where $G_0^{(i)}$ is the return from the $i$-th trajectory, and $N$ independent trajectories with $s_0^{(i)} = s$ and $a_0^{(i)} = a$.</p>
+                <p><strong>$Q_\phi \approx Q^\pi$ with MC</strong></p>
+                $$\mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} (G_t - Q_\phi(s_t, a_t))^2 \right]$$
+                <p><strong>Gradient of $\mathcal{L}$:</strong></p>
+                $$\nabla_\phi \mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(Q_\phi(s_t, a_t) - G_t) \nabla_\phi Q_\phi(s_t, a_t) \right]$$
+                <p><strong>$Q_\phi \approx Q^\pi$ with MC + SGD</strong><br>The stochastic gradient is $g = \sum_{t=0}^{T-1} 2(Q_\phi(s_t, a_t) - G_t) \nabla_\phi Q_\phi(s_t, a_t)$, where $\tau$ is a single trajectory.<br>The update is $\phi \leftarrow \phi - \alpha g$.</p>
+
+                <h3 id="q-phi-td">5.8. $Q_\phi \approx Q^\pi$ with TD + (Approx) SGD</h3>
+                <p>1-step TD works with the same principles.</p>
+                $$\mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} (r_t + \gamma Q_\phi(s_{t+1}, a_{t+1}) - Q_\phi(s_t, a_t))^2 \right]$$
+                <p>Exactly actionable only if $Q^{\pi}$ is known.<br>$N$ independent 1-step transitions and action $a_{t+1}^{(i)}$ with $s_t^{(i)} = s$ and $a_t^{(i)} = a$.</p>
+                <p><strong>$Q_\phi \approx Q^\pi$ with TD + (apx) SGD</strong><br><strong>Gradient of $\mathcal{L}$:</strong></p>
+                $$\nabla_\phi \mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(r_t + \gamma Q_\phi(s_{t+1}, a_{t+1}) - Q_\phi(s_t, a_t)) (\gamma \nabla_\phi Q_\phi(s_{t+1}, a_{t+1}) - \nabla_\phi Q_\phi(s_t, a_t)) \right]$$
+                <p>Approximate SGD implementation ($g$ is no longer an unbiased estimate of $\nabla\mathcal{L}$)</p>
+                $$\phi \leftarrow \phi - \alpha (r_t + \gamma Q_\phi(s_{t+1}, a_{t+1}) - Q_\phi(s_t, a_t)) \nabla_\phi Q_\phi(s_t, a_t)$$
+                <p>If $s_{t+1} == \text{<term>}$, then $Q_\phi(s_{t+1}, a_{t+1}) = 0$.</p>
+                <p>Using the stop-gradient operator, express TD with approximate SGD as</p>
+                $$\phi \leftarrow \phi - \alpha (r_t + \gamma \overline{Q_\phi(s_{t+1}, a_{t+1})} - Q_\phi(s_t, a_t)) \nabla_\phi Q_\phi(s_t, a_t)$$
+                <p>If $s_{t+1} == \text{<term>}$, then $Q_\phi(s_{t+1}, a_{t+1}) = 0$.</p>
+
+                <h3 id="q-phi-k-step-td">5.9. $Q_\phi \approx Q^\pi$ with k-step TD + (Approx) SGD</h3>
+                <p>k-step TD works with the same principles.</p>
+                $$G_t^{(k)} = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k Q^{\pi}(s_{t+k}, a_{t+k})$$
+                <p>Exactly actionable only if $Q^{\pi}$ is known.<br>$N$ independent partial trajectories with $s_0^{(i)} = s$ and $a_0^{(i)} = a$.</p>
+                <p><strong>$Q_\phi \approx Q^\pi$ with k-step TD + SGD</strong><br><strong>Gradient of $\mathcal{L}$:</strong></p>
+                $$\nabla_\phi \mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \sum_{t=0}^{T-1} 2(G_t^{(k)} - Q_\phi(s_t, a_t)) (-\nabla_\phi Q_\phi(s_t, a_t)) \right]$$
+                <p>Approximate SGD implementation ($g$ is no longer an unbiased estimate of $\nabla\mathcal{L}$)</p>
+                $$\phi \leftarrow \phi - \alpha (G_t^{(k)} - Q_\phi(s_t, a_t)) \nabla_\phi Q_\phi(s_t, a_t)$$
+                <p>If $k < T$, then $Q_\phi(s_k, a_k)$ is used.</p>
+                <p>Using the stop-gradient operator, express k-step TD with approximate SGD as</p>
+                $$\phi \leftarrow \phi - \alpha (\overline{G_t^{(k)}} - Q_\phi(s_t, a_t)) \nabla_\phi Q_\phi(s_t, a_t)$$
+                <p>If $k < T$, then $Q_\phi(s_k, a_k)$ is used.</p>
+
+                <h2 id="deep-policy-gradient">6. Deep Policy Gradient Methods</h2>
+                <h3 id="policy-optimization">6.1. Policy Optimization</h3>
+                <p>So far, we talked about policy evaluation: approximating $V^{\pi}$ and $Q^{\pi}$ given a policy $\pi$.<br>Next, let’s talk about policy optimization: solving</p>
+                $$\max_{\theta} \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} [G_0]$$
+                <p>where $\pi_\theta$ is represented by a neural network with parameter $\theta$.</p>
+
+                <h3 id="policy-gradient-fundamentals">6.2. Policy Gradient Fundamentals</h3>
+                <p>For policy gradient methods, Assume $T < \infty$ with probability 1.<br>Write $\tau$ for the trajectory and use the notation</p>
+                $$\mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} [G_0(\tau)]$$
+                <p>The probability distribution of $\tau$ can be written as</p>
+                $$p(\tau | \theta) = p_0(s_0) \prod_{t=0}^{T-1} \pi_\theta(a_t|s_t) p(r_t, s_{t+1}|s_t, a_t)$$
+                <p><strong>Policy after stopping</strong><br>For notational convenience, let $\tilde{a} \in \mathcal{A}$ be a certain action and let</p>
+                $$\pi_\theta(\tilde{a} | \text{<term>}) = 1$$
+                <p>I.e., once we reach the terminal state $s = \text{<term>}$, always take the action $\tilde{a}$.<br>(Remember, actions are irrelevant once we reach &lt;term&gt;.)<br>Then,</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} [G_0(\tau) \nabla_\theta \log p(\tau | \theta)]$$
+                $$ = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} [G_0(\tau) \sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta(a_t|s_t)]$$
+
+                <h3 id="stochastic-gradient">6.3. Stochastic Gradient and Variance Reduction</h3>
+                <p>So $g(\tau)$ with $\tau \sim (p_0, \pi_\theta, p)$ is an unbiased estimator of $\nabla\mathcal{J}(\theta)$.<br>However, current $g(\tau)$ has large variance, so we must reduce it.</p>
+                <p><strong>Enhancement #1: Removing past rewards</strong><br>We can reduce the variance by removing past rewards until time $t-1$:</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} G_t(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p><strong>Justification:</strong><br>Let $X_t = G_t(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t)$. Then</p>
+                $$\mathbb{E} \left[ \sum_{t=0}^{T-1} G_0(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t) \right] = \mathbb{E} \left[ \sum_{t=0}^{T-1} ( \sum_{k=0}^{t-1} \gamma^k r_k + \gamma^t G_t(\tau) ) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                $$ = \mathbb{E} \left[ \sum_{t=0}^{T-1} \gamma^t G_t(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t) \right] + \mathbb{E} \left[ \sum_{t=0}^{T-1} \sum_{k=0}^{t-1} \gamma^k r_k \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>Here, $\nabla_\theta$ here examines how the probabilities for $a_t$ should change. However, a change of $a_t$ does not affect the past rewards $r_1, \ldots, r_{t-1}$. Past rewards only contribute to unnecessary variance.<br>By the tower property, $\mathbb{E} \left[ \sum_{k=0}^{t-1} \gamma^k r_k \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t \right]$ has expectation 0 (with respect to $a_t$), so</p>
+                $$\mathbb{E} \left[ \sum_{t=0}^{T-1} \sum_{k=0}^{t-1} \gamma^k r_k \nabla_\theta \log \pi_\theta(a_t|s_t) \right] = 0$$
+                <p>Let us further reduce the variance.<br>$\square$</p>
+
+                <h3 id="state-dependent-baseline">6.4. Enhancement #2: State-Dependent Baseline</h3>
+                <p>Let $b : \mathcal{S} \to \mathbb{R}$ be a state-dependent baseline.<br>Then,</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (G_t(\tau) - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>is an unbiased estimator of $\nabla\mathcal{J}(\theta)$.</p>
+                <p><strong>Why unbiased?</strong><br>Let $X_t = (G_t(\tau) - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t)$. Then</p>
+                $$\mathbb{E}[X_t | s_t] = \mathbb{E}[G_t(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t] - \mathbb{E}[b(s_t) \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t]$$
+                <p>By the tower property, the following is a sum of zero-mean random variables</p>
+                $$\mathbb{E}[b(s_t) \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t] = b(s_t) \sum_{a_t} \pi_\theta(a_t|s_t) \frac{\nabla_\theta \pi_\theta(a_t|s_t)}{\pi_\theta(a_t|s_t)} = b(s_t) \nabla_\theta \sum_{a_t} \pi_\theta(a_t|s_t) = b(s_t) \nabla_\theta (1) = 0$$
+
+                <h3 id="q-estimates">6.5. Enhancement #3: Q-Estimates</h3>
+                <p><strong>Theorem)</strong> Let $\hat{Q}_t^{T-1}$ be a random variable such that $\mathbb{E}[\hat{Q}_t | s_t, a_t] = Q^{\pi_\theta}(s_t, a_t)$.<br>Let $b(s)$ be any (measurable) deterministic function of $s \in \mathcal{S}$. Then</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (\hat{Q}_t - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p><strong>Proof)</strong> We already established</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} G_t(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>Next,</p>
+                $$\mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (\hat{Q}_t - G_t) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                $$ = \sum_{t=0}^{T-1} \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ (\hat{Q}_t - G_t) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>follows from</p>
+                $$\mathbb{E}[(\hat{Q}_t - G_t) \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t] = \mathbb{E}[\hat{Q}_t \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t] - \mathbb{E}[G_t \nabla_\theta \log \pi_\theta(a_t|s_t) | s_t]$$
+                $$ = \sum_{a_t} \pi_\theta(a_t|s_t) \frac{\nabla_\theta \pi_\theta(a_t|s_t)}{\pi_\theta(a_t|s_t)} \mathbb{E}[\hat{Q}_t | s_t, a_t] - \sum_{a_t} \pi_\theta(a_t|s_t) \frac{\nabla_\theta \pi_\theta(a_t|s_t)}{\pi_\theta(a_t|s_t)} \mathbb{E}[G_t | s_t, a_t]$$
+                $$ = \sum_{a_t} \nabla_\theta \pi_\theta(a_t|s_t) Q^{\pi_\theta}(s_t, a_t) - \sum_{a_t} \nabla_\theta \pi_\theta(a_t|s_t) Q^{\pi_\theta}(s_t, a_t) = 0$$
+                <p>$\square$</p>
+                <p>With the choice $\hat{Q}_t = Q^{\pi_\theta}$ and $b = V_\phi$</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (Q^{\pi_\theta}(s_t, a_t) - V_\phi(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>is an unbiased estimator of $\nabla\mathcal{J}(\theta)$ by the policy gradient theorem. Here, $\tau \sim (p_0, \pi_\theta, p)$ and $V_\phi$ is a neural network approximating $V^{\pi_\theta}$.<br>(This is an unbiased estimate regardless of the accuracy of $V_\phi \approx V^{\pi_\theta}$. However, we must use the exact $Q^{\pi_\theta}$ to have exact unbiasedness.)<br>This choice $\hat{Q}_t = Q^{\pi_\theta}$ and $b = V_\phi$ leads to small (but not optimally small) variance. Why?</p>
+
+                <h3 id="min-variance-estimator">6.6. Minimum-Variance Conditional Estimator</h3>
+                <p><strong>Rao–Blackwell Theorem</strong><br><strong>Theorem)</strong> Let $X$ and $Y$ be random variables. Let $\hat{I}_1(X, Y)$ be an unbiased estimator of $I$, i.e., $\mathbb{E}[\hat{I}_1(X, Y)] = I$.<br>Let $\hat{I}_2(Y) = \mathbb{E}[\hat{I}_1(X, Y) | Y]$. Then $\hat{I}_2(Y)$ is also an unbiased estimator of $I$ and $\text{Var}(\hat{I}_2(Y)) \le \text{Var}(\hat{I}_1(X, Y))$.<br>$\hat{I}_2(Y)$ is called a Rao–Blackwellized estimator of $\hat{I}_1(X, Y)$.</p>
+                <p>This motivates $\hat{Q}_t = Q^{\pi_\theta}$ with $Y = (s_t, a_t)$ and $X = (r_{t+1}, s_{t+1}, a_{t+1}, \ldots)$, i.e., $Q^{\pi_\theta}(s_t, a_t)$ is a good choice as it has all variance beyond $(s_t, a_t)$ removed through conditional expectation and therefore has low variance.</p>
+                <p><strong>Proof)</strong> Unbiasedness of $\hat{I}_2$ follows from the tower property of expectation.<br>Variance bound follows from Jensen’s inequality:</p>
+                $$\text{Var}(\hat{I}_1) = \mathbb{E}[\text{Var}(\hat{I}_1 | Y)] + \text{Var}(\mathbb{E}[\hat{I}_1 | Y]) = \mathbb{E}[\text{Var}(\hat{I}_1 | Y)] + \text{Var}(\hat{I}_2) \ge \text{Var}(\hat{I}_2)$$
+                <p>$\square$</p>
+                <p><strong>Minimum-variance conditional estimator lemma</strong><br><strong>Lemma)</strong> Let $s$ and $a$ be random variables. Let $w(s, a)$, $Q(s, a)$, and $b(s)$ be functions. Then</p>
+                $$\mathbb{E}_{s,a} [w(s, a) (Q(s, a) - b(s))^2] \ge \mathbb{E}_{s,a} [w(s, a) (Q(s, a) - b^\star(s))^2]$$
+                <p>with</p>
+                $$b^\star(s) = \frac{\mathbb{E}_a [w(s, a) Q(s, a) | s]}{\mathbb{E}_a [w(s, a) | s]}$$
+                <p>(When $w(s, a) = 1$, this lemma reduces to a standard result in Bayesian statistics: Conditional mean is the minimum mean squared error estimator. In fact, if $\rho(s, a)$ is a probability density function of $s, a$, then $b^\star(s)$ is the conditional mean of $Q(s, a)$ with respect to the probability distribution proportional to $w^2\rho$.)</p>
+                <p><strong>Proof)</strong></p>
+                $$\mathbb{E}_{s,a} [w(s, a) (Q(s, a) - b(s))^2] = \mathbb{E}_s \left[ \mathbb{E}_a [w(s, a) (Q(s, a) - b(s))^2 | s] \right]$$
+                $$\mathbb{E}_a [w(s, a) (Q(s, a) - b(s))^2 | s] = \mathbb{E}_a [w(s, a) Q(s, a)^2 - 2w(s, a) Q(s, a) b(s) + w(s, a) b(s)^2 | s]$$
+                $$ = \mathbb{E}_a [w(s, a) Q(s, a)^2 | s] - 2b(s) \mathbb{E}_a [w(s, a) Q(s, a) | s] + b(s)^2 \mathbb{E}_a [w(s, a) | s]$$
+                <p>This is a quadratic in $b(s)$, minimized when $b(s) = b^\star(s)$, with equality attained at $b(s) = b^\star(s)$. The step follows from the definition of $b^\star(s)$:</p>
+                $$ \frac{d}{db(s)} \left( -2b(s) \mathbb{E}_a [w(s, a) Q(s, a) | s] + b(s)^2 \mathbb{E}_a [w(s, a) | s] \right) = 0$$
+                $$ -2 \mathbb{E}_a [w(s, a) Q(s, a) | s] + 2b(s) \mathbb{E}_a [w(s, a) | s] = 0$$
+                $$ b(s) = \frac{\mathbb{E}_a [w(s, a) Q(s, a) | s]}{\mathbb{E}_a [w(s, a) | s]} $$
+                <p>$\square$</p>
+                <p>The minimum-variance conditional estimator lemma suggests the choice</p>
+                $$b^\star(s_t) = \frac{\mathbb{E}_{a_t \sim \pi_\theta(\cdot|s_t)} [Q^{\pi_\theta}(s_t, a_t)]}{\mathbb{E}_{a_t \sim \pi_\theta(\cdot|s_t)} [1]} = \mathbb{E}_{a_t \sim \pi_\theta(\cdot|s_t)} [Q^{\pi_\theta}(s_t, a_t)] = V^{\pi_\theta}(s_t)$$
+                <p>However, this choice is cumbersome as it is an entirely new quantity not used later in the estimation of $V^{\pi_\theta}$. Therefore, use the simplified surrogate</p>
+                $$b(s_t) = V_\phi(s_t)$$
+                <p>The choice $b = V_\phi \approx V^{\pi_\theta}$ is not optimal, but it is a reasonable proxy of the optimal choice.</p>
+
+                <h3 id="advantage-estimation">6.7. Interpretation via Advantage Estimation</h3>
+                <p>So, we have</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (Q^{\pi_\theta}(s_t, a_t) - V_\phi(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>$A^{\pi_\theta}(s_t, a_t) = Q^{\pi_\theta}(s_t, a_t) - V^{\pi_\theta}(s_t)$ is called the <strong>advantage</strong> of $a_t$ at $s_t$.</p>
+                <ul>
+                    <li>If $A^{\pi_\theta}(s_t, a_t) > 0$, then $a_t$ is a good action, better than the average action of $\pi_\theta$.</li>
+                    <li>If $A^{\pi_\theta}(s_t, a_t) < 0$, then $a_t$ is a bad action, worse than the average action of $\pi_\theta$.</li>
+                </ul>
+                <p>This gradient estimate uses $Q^{\pi_\theta}(s_t, a_t) - V_\phi(s_t)$, an approximation of the advantage.</p>
+                <ul>
+                    <li>If $a_t$ is good, $\nabla_\theta$ points in a direction to make $a_t$ more likely.</li>
+                    <li>If $a_t$ is bad, $\nabla_\theta$ points in a direction to make $a_t$ less likely.</li>
+                </ul>
+                <p><strong>Aside:</strong> For an optimal policy $\pi^\star$,</p>
+                $$A^{\pi^\star}(s_t, a_t) = Q^{\pi^\star}(s_t, a_t) - V^{\pi^\star}(s_t) \le 0$$
+                <p><strong>Proof)</strong> Hw assignment. $\square$</p>
+                <p>Without the baseline, the sign of $Q^{\pi_\theta}(s_t, a_t)$ is not directly correlated with whether $a_t$ is good or bad. (In fact, many MDPs only have positive rewards and thus have $Q^{\pi_\theta}(s_t, a_t) \ge 0$.) Rather, $\nabla_\theta$ will adjust the probability of $a_t$, and $a_t$ becomes more likely by being pushed up harder than the other actions due to the normalization of $\pi_\theta(\cdot|s_t)$.<br>With the baseline, $a_t$ should be push up only when $a_t$ is good.</p>
+
+                <h3 id="actor-critic">6.8. Interpretation as an Actor-Critic Method</h3>
+                <p>Loosely speaking <strong>actor-critic methods</strong> have an “actor” (i.e., policy $\pi_\theta$) and a separate “critic” that evaluates the actor’s action.<br>In policy gradient methods, the learned state-value function $V_\phi$ serves as the critic.</p>
+
+                <h3 id="approximating-q-k-step-td">6.9. Approximating Q-Values and k-step TD</h3>
+                <p><strong>Replacing $Q^{\pi_\theta}$ with $Q_\phi$?</strong><br>Should we replace $Q^{\pi_\theta}$ with $Q_\phi \approx Q^{\pi_\theta}$?<br>Then $g$ is a biased estimator of $\nabla_\theta\mathcal{L}(\theta)$. This is possible, but a few problems:</p>
+                <ul>
+                    <li>We must learn both $Q_\phi$ and $V_\phi$.</li>
+                    <li>Replacing $G_t$ with $Q_\phi(s_t, a_t)$ will reduce the variance, but the bias will initially be large since $Q_\phi \not\approx Q^{\pi_\theta}$ initially.</li>
+                </ul>
+                <p><strong>Enhancement #4: k-step TD</strong><br>Use k-step TD</p>
+                $$\hat{Q}_t^{(k)} = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k V_\phi(s_{t+k})$$
+                <p>So with $\hat{Q}_t^{(k)}$</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (\hat{Q}_t^{(k)} - V_\phi(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>is an unbiased estimator of $\nabla\mathcal{J}(\theta)$, but is not implementable without $V_\phi$.<br>is a biased estimator of $\nabla\mathcal{J}(\theta)$.</p>
+                <p>Now, we only need to learn $V_\phi \approx V^{\pi_\theta}$. No need to separately learn $Q_\phi$.<br>Even when $V_\phi$ is initially wrong, then</p>
+                $$\hat{Q}_t = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k V_\phi(s_{t+k})$$
+                <p>is still reasonably informative since the rewards $r_t, \ldots, r_{t+k-1}$ provide informative unbiased information of the quality of the action $a_t$, even if $V_\phi(s_{t+k})$ has large bias and is completely non-informative. (Especially so when $\gamma < 1$.)</p>
+
+                <h3 id="pg-algo-1">6.10. Policy Gradient Algorithm #1</h3>
+                <ol>
+                    <li>Initialize $\theta$ and $\phi$.</li>
+                    <li>For $k=0, 1, \ldots$:
+                        <ol type="a">
+                            <li>Sample a trajectory $\tau = (s_0, a_0, r_0, s_1, \ldots, s_T)$ using $\pi_\theta$.</li>
+                            <li>For $t=0, \ldots, T-1$:
+                                <ol type="i">
+                                    <li>Compute $\hat{Q}_t^{(k)} = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k V_\phi(s_{t+k})$.</li>
+                                    <li>Update $\theta \leftarrow \theta + \alpha_\theta (\hat{Q}_t^{(k)} - V_\phi(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t)$.</li>
+                                    <li>Update $\phi \leftarrow \phi - \alpha_\phi (\hat{Q}_t^{(k)} - V_\phi(s_t)) \nabla_\phi V_\phi(s_t)$.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+
+                <h3 id="stop-gradient-g-theta">6.11. Stop-gradient Operator for $g_\theta$</h3>
+                <p>For ease of practical implementation, use the stop-gradient operator for $g_\theta$:</p>
+                $$g_\theta = (\overline{\hat{Q}_t^{(k)}} - \overline{V_\phi(s_t)}) \nabla_\theta \log \pi_\theta(a_t|s_t)$$
+                <p>Note that sampling of $r_0, \ldots, r_{T-1}$ and $s_1, \ldots, s_T$ does depend on $\pi_\theta$. Therefore, it is dubious to claim $\partial\hat{Q}/\partial\theta = 0$ and $\partial V_\phi(s_t)/\partial\theta = 0$. It is best to avoid these derivatives by through the stop-gradient operator.</p>
+
+                <h3 id="gamma-trick">6.12. The $\tilde{\gamma}$-trick</h3>
+                <p>When $\gamma = 1$,</p>
+                $$\sum_{t=0}^{T-1} G_t(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t) = \sum_{t=0}^{T-1} (G_T(\tau) - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t)$$
+                <p>where $G_T(\tau)$ is the total undiscounted return from the trajectory.<br>Let $\tilde{\gamma} < 1$ but $\tilde{\gamma} \approx 1$. Let $\hat{Q}_t^{\tilde{\gamma}}$ be a random variable such that</p>
+                $$\hat{Q}_t^{\tilde{\gamma}} = r_t + \tilde{\gamma} r_{t+1} + \cdots + \tilde{\gamma}^{T-t-1} r_{T-1}$$
+                <p>Then</p>
+                $$\nabla_\theta \mathcal{J}(\theta) \approx \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} (\hat{Q}_t^{\tilde{\gamma}} - V_\phi(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>Introducing the artificial discount factor $\tilde{\gamma}$ (not part of the MDP) introduces bias in the gradient estimates but can reduce the variance.<br>Most deep RL setups consider the undiscounted problem (so $\gamma = 1$) but introduces the artificial discount factor (so $\tilde{\gamma} < 1$).<br>For notational simplicity, we will not distinguish $\gamma$, the discount factor of the MDP, from $\tilde{\gamma}$, the artificial discount factor, and write $\gamma = \tilde{\gamma}$.</p>
+
+                <h3 id="pg-algo-2">6.13. Policy Gradient Algorithm #2</h3>
+                <ol>
+                    <li>Initialize $\theta$ and $\phi$.</li>
+                    <li>For $k=0, 1, \ldots$:
+                        <ol type="a">
+                            <li>Sample a trajectory $\tau = (s_0, a_0, r_0, s_1, \ldots, s_T)$ using $\pi_\theta$.</li>
+                            <li>For $t=0, \ldots, T-1$:
+                                <ol type="i">
+                                    <li>Compute $\hat{Q}_t^{(k)} = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k V_\phi(s_{t+k})$.</li>
+                                    <li>Update $\theta \leftarrow \theta + \alpha_\theta (\overline{\hat{Q}_t^{(k)}} - \overline{V_\phi(s_t)}) \nabla_\theta \log \pi_\theta(a_t|s_t)$.</li>
+                                    <li>Update $\phi \leftarrow \phi - \alpha_\phi (\overline{\hat{Q}_t^{(k)}} - V_\phi(s_t)) \nabla_\phi V_\phi(s_t)$.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+                <p>(no $\gamma$ factor here)</p>
+
+                <h3 id="sgd-non-uniform">6.14. SGD with Non-Uniform Selection Rules</h3>
+                <p>Let</p>
+                $$g_i = \sum_{t=0}^{T_i-1} (G_t^{(i)} - V_\phi(s_t^{(i)})) \nabla_\phi V_\phi(s_t^{(i)})$$
+                <p>where $N$ is fixed (non-random). If $i_k \sim \text{Uniform}(1, \ldots, N)$, then $g_{i_k}$ is a stochastic gradient (up to a factor of $1/N$) and</p>
+                $$\phi_{k+1} = \phi_k - \alpha_k g_{i_k}$$
+                <p>is an instance of SGD with unbiased stochastic gradients.<br>However, cyclic SGD</p>
+                $$\theta_{k+1} = \theta_k - \alpha_k g_{\text{mod}(k,N)+1}$$
+                <p>which gradient selection $g_1, \ldots, g_N, g_1, \ldots, g_N, \ldots$ is not an instance SGD with unbiased stochastic gradients. Nevertheless, cyclic SGD is commonly used in practice.</p>
+                <p>In the context of MDPs, we have $\tau \sim (p_0, \pi_\theta, p)$ with a random $T$. Then</p>
+                $$\theta_{k+1} = \theta_k - \alpha_k (G_0(\tau) - b(s_0)) \nabla_\theta \log \pi_\theta(a_0|s_0)$$
+                <p>is an instance of SGD with unbiased stochastic gradients, but it is an inefficient algorithm as only one of $g_0, \ldots, g_{T-1}$ is used in the update.</p>
+                <p>We can use all of $g_1, \ldots, g_T$ in the update:</p>
+                $$\theta_{k+1} = \theta_k - \alpha_k \sum_{t=0}^{T-1} (G_t(\tau) - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t)$$
+                <p>This is an instance of SGD with unbiased stochastic gradients, but it is inefficient as it updates infrequently. (In supervised learning, full-batch GD is less efficient than SGD.)</p>
+                <p>Finally,</p>
+                $$\theta_{k+1} = \theta_k - \alpha_k (G_t(\tau) - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t)$$
+                <p>is not an instance of SGD, but it updates the policy frequently and therefore is efficient despite using biased gradients.</p>
+
+                <h3 id="a2c">6.15. Advantage Actor-Critic (A2C)</h3>
+                <p align="center">
+                    <img src="https://placehold.co/600x400/e0e0e0/333333?text=A2C+Diagram" alt="A2C Diagram">
+                </p>
+                <p>Mnih et al. published the asynchronous advantage actor-critic (A3C) method. A2C is a version of A3C without the multiple CPU cores performing gradient updates asynchronously.</p>
+                <p>Action space $\mathcal{A}$ may be discrete or continuous. Further details through examples.</p>
+                <p><em>Reference: V. Mnih, A. P. Badia, M. Mirza, A. Graves, T. Lillicrap, T. Harley, D. Silver, K. Kavukcuoglu, Asynchronous methods for deep reinforcement learning, ICML, 2016.</em></p>
+
+                <h3 id="atari-a2c">6.16. A2C in Atari 2600</h3>
+                <p align="center">
+                    <img src="https://placehold.co/400x300/e0e0e0/333333?text=Atari+2600" alt="Atari 2600">
+                </p>
+                <p>Atari 2600 is a video game console released in 1977.<br>Bellemare et al. created an emulator environment to train and evaluate RL models on 55 different Atari games.<br>(Technically, using these Atari games for RL research is against copyright law as US Code Title 17, Chapter 3, Sec. 302, stipulates that the copyright of these games apply 70 years after the author's death.)</p>
+                <p><em>Reference: M. G. Bellemare, Y. Naddaf, J. Veness, and M. Bowling. The arcade learning environment: An evaluation platform for general agents. Journal of Artificial Intelligence Research, 2013.</em></p>
+                <p><strong>Atari 2600 action space</strong><br>18 possible actions:<br>$\uparrow, \leftarrow, \cdot, \rightarrow, \downarrow, \text{no press, button press}$<br>(Not all games use all 18 actions.)<br>60 frames per second, so up to 60 actions per second.<br>Standard trick: Agent repeats the same action for 4 frames, i.e., 15 actions per second.</p>
+                <p><strong>Atari 2600 preprocessing</strong><br>Remove flickering (artifact caused by the limited number of sprites Atari 2600 can display at once), make black and white, and down-scale the image resolution.<br>Stack 4 most recent frames. This allows the information to contain current velocity.<br>Note that Atari games are actually partially observable Markov decision processes (POMDP) and the game screen does not fully capture the game state. Moreover, the screen preprocessing means the agent (policy) receives only partial information.<br>These issues are not addressed (ignored) in the initial A3C or DQN papers.</p>
+
+                <h3 id="a2c-architecture">6.17. A2C Architecture</h3>
+                <p>Architecture of Mnih et al.:</p>
+                <ul>
+                    <li>Frames preprocessed into: 4x84x84</li>
+                    <li>16 channel, 8x8 conv, stride 4, ReLU: 16x20x20</li>
+                    <li>23 channel, 4x4 conv, stride 2, ReLU: 23x9x9</li>
+                    <li>FC 256, ReLU</li>
+                    <li>FC $\mathcal{A}$, softmax</li>
+                    <li>$\mathcal{A}$ is the set of valid actions. Between 4 and 18 for the games.</li>
+                    <li>Softmax makes the output probabilities over actions.</li>
+                </ul>
+                <p>In finite-action-space deep RL, deep NN usually has an output for each $a \in \mathcal{A}$ (as opposed to action $a \in \mathcal{A}$ being an input to the NN).</p>
+                <p><em>Reference: V. Mnih, A. P. Badia, M. Mirza, A. Graves, T. Lillicrap, T. Harley, D. Silver, K. Kavukcuoglu, Asynchronous methods for deep reinforcement learning, ICML, 2016.</em></p>
+
+                <h3 id="a2c-discrete">6.18. A2C for Discrete Action Spaces</h3>
+                <p>Form a neural network $f_\theta : \mathcal{S} \to \Delta_{\mathcal{A}}$, where<br>$\Delta_d = \{ p \in \mathbb{R}^d | p_1, \ldots, p_d \ge 0, p_1 + \cdots + p_d = 1 \}$<br>is the probability simplex of dimension $d$. For notational simplicify, assume actions $a_1, \ldots, a_{\mathcal{A}} \in \mathcal{A}$ are all integers. There are 2 steps in A2C to clarify.</p>
+                <p><strong>Step 1:</strong> Evaluate $f_\theta(s_t)$ and sample $a_j$ with probability $f_\theta(s_t)_j$ for $j = 1, \ldots, \mathcal{A}$.<br><strong>Step 2:</strong> Backprop on $\log f_\theta(s_t)_{a_t}$.</p>
+
+                <h3 id="a2c-continuous">6.19. A2C for Continuous Action Spaces (MuJoCo)</h3>
+                <p>MuJoCo (Multi-Joint dynamics with Contact) is a general purpose physics engine that simulates articulated structures.</p>
+                <ul>
+                    <li>State is the generalized coordinates and velocity of the joints.</li>
+                    <li>Action represents forces exerted on the joints and is continuous.</li>
+                    <li>In robotics applications, it is common for an action to correspond to a controller, and the controller has maximum and minimum inputs bounds.</li>
+                </ul>
+                <p><em>Reference: E. Todorov, T. Erez, and Y. Tassa, MuJoCo: A physics engine for model-based control, IROS, 2012.</em></p>
+                <p>A2C applies to the setup with continuous actions. There are 2 steps in A2C to clarify.<br>As a concrete instance, let $\mathcal{A} \subseteq [-1, +1]$ be a continuous action space. Form a neural network $f_\theta : \mathcal{S} \to \mathbb{R}^2$ and write<br>$f_\theta(s) = (\mu_\theta(s), \tau_\theta(s))$</p>
+                <p><strong>Step 1:</strong> Sample $a_t = \tanh(z_t)$ with $z_t \sim \mathcal{N}(\mu_\theta(s_t), \text{variance} = e^{2\tau_\theta(s_t)})$.<br><strong>Step 2:</strong> Backpropagate on</p>
+                $$\log \pi_\theta(a_t|s_t) = -\tau_\theta(s) - \frac{(\tanh^{-1}(a_t) - \mu_\theta(s_t))^2}{2e^{2\tau_\theta(s)}} + C$$
+                <p>(Derivation in Hw. Follows from change of variable formula for probability density functions.)</p>
+
+                <h3 id="mujoco-architecture">6.20. MuJoCo Architecture</h3>
+                <p>For a MuJoCo environment, $\mathcal{S} \subseteq \mathbb{R}^m$ with $m$ ranging from 4 to 100 and $\mathcal{A} \subseteq \mathbb{R}^n$ with $n$ being in a similar range.<br>The neural network<br>$f_\theta : \mathcal{S} \to \mathbb{R}^{2d}$<br>can be a simple ReLU MLP with $\sim 4$ layers.</p>
+
+                <h3 id="sample-efficiency">6.21. Sample Efficiency</h3>
+                <p>In ML, sample efficiency refers to the method’s ability to learn with fewer data points.<br>For RL in simulated environments (e.g. Atari 2600) sample efficiency is not a concern and only compute efficiency matters.<br>In many RL setups, however, samples (full trajectories or $(s_t, a_t)$ pairs) are obtained by interacting with the environment, and this can be expensive. In such cases, we prefer methods with good sample efficiency.<br>E.g. having a physical robot take certain actions.<br>E.g. an LLM writing a completion and having a human provide feedback on whether the completion is good.</p>
+
+                <h3 id="surrogate-objectives">6.22. Surrogate Objectives and Trust Regions</h3>
+                <p><strong>Can we learn more from an episode?</strong><br>A2C uses an episode $\tau$ to perform $T$ SGD updates. Can we learn more from $\tau$?<br>Can we be more sample efficient?<br>We do so via the surrogate objective.<br>Let $\theta$ and $\theta_0$ be the policy parameters. Consider $\mathcal{J}(\theta)$ relative to $\mathcal{J}(\theta_0)$:</p>
+                $$\mathcal{J}(\theta) - \mathcal{J}(\theta_0) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} [G_0(\tau)] - \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} [G_0(\tau)]$$
+                $$ = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} \left[ \frac{p(\tau|\theta)}{p(\tau|\theta_0)} G_0(\tau) \right] - \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} [G_0(\tau)]$$
+                $$ = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} \left[ \left( \prod_{t=0}^{T-1} \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_0}(a_t|s_t)} - 1 \right) G_0(\tau) \right]$$
+                <p><strong>Surrogate objective derivation</strong><br>Then,</p>
+                $$\mathcal{J}(\theta) - \mathcal{J}(\theta_0) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} \left[ \sum_{t=0}^{T-1} \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_0}(a_t|s_t)} A^{\pi_{\theta_0}}(s_t, a_t) \right]$$
+                <p>So,</p>
+                $$\mathcal{J}(\theta) - \mathcal{J}(\theta_0) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} \left[ \sum_{t=0}^{T-1} \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_0}(a_t|s_t)} A^{\pi_{\theta_0}}(s_t, a_t) \right]$$
+                <p>Let</p>
+                $$\mathcal{K}(\theta; \theta_0) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} \left[ \sum_{t=0}^{T-1} \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_0}(a_t|s_t)} A^{\pi_{\theta_0}}(s_t, a_t) \right]$$
+                <p>Then, for $\theta \approx \theta_0$.<br>$\mathcal{J}(\theta) \approx \mathcal{K}(\theta; \theta_0) + C$. Here, $C$ represents constants independent of $\theta$.<br>In fact, $\nabla_\theta \mathcal{J}(\theta_0) = \nabla_\theta \mathcal{K}(\theta_0; \theta_0)$, although $\mathcal{J}(\theta) \ne \mathcal{K}(\theta; \theta_0)$.</p>
+                <p><strong>Surrogate is accurate up to 1st order</strong><br>Our prior analysis for the policy gradient methods gave us</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} A^{\pi_\theta}(s_t, a_t) \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>Differentiating under the expectation gives us</p>
+                $$\nabla_\theta \mathcal{K}(\theta; \theta_0) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_0}, p)} \left[ \sum_{t=0}^{T-1} \frac{\nabla_\theta \pi_\theta(a_t|s_t)}{\pi_{\theta_0}(a_t|s_t)} A^{\pi_{\theta_0}}(s_t, a_t) \right]$$
+                <p>Therefore, $\nabla_\theta \mathcal{J}(\theta_0) = \nabla_\theta \mathcal{K}(\theta_0; \theta_0)$.</p>
+                <p>For $\theta \approx \theta_0$, if we sample IID trajectories $\tau^{(1)}, \ldots, \tau^N \sim (p_0, \pi_{\theta_0}, p)$, then</p>
+                $$\mathcal{J}(\theta) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T_i-1} \frac{\pi_\theta(a_t^{(i)}|s_t^{(i)})}{\pi_{\theta_0}(a_t^{(i)}|s_t^{(i)})} \hat{A}_t^{(i)}$$
+                <p>where $\hat{A}_t \approx A^{\pi_{\theta_0}}(s_t, a_t)$ is an advantage estimate. The approximation $(*)$ is accurate when $N$ is large and when $\pi_\theta \approx \pi_{\theta_0}$. (In general, importance sampling estimators become inaccurate when the sampling distribution $\pi_{\theta_0}$ is too far from the nominal distribution $\pi_\theta$.)</p>
+                <p>We therefore maximize the surrogate objective subject to a certain trust-region constraint:</p>
+                $$\max_\theta \mathcal{K}(\theta; \theta_0) \quad \text{s.t.} \quad D_{\text{KL}}(\pi_{\theta_0} || \pi_\theta) \le \delta$$
+                <p>(The trust-region constraint is needed for 2 reasons: $\mathcal{K}(\theta; \theta_0) \approx \mathcal{J}(\theta)$ and $(*)$.)</p>
+
+                <h3 id="trpo">6.23. Trust-Region Policy Optimization (TRPO)</h3>
+                <p>Trust-region policy optimization (TRPO) solves a sequence of trust-region optimization problems to improve the policy.<br>The trust region is defined by the KL-divergence of the policies.<br>Note that $\hat{A}_t = \hat{Q}_t - V_\phi(s_t)$ depends on $\theta_{\text{curr}}$ through $\hat{Q}_t$ and $\phi$ through $V_\phi$. (We discuss the choice of $\hat{A}_t$ soon.)<br>The “solve” involves performing an approximate Newton method (which resembles a natural gradient method) with $H^{-1}g$ solved via a conjugate gradient (CG) solver. (We skip the details.)</p>
+                <p><em>Reference: J. Schulman, S. Levine, P. Moritz, M. I. Jordan, and P. Abbeel, Trust region policy optimization, ICML, 2015.</em></p>
+
+                <h3 id="ppo">6.24. Proximal Policy Optimization (PPO)</h3>
+                <p>Implementing TRPO hard work due to the trust-region formulation. Also, it is unclear whether the 2nd-order optimization of TRPO is efficient, since most deep learning formulations are optimized via 1st-order optimization algorithms (SGD).<br>Proximal policy optimization (PPO) returns to a 1st-order formulation while keeping the trust-region idea.<br>The PPO paper presents “PPO-Penalty” and “PPO-Clip”. We will talk about the simpler PPO-Clip.<br>(PPO-Penalty uses a penalty, rather than a constrained, version of TRPO with the KL-divergence added to the objective as a regularizer.)</p>
+                <p><em>Reference: J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, Proximal policy optimization algorithms, arXiv, 2017.</em></p>
+                <p><strong>Clipped surrogate objective</strong><br>The clipped surrogate objective in PPO is</p>
+                $$\mathcal{L}^{\text{CLIP}}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_k}, p)} \left[ \sum_{t=0}^{T-1} \min \left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} \hat{A}_t, \text{clip}\left(\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}, 1-\epsilon, 1+\epsilon\right) \hat{A}_t \right) \right]$$
+                <p>Interpretation: We increase/maximize only by a small factor. This removes the incentive to move $\theta$ far away from $\theta_k$.<br>The loss is equivalent to</p>
+                $$\mathcal{L}^{\text{CLIP}}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_k}, p)} \left[ \sum_{t=0}^{T-1} \left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} \hat{A}_t - \max\left(0, \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} \hat{A}_t - (1+\epsilon)\hat{A}_t \right) - \max\left(0, (1-\epsilon)\hat{A}_t - \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} \hat{A}_t \right) \right) \right]$$
+                <p><strong>Use the clipped loss</strong><br>The optimization subproblem is</p>
+                $$\max_\theta \mathcal{L}^{\text{CLIP}}(\theta)$$
+                <p>solved with first-order methods like SGD or Adam with early stopping.<br>The trust-region constraint is implicitly enforced by the clipping (no motivation to improve too much) and by performing few SGD iterations.<br>(We discuss the choice of $\hat{A}_t$ soon.)</p>
+                <p><strong>PPO: Discussion</strong><br>In Schulman et al., $\epsilon = 0.2$ is used.<br>In the maximization objective, $\mathcal{L}^{\text{CLIP}}$ is viewed as loss formed with $NT$ data points, where $T$ is the average of $T_i$. The maximization performs $\approx 10$ epochs over the $NT$ data points.<br>Strictly speaking, TRPO and PPO are not policy gradient methods, but they can be viewed as variants/enhancements of deep policy gradient methods.</p>
+                <p><em>Reference: J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, Proximal policy optimization algorithms, arXiv, 2017.</em></p>
+
+                <h3 id="bias-variance-tradeoff">6.25. Bias-Variance Tradeoff</h3>
+                <p><strong>Bias-variance tradeoff of $\hat{A}_t$</strong><br>Assume, for the sake of argument, we have access to $V^{\pi_{\text{curr}}}$. You will show in hw that</p>
+                $$G_t, \quad r_t + \gamma V^{\pi_{\text{curr}}}(s_{t+1}), \quad r_t + \gamma r_{t+1} + \gamma^2 V^{\pi_{\text{curr}}}(s_{t+2}), \quad \ldots$$
+                <p>all have the as the same mean, but the variance reduces (Rao–Blackwell) with smaller $k$.</p>
+                <p><strong>In practice, we replace $V^{\pi_{\text{curr}}}$ with $V_\phi$</strong><br>The estimators with $k < \infty$ are no longer unbiased.</p>
+                <p>Although there is no precise analysis, we still expect the variance to reduce with smaller $k$.<br>We now have a bias-variance tradeoff with $k$:</p>
+                <ul>
+                    <li>Small $k$: Large bias but small variance.</li>
+                    <li>Large $k$: Small bias but large variance.</li>
+                </ul>
+                <p><strong>What about the dependency on $\gamma$?</strong> Consider using an artificial discount factor $\tilde{\gamma}$ for an undiscounted MDP:</p>
+                $$\hat{Q}_t^{\tilde{\gamma}} = r_t + \tilde{\gamma} r_{t+1} + \cdots + \tilde{\gamma}^{T-t-1} r_{T-1}$$
+                <p>In terms of expectations, $\tilde{\gamma} = 1$ is the correct choice (if $k = \infty$ and $\gamma = 1$, then unbiased) and using $\tilde{\gamma} < 1$ introduces bias. With $\tilde{\gamma} < 1$, however, the later rewards contribute less and they contribute less towards the variance.<br>We now have a bias-variance tradeoff with $\tilde{\gamma}$:</p>
+                <ul>
+                    <li>Small $\tilde{\gamma}$: Large bias but small variance.</li>
+                    <li>Large $\tilde{\gamma}$: Small bias but large variance.</li>
+                </ul>
+
+                <h3 id="gae">6.26. Generalized Advantage Estimation (GAE)</h3>
+                <p>One challenge with tuning $k$ is that it cannot be continuously tuned. (What if you want to use $k$ larger than 4 and smaller than 5?)<br>Generalized Advantage Estimation (GAE) uses an exponentially weighted average of all $\hat{A}_t^{\text{TD}(k)}$ estimators based on an approach analogous to a classical technique called TD($\lambda$).</p>
+                <p><em>Reference: J. Schulman, P. Moritz, S. Levine, M. I. Jordan, and P. Abbeel, High-dimensional continuous control using generalized advantage estimation, ICLR, 2016.</em></p>
+                <p><strong>Generalized Advantage Estimation (GAE)</strong><br>Given a $V(s)$ (meant to approximate $V^{\pi}(s)$), let</p>
+                $$\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$$
+                <p>Then, by a telescoping-sum argument, we have</p>
+                $$\sum_{l=0}^{k-1} \gamma^l \delta_{t+l} = r_t + \gamma r_{t+1} + \cdots + \gamma^{k-1} r_{t+k-1} + \gamma^k V(s_{t+k}) - V(s_t)$$
+                <p>Next, define the GAE estimator with $\lambda \in [0,1]$ as</p>
+                $$\hat{A}_t^{\text{GAE}(\gamma, \lambda)} = \sum_{l=0}^{T-t-1} (\gamma \lambda)^l \delta_{t+l}$$
+                <p>where $(*)$ is due to a geometric-sum argument. (HW)</p>
+                <p><strong>Generalized Advantage Estimation (GAE) (cont.)</strong><br>Note, if $\lambda = 0$, we recover the TD(1) estimator. If $\lambda = 1$, we recover the TD($\infty$) estimator.<br>If $V = V^{\pi}$, then GAE is an unbiased estimator. In homework, you will show that</p>
+                $$\mathbb{E}[\hat{A}_t^{\text{GAE}(\gamma, \lambda)} | s_t, a_t] = Q^{\pi}(s_t, a_t) - V(s_t)$$
+                <p>So</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_\theta, p)} \left[ \sum_{t=0}^{T-1} \hat{A}_t^{\text{GAE}(\gamma, \lambda)} \nabla_\theta \log \pi_\theta(a_t|s_t) \right]$$
+                <p>The $\lambda$ of GAE is a continuous parameter serving a similar role to the $k$ of TD.<br>When $V_\phi = V^{\pi}$, any value of $\lambda$ incurs no bias. (Unlike $\gamma$, which always causes a bias when $\gamma < 1$.) But when $V_\phi \ne V^{\pi}$, then large $\lambda$ allows the telescoping structure to reduce bias (when $\lambda = \gamma = 1$ there is no bias) while for small $\lambda$ the bias is larger.<br>We now have a bias-variance tradeoff with $\gamma$ and $\lambda$:</p>
+                <ul>
+                    <li>Small $\gamma$: Large bias but small variance.</li>
+                    <li>Large $\gamma$: Small bias but large variance.</li>
+                    <li>Small $\lambda$: Large bias but small variance.</li>
+                    <li>Large $\lambda$: Small bias but large variance.</li>
+                </ul>
+                <p>TRPO and PPO uses GAE for the advantage estimator $\hat{A}_t$.<br>A common choice of values: $\gamma = 0.995$ and $\lambda = 0.96$.</p>
+
+                <h3 id="policy-advantage-pi">6.27. Policy Advantage and Policy Iteration</h3>
+                <p>Define the policy advantage of $\pi$ over $\pi_k$ as</p>
+                $$\mathcal{A}(\pi, \pi_k) = \mathbb{E}_{s \sim \rho^{\pi_k}} \left[ \sum_a \pi(a|s) A^{\pi_k}(s, a) \right]$$
+                <p>Note that</p>
+                $$\mathcal{A}(\pi, \pi_k) = \mathbb{E}_{s \sim \rho^{\pi_k}} \left[ \sum_a \pi(a|s) Q^{\pi_k}(s, a) - V^{\pi_k}(s) \right] = \mathbb{E}_{s \sim \rho^{\pi_k}} [V^{\pi}(s) - V^{\pi_k}(s)]$$
+                <p>Interpretation: Follow a trajectory $\tau$ generated $\pi_k$, and we ask what actions $\pi$ would have chosen. $\mathcal{A}(\pi, \pi_k)$ quantifies how better, as measured by $A^{\pi_k}$, these actions are compared to the actions chosen by $\pi_k$.</p>
+                <p><strong>Theorem)</strong> A policy $\pi_k$ is optimal if and only if $\mathcal{A}(\pi, \pi_k) = 0$ for all policies $\pi$.<br><strong>Proof)</strong> XXX $\square$</p>
+                <p><strong>PI as policy advantage maximization</strong><br>We can equivalently express PI as policy advantage maximization.<br><strong>Policy iteration (PI):</strong></p>
+                $$\pi_{k+1} = \arg\max_\pi \mathcal{A}(\pi, \pi_k)$$
+                <p>(Strictly speaking, the equivalence requires that $\tau \sim (p_0, \pi_k, p)$ has positive probability to visit every state $s \in \mathcal{S}$.)<br><strong>Proof)</strong> $\max_\pi \mathcal{A}(\pi, \pi_k)$ is maximized when $\pi(s) = \arg\max_{a \in \mathcal{A}} A^{\pi_k}(s, a)$. This is exactly PI. $\square$</p>
+
+                <h3 id="approx-pi">6.28. Approximate Policy Iteration (TRPO and PPO)</h3>
+                <p><strong>Implementing PI with IS estimates</strong><br>In practice, the expectation of $\mathcal{A}(\pi, \pi_k)$ has no closed form formula, so we approximate it with importance sampling (IS) estimates. We sample $\tau^{(1)}, \ldots, \tau^N \sim (p_0, \pi_k, p)$ IID trajectories and form the estimator:</p>
+                $$\hat{\mathcal{A}}(\pi, \pi_k) = \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T_i-1} \frac{\pi(a_t^{(i)}|s_t^{(i)})}{\pi_k(a_t^{(i)}|s_t^{(i)})} \hat{A}_t^{(i)}$$
+                <p>using advantage estimators $\hat{A}_t^{(i)}$ satisfying $\mathbb{E}[\hat{A}_t^{(i)} | s_t^{(i)}, a_t^{(i)}] = A^{\pi_k}(s_t^{(i)}, a_t^{(i)})$.<br>When $N$ is large, we expect $\hat{\mathcal{A}}(\pi, \pi_k) \approx \mathcal{A}(\pi, \pi_k)$?</p>
+                <p><strong>TRPO and PPO as approximate PI</strong><br>We can interpret TRPO and PPO as an approximate policy iteration (PI). Consider the following approximate PI:</p>
+                $$\pi_{k+1} = \arg\max_\pi \mathcal{K}(\pi; \pi_k)$$
+                <p>where the argmax is computed approximately.<br>This fails because it requires $\pi_{\theta_{k+1}} \approx \pi_{\theta_k}$. In general, importance sampling estimators become inaccurate when the sampling distribution $\pi_{\theta_k}$ is not too far from the nominal distribution $\pi_{\theta_{k+1}}$. Therefore, a trust-region or proximal mechanism is needed, and this leads to TRPO as PPO.<br>(The first derivation covered earlier is the derivation from the TRPO and PPO papers. This is an alternate interpretation of the methods.)</p>
+
+                <h3 id="avoiding-baseline">6.29. Avoiding the Baseline Function</h3>
+                <p>In TRPO and PPO, we must learn two neural networks: $\pi_\theta$ and $V_\phi$.<br>Learning the baseline function (also called the critic function) $V_\phi$ is an additional layer of complexity, and it would be better if we can avoid it.<br>But let us recall why $V_\phi$ is needed: We want to assign appropriate sign of the gradient signals based on whether the action is better than what the current policy prescribes.</p>
+                <p><strong>PPO without baseline</strong><br>Consider the undiscounted MDP with no $\gamma$-trick. Assume a non-zero reward is collected only at the end of the episode. In this case, $\hat{Q}_t^{\text{TD}(\infty)} = r$ for $t = 0,1, \ldots, T-1$, where $r = r_{T-1}$ is the reward obtained at the end, as the episode terminates.<br>Then, PPO without a baseline function would be:</p>
+                $$\max_\theta \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_k}, p)} \left[ \sum_{t=0}^{T-1} \min \left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} r, \text{clip}\left(\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}, 1-\epsilon, 1+\epsilon\right) r \right) \right]$$
+                <p>Without the baseline, this will not work! Variance of the objective will be too large.</p>
+
+                <h3 id="grpo">6.30. Group Relative Policy Optimization (GRPO)</h3>
+                <p>Again consider the undiscounted MDP with no $\gamma$-trick. Assume a non-zero reward is collected only at the end of the episode.<br>Group Relative Policy Optimization (GRPO) replaces the baseline function with a BatchNorm-style normalization of the rewards.</p>
+                $$\mathcal{L}^{\text{GRPO}}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi_{\theta_k}, p)} \left[ \sum_{t=0}^{T-1} \min \left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} \hat{A}_t^{\text{GRPO}}, \text{clip}\left(\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}, 1-\epsilon, 1+\epsilon\right) \hat{A}_t^{\text{GRPO}} \right) \right]$$
+                <p>where $\hat{A}_t^{\text{GRPO}} = \frac{r_t - \text{mean}(\mathbf{r})}{\text{std}(\mathbf{r}) + \epsilon_{\text{std}}}$.</p>
+                <p><em>Reference: Z. Shao, P. Wang, Q. Zhu, R. Xu, J. Song, X. Bi, H. Zhang, M. Zhang, Y. K. Li, Y. Wu, and D. Guo, DeepSeekMath: Pushing the limits of mathematical reasoning in open language models, arXiv, Feb. 2024.</em></p>
+                <p><strong>Advantage estimate interpretation</strong><br>The advantage $A^{\pi}(s_t, a_t)$ measures how good is action $a_t$ compared to the average action selected by $\pi$.<br>The GRPO advantage estimate is not an unbiased estimate of $A^{\pi}(s_t, a_t)$.<br>Qualitatively, however, $\hat{A}_i^{\text{GRPO}}$ measures similar information: The trajectory with action $a_t^{(i)}$ yielded reward $r^{(i)}$, and how good is this compared to the other actions selected by $\pi$, which yielded rewards $\mathbf{r}$?<br>DeepSeek’s GitHub uses $\epsilon = 10^{-4}$. If $\text{std}(\mathbf{r}) = 0$, then $\hat{A}_i^{\text{GRPO}} = 0$ and no update happens.</p>
+                <p><strong>GRPO: Caveats</strong><br>GRPO should not yet be considered a general deep RL method. Its effectiveness has not been tested outside of the LLM applications.<br>GRPO is not the first modern deep RL method that forgoes a baseline or critic function.<br>It is not obvious that GRPO is the best (or a good enough) algorithm to do RL without a baseline or critic model, even restricted to LLMs. GRPO got a lot of attention due to its use in training DeepSeek-R1, but better approaches may replace GRPO in future work. Improving upon GRPO will likely be an active area of research.</p>
+                <p><em>Reference: Z. Li, T. Xu, Y. Zhang, Z. Lin, Y. Yu, R. Sun, Z.-Q. Luo, ReMax: A simple, effective, and efficient reinforcement learning method for aligning large language models, ICML, 2024.</em></p>
+                <p><strong>GRPO: More details</strong><br>Consider this coverage a quick and incomplete introduction to GRPO.<br>We will revisit GRPO when we use it for LLMs. In that context we will incorporate a KL penalty and we will normalize trajectories with their sequence lengths.<br>GRPO also has a version for MDPs with rewards at intermediate steps.</p>
+
+                <h2 id="mdp-basics-ii">7. MDP Basics II: Value Iteration</h2>
+                <p>(Missing material added retroactively)</p>
+                <h3 id="value-iteration">7.1. Value Iteration (VI)</h3>
+                <p><strong>V-value iteration:</strong></p>
+                $$V_{k+1}(s) = \max_a \sum_{r,s'} p(r,s'|s,a) [r + \gamma V_k(s')]$$
+                <p><strong>Q-value iteration:</strong></p>
+                $$Q_{k+1}(s, a) = \sum_{r,s'} p(r,s'|s,a) [r + \gamma \max_{a'} Q_k(s', a')]$$
+                <p><strong>Theorem)</strong> For $\gamma \in (0,1)$, both iterations converge with rate</p>
+                $$||V_k - V^\star||_\infty \le \gamma^k ||V_0 - V^\star||_\infty$$
+                <p>for $k = 0,1, \ldots$. (For $\gamma = 1$, convergence is not guaranteed.)<br><strong>Proof)</strong> This follows from $\gamma$-contractiveness of $\mathcal{B}^\star$. $\square$<br>VI is usually not implemented in its exact form. But VI serves as a conceptual framework for designing and understanding many practical deep RL algorithms such as DQN.</p>
+
+                <h3 id="accelerated-vi">7.2. Accelerated Value Iteration</h3>
+                <p><strong>Aside)</strong> VI is suboptimal, and it can be accelerated with anchored value iteration (AncVI):</p>
+                $$U_{k+1} = \frac{1}{1+\beta_k} U_k + \frac{\beta_k}{1+\beta_k} \mathcal{B}^\star U_k$$
+                <p>for $k = 0,1, \ldots$, where $\beta_k = \frac{1}{\sum_{i=0}^k \gamma^{-2i}}$ and $U_0$ is an initial point. $U_k = V_k$ or $U_k = Q_k$.</p>
+                <p><strong>Theorem)</strong> If $U_0 \le \mathcal{B}^\star U_0$, then AncVI exhibits the rate</p>
+                $$||U_k - U^\star||_\infty \le \frac{4}{k+1} \frac{1}{1-\gamma} ||U_0 - U^\star||_\infty$$
+                <p>for $k = 0,1, \ldots$. This rate is faster than that of VI, and it matches a complexity lower bound up to a constant factor of 4 (and thus is optimal).<br>This result suggests that methods designed as approximations of vanilla VI may be theoretically suboptimal (in the sense of worst-case guarantees).</p>
+                <p><em>Reference: J. Lee and E. K. Ryu, Accelerating value iteration with anchoring, NeurIPS, 2023.</em></p>
+
+                <h2 id="policy-iteration">8. Policy Iteration</h2>
+                <h3 id="pi-algorithm">8.1. Policy Iteration Algorithm</h3>
+                <p>Policy iteration (PI) is a classical algorithm that alternates policy evaluation and policy improvement steps.<br>Start with $\pi_0$.<br>For $k = 0,1, \ldots$:</p>
+                <ul>
+                    <li>Compute $V^{\pi_k}$ and/or $Q^{\pi_k}$ (Policy Evaluation)</li>
+                    <li>Compute $\pi_{k+1}(s) = \arg\max_a Q^{\pi_k}(s, a)$ (Policy Improvement)</li>
+                </ul>
+                <p>PI is usually not implemented in its exact form. But PI serves as a conceptual framework for designing and understanding many practical deep RL algorithms such as PPO.</p>
+
+                <h3 id="pi-theorem">8.2. Policy Improvement Theorem</h3>
+                <p><strong>Theorem)</strong> Consider the PI iteration. Assume $\gamma \in (0,1)$, $\mathcal{S} < \infty$, $\mathcal{A} < \infty$, and $r \le R < \infty$ almost surely. Then,</p>
+                $$V^{\pi_{k+1}} \ge V^{\pi_k}$$
+                <p>for $k = 0,1, \ldots$. Furthermore, there is a $K \in \mathbb{N}$ such that $V^{\pi_k} = V^\star$ and $\pi_k$ is an optimal policy for all $k \ge K$. (Policies become optimal after finitely many steps.)</p>
+                <p><strong>Proof)</strong> To be covered XXX $\square$</p>
+
+                <h2 id="undiscounted-mdps">9. Challenges with Undiscounted MDPs ($\gamma=1$)</h2>
+                <p>It is instructive to understand when undiscounted ($\gamma = 1$) MDPs lead to pathologies.</p>
+                <p><strong>Scenario 1: There is no problem.</strong> (There is an optimal policy $\pi^\star$ and $V^\star = \mathcal{B}^\star V^\star = V^{\pi^\star}$.)<br>This is the case when $\mathcal{S}$ and $\mathcal{A}$ are finite and $V^{\pi}$ is well defined and finite for all policy $\pi$.<br>E.g. If you only get a reward at the end of the episode (and never get any reward if the episode never terminates), then everything is well defined. The RL-LLM setting without KL-penalty falls under this case.</p>
+                <p><em>Reference: M. L. Puterman, Markov Decision Processes: Discrete Stochastic Dynamic Programming, 1994.</em></p>
+                <p><strong>Scenario 2: You can get $+\infty$ reward by exploiting a cycle with positive reward.</strong><br>This it not a problem with discounted MDPs; when $\gamma < 1$, even if the optimal policy exploits a positive-reward cycle, the optimal cumulative discounted return will be finite.</p>
+                <p align="center">
+                    <img src="https://placehold.co/400x200/e0e0e0/333333?text=Infinite+Mario+Loop" alt="Infinite Mario Loop">
+                </p>
+                <p>One resolution is to consider the average-reward MDP formulation, instead of the undiscounted total return MDP. An average-reward MDP maximizes $R^{\pi}$:</p>
+                $$R^{\pi} = \lim_{T \to \infty} \mathbb{E}_{\tau \sim (p_0, \pi, p)} \left[ \frac{1}{T} \sum_{t=0}^{T-1} r_t \right]$$
+                <p>Analyzing average-reward MDPs tends to be more technical than the total return MDPs, and it is an active area of research.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>M. Zurek and Y. Chen, Span-based optimal sample complexity for weakly communicating and general average reward MDPs, NeurIPS, 2024.</em></li>
+                    <li><em>J. Lee and E. K. Ryu, Optimal non-asymptotic rates of value iteration for average-reward Markov decision processes, ICLR, 2025.</em></li>
+                </ul>
+                <p><strong>Scenario 3: Total return (infinite sum) may not be well defined.</strong><br>For example, if $r_0, r_1, r_2, r_3, r_4, r_5, \ldots = +1, -1, +1, -1, +1, -1, \ldots$, then the total return is not summable.<br>A reasonable remedy would be to consider a Cesàro (Abel) sum or the liminf of the partial sums, but this is a complication we will not go into.</p>
+
+                <h2 id="why-ppo-rl-llm">10. Why PPO for RL-LLM?</h2>
+                <p>Most RL-LLM methods use PPO or variants of PPO. Why not other choices?</p>
+                <p><strong>Key properties of the RL-LLM setup:</strong></p>
+                <ul>
+                    <li>LLMs have finite action space (# of possible tokens). Action space is not continuous.</li>
+                    <li>A strong pre-trained large language model $\pi_\theta$, which serves as a suboptimal but reasonably good initial policy for the RL, is absolutely crucial. Tabula rasa RL methods (randomly initialized $\pi_\theta$) do not work.</li>
+                    <li>We expect an RL method for RL-LLM to work only if it can effectively utilize the pre-trained LLM $\pi_\theta$.</li>
+                </ul>
+                <p><strong>Why not other deep RL algorithms? (DQN, Rainbow DQN)</strong><br>DQN and Rainbow DQN are deep RL methods parameterizing $Q_\phi$ as a neural network and learning $Q_\phi \approx Q^\star$ through the Bellman optimality equation.<br>The policy $\pi_\phi$ is implicitly derived from the greedy rule $\pi_\phi(s) = \arg\max_{a \in \mathcal{A}} Q_\phi(s, a)$. There is no explicitly parameterized policy. The strength of $\pi_\phi$ hinges on the accuracy of $Q_\phi \approx Q^\star$.<br>There does not seem to be a good way for DQN to utilize a pre-trained policy.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>V. Mnih, K. Kavukcuoglu, D. Silver, A. Graves, I. Antonoglou, D. Wierstra, and M. Riedmiller, Playing Atari with deep reinforcement learning, arXiv, 2013.</em></li>
+                    <li><em>M. Hessel, J. Modayil, H. van Hasselt, T. Schaul, H. Ostrovski, W. Dabney, D. Horgan, B. Piot, M. Azar, and D. Silver, Rainbow: Combining improvements in deep reinforcement learning, AAAI, 2018.</em></li>
+                </ul>
+                <p><strong>Why not other deep RL algorithms? (DDPG, TD3, SAC)</strong><br>DDPG, TD3, and SAC are methods with dual interpretations as deterministic policy gradient methods (qualitatively quite different from the stochastic policy gradient methods) and Q-learning methods. These methods are designed for continuous action spaces, although the variant ‘SAC discrete’ applies to discrete action spaces.<br>These methods train both $\pi_\theta$ and $Q_\phi$. Different from PPO, $\pi_\theta$ is not trained directly to maximize reward. Rather $\pi_\theta$ is trained to satisfy the relation $\pi_\theta(s) \approx \arg\max_{a \in \mathcal{A}} Q_\phi(s, a)$.<br>In PPO, rewards directly influence the updates of $\pi_\theta$. In DDPG, TD3, and SAC, rewards influence $Q_\phi$ which in turns influences $\pi_\theta$. So, the updates on $\pi_\theta$ depend on the rewards only through $Q_\phi$.<br>Without a good initialization for $Q_\phi \approx Q^\star$, a pre-trained $\pi_\theta$ alone seems difficult to utilize.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>S. Fujimoto, H. van Hoof, and D. Meger, Addressing function approximation error in actor-critic methods, ICML, 2018.</em></li>
+                    <li><em>T. P. Lillicrap, J. J. Hunt, A. Pritzel, N. Heess, T. Erez, Y. Tassa, D. Silver, and D. Wierstra, Continuous control with deep reinforcement learning, ICLR, 2016.</em></li>
+                    <li><em>T. Haarnoja, A. Zhou, P. Abbeel, and S. Levine, Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor, ICML (and arXiv v2), 2018.</em></li>
+                    <li><em>P. Christodoulou, Soft actor-critic for discrete action settings, arXiv, 2019.</em></li>
+                </ul>
+
+                <h2 id="two-player-games">11. 2-Player Zero-Sum Games</h2>
+                <p>In a 2-player zero-sum game, two players compete against each other and one player’s reward is precisely the loss of the other player.</p>
+                <p>In a simultaneous move game, the 2 players make their moves simultaneously. E.g., rock paper scissors.</p>
+                <p>In a sequential (turn-based) move game, the 2 players make their moves in turns. E.g., chess and go. However, we will think of sequential move games as simultaneous move games where the two players each offer policies $\pi_1$ and $\pi_2$ at the start of the game. (In real life game competitions, a human offers their brain at the start of the game.) These policies $\pi_1$ and $\pi_2$ can strategize and adapt to the opponents’ moves. They can also make randomized decisions.</p>
+
+                <h3 id="minimax-optimization">11.1. Minimax Optimization</h3>
+                <p>In a minimax optimization problem, we minimize with respect to one variable and maximize with respect to another:</p>
+                $$\min_{\theta_1} \max_{\theta_2} R(\theta_1, \theta_2)$$
+                <p>We say $\theta_1^\star, \theta_2^\star$ is a solution to the minimax problem if it is a Nash equilibrium:</p>
+                $$R(\theta_1^\star, \theta_2^\star) \le R(\theta_1, \theta_2^\star) \quad \text{and} \quad R(\theta_1^\star, \theta_2^\star) \ge R(\theta_1^\star, \theta_2)$$
+                <p>In other words, unilaterally deviating from $\theta_1^\star$ decreases the value of $R$ while unilaterally deviating from $\theta_2^\star$ increases the value of $R$.<br>Standard RL is posed as a maximization problem. However, adversarial training and two-player zero-sum games are posed as minimax optimization problems.</p>
+                <p><strong>Example: Rock paper scissors</strong><br>Consider the game of rock paper scissors with randomized strategies $p_{\theta_1}$ and $p_{\theta_2}$ and expected payoff $R(\theta_1, \theta_2)$:</p>
+                $$R(\theta_1, \theta_2) = \sum_{i,j \in \{\text{rock, paper, scissors}\}} M_{ij} \mu(\theta_1)_i \mu(\theta_2)_j$$
+                <p>where $\mu$ is the softmax function. Of course, the Nash equilibrium occurs at</p>
+                $$\mu(\theta_1) = \mu(\theta_2) = (1/3, 1/3, 1/3)$$
+
+                <h3 id="minimax-gradients">11.2. Minimax Optimization with Gradients</h3>
+                <p>In deep learning, we solve minimax optimization algorithms with first-order methods using stochastic gradients.<br>However, convergence of minimax optimization should not be taken for granted, and much more delicate care is needed than min optimization. The training of GANs is famously tricky. We will also see that the minimax training of the rock paper scissors examples is a highly unstable process.<br>RL training is already more unstable than supervised learning. Multi-agent RL (2-agent in our case) is even more delicate than non-RL minimax training.</p>
+                <p><strong>Simultaneous gradient ascent-descent</strong><br>Simultaneous gradient ascent-descent (SimGAD) is one of the simplest minimax optimization algorithms, but it fails to converge on rock paper scissors. In fact, SimGAD is expected to diverge on any zero-sum game.</p>
+                $$\theta_1^{k+1} = \theta_1^k - \alpha \nabla_{\theta_1} R(\theta_1^k, \theta_2^k)$$
+                $$\theta_2^{k+1} = \theta_2^k + \alpha \nabla_{\theta_2} R(\theta_1^k, \theta_2^k)$$
+                <p>Cycling dynamics where players countering the counter: Player 1 plays rock $\to$ Player 2 plays paper $\to$ Player 1 plays scissors $\to$ Player 2 plays rock $\to$ Player 1 plays paper $\to \cdots$</p>
+
+                <h3 id="extragradient">11.3. Extragradient (EG) Method</h3>
+                <p>For the extragradient (EG) method, imagine you and the opponent make regular 1-step updates, evaluate the gradient from there, and use that gradient to commit to the update. Closely related to learning with opponent-level awareness (LOLA).<br>EG does converge for 2-player zero-sum games.</p>
+                $$\tilde{\theta}_1^k = \theta_1^k - \alpha \nabla_{\theta_1} R(\theta_1^k, \theta_2^k)$$
+                $$\tilde{\theta}_2^k = \theta_2^k + \alpha \nabla_{\theta_2} R(\theta_1^k, \theta_2^k)$$
+                $$\theta_1^{k+1} = \theta_1^k - \alpha \nabla_{\theta_1} R(\tilde{\theta}_1^k, \tilde{\theta}_2^k)$$
+                $$\theta_2^{k+1} = \theta_2^k + \alpha \nabla_{\theta_2} R(\tilde{\theta}_1^k, \tilde{\theta}_2^k)$$
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>G. M. Korpelevich, The extragradient method for finding saddle points and other problems, Ekonomika i Matematicheskie Metody, 1976.</em></li>
+                    <li><em>J. N. Foerster, R. Y. Chen, M. Al-Shedivat, S. Whiteson, P. Abbeel, and I. Mordatch, Learning with opponent-learning awareness, AAMAS, 2018.</em></li>
+                </ul>
+
+                <h3 id="anchoring-weight-decay">11.4. Anchoring and Weight Decay</h3>
+                <p>Anchored simultaneous gradient ascent-descent adds the “anchor” mechanism that can also be understood as weight decay. (Anchor doesn’t have to be at 0, but weight decay shrinks toward 0.) This does converge on 2-player zero-sum games.</p>
+                $$\theta_1^{k+1} = \theta_1^k - \alpha (\nabla_{\theta_1} R(\theta_1^k, \theta_2^k) + \lambda (\theta_1^k - \theta_1^0))$$
+                $$\theta_2^{k+1} = \theta_2^k + \alpha (\nabla_{\theta_2} R(\theta_1^k, \theta_2^k) + \lambda (\theta_2^k - \theta_2^0))$$
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>E. K. Ryu, K. Yuan, and W. Yin, Ode analysis of stochastic gradient methods with optimism and anchoring for minimax problems, arXiv, 2019.</em></li>
+                    <li><em>T. Yoon and E. K. Ryu, Accelerated algorithms for smooth convex-concave minimax problems with O(1/k^2) rate on squared gradient norm, ICML, 2021.</em></li>
+                </ul>
+
+                <h3 id="antisymmetric-payoff">11.5. Antisymmetric Payoff Games</h3>
+                <p>We say a 2-player zero-sum game has antisymmetric payoff if</p>
+                $$R(\theta_1, \theta_2) = -R(\theta_2, \theta_1)$$
+                <p>In this case, the Nash equilibrium at $\theta^\star, \theta^\star$ for some $\theta^\star$ and</p>
+                $$\nabla_{\theta_1} R(\theta, \theta) = - \nabla_{\theta_2} R(\theta, \theta)$$
+                <p>Also,</p>
+                $$\nabla_{\theta_1} R(\theta, \theta) = \nabla_{\theta_2} R(\theta, \theta)$$
+                <p>Therefore, SimGAD simplifies to</p>
+                $$\theta^{k+1} = \theta^k - \alpha \nabla_{\theta_1} R(\theta^k, \theta^k)$$
+                <p><strong>Antisymmetric payoff games (cont.)</strong><br>SimGAD with weight decay simplifies to</p>
+                $$\theta^{k+1} = \theta^k - \alpha (\nabla_{\theta_1} R(\theta^k, \theta^k) + \lambda (\theta^k - \theta^0))$$
+                <p>So a gradient ascent is done on player 1 with player 1 is playing against itself. (Player 2 is a copy of player 1.)</p>
+
+                <h3 id="chess-go">11.6. Chess and Go</h3>
+                <p>Chess and go are 2-player zero-sum perfect information games with antisymmetric payoff.<br>Technically, the games are not perfectly (anti)symmetric, since one player moves first. (We can make game symmetric if first move is given to the players randomly.)<br>However, because the game is mostly symmetric, we will train one agent to play both players. So, there is only one policy $\pi_\theta$.<br>(In a highly asymmetric 2-player game, you would train 2 policies for each player.)</p>
+
+                <h2 id="recent-llm-dev">12. Recent Developments in LLMs</h2>
+                <p>Shortly after the previous lecture, OpenAI announced its new memory features in ChatGPT. Other chatbot services will likely follow-up with similar features. LLMs now have long-term memory, and this will profoundly affect how we interact with LLMs.</p>
+                <p><em>Reference: <a href="https://x.com/polynoamial/status/1910379351759347860">https://x.com/polynoamial/status/1910379351759347860</a></em></p>
+
+                <h2 id="sutton-turing-award">13. Richard Sutton Wins 2025 Turing Award</h2>
+                <p>In the first lecture of this course, I introduced Richard Sutton’s essay The Bitter Lesson. Shortly after this lecture, it was announced that Sutton was selected for the 2025 Turing Award, the highest academic honor in computer science.</p>
+                <p>Aside from his essay, Richard Sutton’s pioneering contributions to RL directly influenced much of the material covered in this course.</p>
+                <p>While our appreciation of Sutton’s work is not dependent on this award, I believe it is worthwhile to mention this recent development and retroactively acknowledge it here.</p>
+
+                <h2 id="alphago-expert-iteration">14. AlphaGo, Test-Time Compute, and Expert Iteration</h2>
+                <h3 id="intro-alphago">14.1. Introduction to AlphaGo</h3>
+                <p><strong>Chess, shogi, and go</strong><br>2-player perfect-information zero-sum turn-based games.</p>
+                <ul>
+                    <li>The top human chess player was defeated in 1997 by Deep Blue.</li>
+                    <li>The top human shogi player was defeated in 2017 by Elmo.</li>
+                    <li>The top human go player was defeated in 2016 by AlphaGo.</li>
+                </ul>
+                <p><strong>AlphaGo and AlphaGo Zero</strong><br>AlphaGo and AlphaGo Zero combine search and learning to achieve super-human play.<br>These methods represent landmark scientific accomplishments in AI, and contain insights generalizable beyond the domains of games.<br>However, the exact techniques of MCTS has not yet been successfully adapted to the setup of LLM reasoning.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>D. Silver, A. Huang, C. J. Maddison, A. Guez, L. Sifre, G. van den Driessche, J. Schrittwieser, I. Antonoglou, V. Panneershelvam, M. Lanctot, S. Dieleman, D. Grewe, J. Nham, N. Kalchbrenner, I. Sutskever, T. Lillicrap, M. Leach, K. Kavukcuoglu, T. Graepel, and D. Hassabis, Mastering the game of Go with deep neural networks and tree search, Nature, 2016.</em></li>
+                    <li><em>D. Silver, J. Schrittwieser, K. Simonyan, I. Antonoglou, A. Huang, A. Guez, T. Hubert, L. Baker, M. Lai, A. Bolton, Y. Chen, T. Lillicrap, F. Hui, L. Sifre, G. van den Driessche, T. Graepel, and D. Hassabis, Mastering the game of Go without human knowledge, Nature 2017.</em></li>
+                </ul>
+
+                <h3 id="alphago-training">14.2. AlphaGo Training Steps</h3>
+                <p><strong>AlphaGo training step 1: $\pi^{\text{IL}}_\theta$</strong><br>Train policy $\pi^{\text{IL}}_\theta$ with imitation learning. From expert play record (기보), construct dataset<br>$\mathcal{D} = \{ (s, a) | \text{board position } s \text{ and next move } a \text{ from expert games} \}$<br>Then, train the policy to predict the expert players’ next move with loss</p>
+                $$\mathcal{L}(\theta) = \sum_{(s,a) \in \mathcal{D}} \ell_{\text{CE}}(\pi^{\text{IL}}_\theta(a|s), a)$$
+                <p>Neural network architecture is a 13-layer conv net. (Architecture is later improved in AlphaGo Zero.)<br>$\pi^{\text{IL}}_\theta$ cannot yet beat expert humans.</p>
+                <p><strong>AlphaGo training step 2: $\pi^{\text{RL}}_\theta$</strong><br>Train policy $\pi^{\text{RL}}_\theta$ through self-play. (i) Initialize $\pi^{\text{IL}}_\theta = \pi^{\text{RL}}_\theta$. (ii) Play $\pi^{\text{RL}}_\theta$ vs. $\pi^{\text{RL}}_{\theta^-}$ where $\theta^-$ is an earlier version of the parameter $\theta$. Choosing $\theta^-$ from a collection of past values stabilize training. Let $z = \pm 1$ indicate whether $\pi^{\text{RL}}_\theta$ won. (iii) Perform undiscounted policy gradient update on</p>
+                $$\mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi^{\text{RL}}_\theta, p)} [z]$$
+                <p>where first move (black or white stone) is randomized. Obtain an unbiased estimate of $\nabla_\theta \mathcal{J}(\theta)$ with the deep policy gradient method gradient</p>
+                $$\nabla_\theta \mathcal{J}(\theta) = \mathbb{E}_{\tau \sim (p_0, \pi^{\text{RL}}_\theta, p)} \left[ z \sum_{t=0}^{T-1} \nabla_\theta \log \pi^{\text{RL}}_\theta(a_t|s_t) \right]$$
+                <p>Here, the $(s_t, a_t)_{t=0}^{T-1}$ is the board states provided to and actions taken by $\pi^{\text{RL}}_\theta$.<br>(Of course, $\pi^{\text{RL}}_\theta$ should not be penalized or rewarded by actions taken by $\pi^{\text{RL}}_{\theta^-}$.)</p>
+                <p>Same neural network architecture as $\pi^{\text{IL}}_\theta$.<br>$\pi^{\text{RL}}_\theta$ vs $\pi^{\text{IL}}_\theta$ wins 80%, but still cannot defeat human experts.<br>In principle, if NN is very large and self-play is done for very long, then $\pi^{\text{RL}}_\theta$ should converge to perfection (and beat all humans.)<br>Under practical compute limitations, we need something more.</p>
+
+                <h3 id="alphago-v-phi">14.3. AlphaGo Training Step 3: Value Network $V_\phi$</h3>
+                <p>Train value network $V_\phi \approx V^{\pi^{\text{RL}}_\theta} \approx V^\star$ use standard Monte Carlo policy evaluation method.<br>Self-play with the strongest policy $\pi^{\text{RL}}_\theta$, and perform stochastic gradient descent with</p>
+                $$\mathcal{L}(\phi) = \mathbb{E}_{\tau \sim (p_0, \pi^{\text{RL}}_\theta, p)} \left[ \sum_{t=0}^{T-1} (z - V_\phi(s_t))^2 \right]$$
+                <p>What about $Q$? Should we also learn $Q_\phi \approx Q^{\pi^{\text{RL}}_\theta} \approx Q^\star$?<br>Note, the dynamics is deterministic, with the transitioned state $s'$ given by a function $f : \mathcal{S} \times \mathcal{A} \to \mathcal{S}$. So with $s' = f(s, a)$, we have</p>
+                $$Q^\star(s, a) = -V^\star(f(s, a))$$
+                <p>where the negative sign reflects the fact that the turn passes to the opponent, and both the Q- and V-value functions are defined with respect to the player whose turn it is to move.</p>
+
+                <h3 id="alphago-fast-policy">14.4. AlphaGo Training Step 4: Fast Rollout Policy $\pi^{\text{fast}}_\psi$</h3>
+                <p>Train a faster rollout policy $\pi^{\text{fast}}_\psi$ with imitation learning.<br>Because $\pi^{\text{fast}}_\psi$ uses a lightweight architecture, it has significantly faster inference time: $\sim 2$ microseconds for $\pi^{\text{fast}}_\psi$ for compared to $\sim 3$ milliseconds for $\pi^{\text{RL}}_\theta$.<br>So more than 1000x faster.<br>Not a strong policy, but it does understand the most basic principles.</p>
+
+                <h3 id="neural-net-only-play">14.5. Neural-Net-Only Play</h3>
+                <p>We have two reasonable options for neural-net-only play.<br><strong>Option 1.</strong> Play with $\pi^{\text{RL}}_\theta$.<br><strong>Option 2.</strong> Play with the greedy policy $\arg\max_{a \in \mathcal{A}} Q_\phi(s, a)$.<br>In principle, raw neural nets could beat humans with an exorbitant amount of compute, and we can estimate how much this would be. (More on this later.) However, under practical compute limitations, pure neural-net-based play is not enough.</p>
+
+                <h3 id="pure-tree-search">14.6. Pure Tree Search</h3>
+                <p>Consider all possible future board states that can be played. This approach is called <strong>minimax tree search</strong>, since I try to maximize my reward and my opponent tries to minimize my reward.<br>At every board state, the optimal action is</p>
+                $$\arg\max_{a \in \mathcal{A}} Q^\star(s, a) = \arg\min_{a \in \mathcal{A}} V^\star(f(s, a))$$
+                <p>Without learning, we don’t know $V^\star(s)$ for most states. However, if $s$ is terminal, then we know $V^\star(s)$ based on who won the game. So, expand the tree until the game ends, and recursively backtrack (dynamic programming) to find moves that take you to a winning board state.<br>This pure search-based method does not require any learning. However, this strategy is infeasible for moderately sized games because the computation size exponentially blows up.</p>
+
+                <h3 id="human-systems-1-2">14.7. Human Thinking: Systems 1 and 2</h3>
+                <p>It is instructive to reflect on how we humans play.<br>Human players have intuition on a set of reasonable moves and how advantageous a board state is. This intuition is corresponds to system 1 thinking and is analogous to what neural networks learn.<br>Humans do not immediately act on these instincts, and instead deliberate through the future ramifications of moves. This deliberation corresponds to system 2 thinking and it analogous to search.<br>Human deliberation is not exhaustive. We do not consider all possible actions (limited width), and we do not mentally simulate until the end of the game (limited depth).<br>Alphago performs neural guided search through MCTS; Use neural networks to guided and focus the search on the relevant region of the game space.</p>
+
+                <h3 id="mcts">14.8. Monte Carlo Tree Search (MCTS)</h3>
+                <p>Monte Carlo Tree Search (MCTS) performs a neural guided search, selectively exploring parts of the tree based on the guidance of neural networks.</p>
+                <p><strong>Principle #1:</strong> Gradually build up the tree, making it wider and deeper we exhaust the given computational budget.</p>
+                <p><strong>Principle #2:</strong> Control the width of the tree by only considering “good” actions, defined as actions $a \in \mathcal{A}$ such that<br>(a) $\pi^{\text{IL}}_\theta(a|s)$ or $\pi^{\text{RL}}_\theta(a|s)$ is high (actions that $\pi_\theta$ would play)<br>(b) $Q_\phi(s, a)$ is high (actions that $Q_\phi$ thinks is good)<br>(c) we have not yet deliberated on (consider a set of actions instead of focusing on the presumed top choice).<br><strong>Solution:</strong> At every node $s_t$, choose the action $a_t$ based on</p>
+                $$a_t = \arg\max_a \left( Q_\phi(s_t, a) + \rho \pi_\theta(a|s_t) \frac{\sqrt{\sum_a N(s_t, a)}}{1 + N(s_t, a)} \right)$$
+                <p>where $\rho > 0$ is a hyperparameter, $\pi = \pi^{\text{IL}}_\theta$ or $\pi = \pi^{\text{SL}}_\theta$, and $N(s_t, a)$ is the number of times the action has already been considered in the tree search.</p>
+                <p><strong>Principle #3:</strong> Starting at $s_t$ consider a sequence of states based on the actions selected as previously described:<br>$s_t \mapsto s_{t+1} \mapsto s_{t+2} \mapsto \cdots \mapsto s_L$<br>We will have multiple leaf nodes $s_L$, and $s_L$ will likely not reach the end of the game. (Lookahead is $\sim 30$ moves, i.e., $\sim 60$ plies, deep.) So, truncate the depth of the search by approximating $V^\star(s_L)$ in the following two ways:<br>(a) Evaluate value network $V^\star(s_L) \approx V_\phi(s_L)$<br>(b) Play $N$ rollouts (until the end of the game) starting from $s_L$ using the fast policy $\pi^{\text{fast}}_\psi$:</p>
+                $$G_L^{\text{rollout}} = \sum_{k=L}^{T-1} \gamma^{k-L} r_k$$
+                <p>(c) Form a weighted average of the estimates of (a) and (b).</p>
+
+                <h3 id="summary-mcts">14.9. Summary of MCTS</h3>
+                <ul>
+                    <li>Consider moves based on intuition encoded by $\pi^{\text{IL}}_\theta$ or $\pi^{\text{RL}}_\theta$ and $V_\phi$ and construct a lookahead tree.</li>
+                    <li>Assess the assess the strength of the position $V_\phi$ and by quickly playing until the end of the game using $\pi^{\text{fast}}_\psi$.</li>
+                    <li>Commit to the best action after this deliberation.</li>
+                </ul>
+
+                <h3 id="mcts-bib">14.10. MCTS Bibliography</h3>
+                <p>The Monte Carlo Tree Search (MCTS) of AlphaGo is really the classical MCTS + additional enhancements.<br>The ideas of MCTS was first described in</p>
+                <ul>
+                    <li>B. Abramson. The Expected-Outcome Model of Two-Player Games, Columbia University Ph.D. Thesis, 1987.</li>
+                </ul>
+                <p>and was first applied to the game of go in</p>
+                <ul>
+                    <li>B. Brügmann, Monte Carlo Go, 1993.</li>
+                </ul>
+                <p>The name “MCTS” was first coined in</p>
+                <ul>
+                    <li>R. Coulom, Efficient selectivity and backup operators in Monte-Carlo tree search, Computers and Games, 2006.</li>
+                </ul>
+                <p>The action selection rule is called Upper Confidence bounds applied to Trees (UCT) in analogy to the UCB selection rule for the multi-armed bandit setting. UCT was proposed by</p>
+                <ul>
+                    <li>K. Levente and C. Szepesvári, Bandit based Monte-Carlo planning, European Conference on Machine Learning, 2006.</li>
+                </ul>
+
+                <h3 id="why-mcts">14.11. Why MCTS?</h3>
+                <p align="center">
+                    <img src="https://placehold.co/400x300/e0e0e0/333333?text=Elo+Score+Graph" alt="Elo Score Graph">
+                </p>
+                <p>The MCTS algorithm is complicated. Why not do pure RL and just use $\pi^{\text{RL}}_\theta$?</p>
+                <ul>
+                    <li>Without, $\pi^{\text{IL}}_\theta$, the RL training of $\pi^{\text{RL}}_\theta$ makes no progress.</li>
+                    <li>Ablation studies show that rollouts (using $\pi^{\text{fast}}_\psi$), value network ($V_\phi$), and policy network ($\pi^{\text{IL}}_\theta$ or $\pi^{\text{RL}}_\theta$) are all necessary.</li>
+                </ul>
+                <p><em>Reference: D. Silver, A. Huang, C. J. Maddison, A. Guez, L. Sifre, G. van den Driessche, J. Schrittwieser, I. Antonoglou, V. Panneershelvam, M. Lanctot, S. Dieleman, D. Grewe, J. Nham, N. Kalchbrenner, I. Sutskever, T. Lillicrap, M. Leach, K. Kavukcuoglu, T. Graepel, and D. Hassabis, Mastering the game of Go with deep neural networks and tree search, Nature, 2016.</em></p>
+
+                <h3 id="alphago-zero-improvements">14.12. Improving AlphaGo to AlphaGo Zero</h3>
+                <p><strong>Problem:</strong> Can we eliminate the reliance on imitation learning and human expert play data?<br><strong>Technical improvements:</strong></p>
+                <ul>
+                    <li>The neural network (NN) architecture of AlphaGo relied on design principles that were outdated by the time the AlphaGo paper was published. Use better architecture?</li>
+                    <li>AlphaGo training does not use search. MCTS is employed at inference time to produce a stronger agent. Can we use this stronger agent during training?<br>These improvements led to AlphaGo Zero.</li>
+                </ul>
+                <p><em>Reference: D. Silver, J. Schrittwieser, K. Simonyan, I. Antonoglou, A. Huang, A. Guez, T. Hubert, L. Baker, M. Lai, A. Bolton, Y. Chen, T. Lillicrap, F. Hui, L. Sifre, G. van den Driessche, T. Graepel, and D. Hassabis, Mastering the game of Go without human knowledge, Nature 2017.</em></p>
+                <p><strong>Improved architecture of AlphaGo Zero</strong><br>AlphaGo used 13-layer conv nets for $\pi$ and $V$.<br>AlphaGo Zero used a 40-layer convnet with BatchNorm and residual connections. Also, the policy $\pi^{\text{EI}}_\theta$ and value function $V_\theta$ are two heads with a shared base:<br>$(\pi^{\text{EI}}_\theta, V_\theta) = f(s)$<br>Sharing the base makes sense because the two networks $\pi^{\text{EI}}_\theta$ and $V_\theta$ would use similar features.<br><strong>Takeaway:</strong> Neural network architecture matters.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>S. Ioffe and C. Szegedy, Batch normalization: Accelerating deep network training by reducing internal covariate shift, ICML, 2015.</em></li>
+                    <li><em>Kaiming He, X. Zhang, S. Ren, and J. Sun, Deep residual learning for image recognition, CVPR, 2016.</em></li>
+                </ul>
+
+                <h3 id="alphago-zero-training">14.13. AlphaGo Zero Training: Expert Iteration</h3>
+                <p>Perform MCTS with $\pi^{\text{EI}}_\theta$ and $V_\theta$. Perform self-play and improve $(\pi^{\text{EI}}_\theta, V_\theta) = f(s)$.<br>(No rollouts are used, so $\pi^{\text{fast}}_\psi$ is not needed.)</p>
+                <p><strong>Expert iteration:</strong></p>
+                <ol>
+                    <li>Self-play with MCTS = $(\pi^{\text{EI}}_\theta, V_\theta)$ for many games.
+                        <ul>
+                            <li>Form action dataset $\mathcal{D}_a = \{(s_t, a_t)\}$</li>
+                            <li>Form win/loss dataset $\mathcal{D}_w = \{(s_t, z)\}$</li>
+                        </ul>
+                    </li>
+                    <li>Train $\pi^{\text{EI}}_\theta$ on $\mathcal{D}_a$ and $V_\theta$ on $\mathcal{D}_w$.</li>
+                </ol>
+                <p>Policy $\pi^{\text{EI}}_\theta$ is trained to imitate the MCTS policy, which is stronger than $\pi^{\text{EI}}_\theta$.<br><strong>Key insight of expert iteration:</strong> Given a NN, improve the policy with NN+search, and train the NN to mimic the improved policy. Can be thought of as extensions of imitation learning and policy iteration. Much faster learning compared to pure RL.</p>
+                <p><em>Reference: The name expert iteration was coined in concurrent work by Anthony, Tian, and Barber: T. Anthony, Z. Tian, and D. Barber, Thinking fast and slow with deep learning and tree search, NeurIPS, 2017.</em></p>
+
+                <h3 id="alphago-zero-results">14.14. AlphaGo Zero Results</h3>
+                <p>The expert iteration of AlphaGo Zero significantly simplifies the approach of AlphaGo.<br><strong>Results:</strong> Much stronger policy trained with no human expert data or any handcrafted human knowledge.</p>
+                <p><em>Reference: D. Silver, J. Schrittwieser, K. Simonyan, I. Antonoglou, A. Huang, A. Guez, T. Hubert, L. Baker, M. Lai, A. Bolton, Y. Chen, T. Lillicrap, F. Hui, L. Sifre, G. van den Driessche, T. Graepel, and D. Hassabis, Mastering the game of Go without human knowledge, Nature 2017.</em></p>
+
+                <h3 id="poker-test-time">14.15. Computer Poker and Test-Time Scaling</h3>
+                <p><strong>The tale of computer poker</strong></p>
+                <ul>
+                    <li><strong>Cepheus.</strong> M. Bowling, N. Burch, M. Johanson, O. and Tammelin, Heads-up limit hold'em poker is solved, Science, 2015.</li>
+                    <li><strong>Libratus.</strong> Spectacular victory in public match against professional players in 2017. N. Brown and T. Sandholm, Superhuman AI for heads-up no-limit poker: Libratus beats top professionals, Science, 2018.</li>
+                    <li><strong>Pluribus.</strong> Spectacular victory in public match against professional players in 2019. N. Brown and T. Sandholm, Superhuman AI for multiplayer poker, Science, 2019.
+                        <ul>
+                            <li>Jason Les: "very hopeless. You don't feel like there’s anything you can do to win.”</li>
+                            <li>Chris Ferguson: "Pluribus is a very hard opponent to play against. It's really hard to pin him down on any kind of hand.”</li>
+                            <li>Jimmy Chou: "Whenever playing the bot, I feel like I pick up something new to incorporate into my game."</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Test-time scaling with computer poker</strong><br>While the poker bots utilize learning, the capability is primarily due to search.<br>The search methodology is quite different from MCTS. How to carry out search is often domain specific.<br>By leveraging search (test-time compute), one can achieve capabilities that would otherwise require an exorbitant amount of train-time compute.</p>
+                <ul>
+                    <li><em>References:</em></li>
+                    <li><em>N. Brown and T. Sandholm, Safe and nested subgame solving for imperfect-information games, NeurIPS, 2017.</em></li>
+                    <li><em>N. Brown, Learning to Reason with LLMs, Talk at Simons Institute, Sept. 26, 2024.</em></li>
+                </ul>
+
+                <h3 id="train-vs-test-compute">14.16. Train-time vs. Test-time Compute</h3>
+                <p>In fact, no raw neural network has yet to defeat top human players in go.<br>About 1000x train-time compute would be needed based on a back-of-the-envelope computation.</p>
+                <p><em>Reference: N. Brown, Learning to Reason with LLMs, Talk at Simons Institute, Sept. 26, 2024.</em></p>
+                <p><strong>Mathematically, why does test-time compute work?</strong><br>A pre-trained policy must handle all possible game states. Finding a perfect policy, therefore, amounts to solving the entire game upfront.<br>Tree search considers only the game states that can occur given the current state. I.e., test-time compute solves for a much smaller subset of the overall game.</p>
+
+                <h3 id="takeaways-games">14.17. Takeaways from Games</h3>
+                <p>By leveraging test-time compute, one can spend extra compute on the given problem instance and deliberate to a degree that would be impossible in train-time.<br>In domains with verifiable answers (win or lose in the case of games), expert iteration can significantly accelerate training compared to pure RL.</p>
+
+                <h2 id="kahneman-obituary">15. Obituary: Daniel Kahneman</h2>
+                <p>In the first lecture of this course, I introduced Daniel Kahneman’s work describing the System 1 and System 2 thinking of humans, and the notion of System 1 and System 2 thinking will come up again several times in this course. Since then, I have become aware of the following news.</p>
+                <p>Daniel Kahneman died by assisted suicide on March 27, 2024, three weeks after his 90th birthday, in Switzerland, though the manner and location of his death was only revealed in March 2025 (after the first lecture of this course was given). He wrote in an email:</p>
+                <blockquote>
+                    “I have believed since I was a teenager that the miseries and indignities of the last years of life are superfluous, and I am acting on that belief. I am still active, enjoying many things in life (except the daily news) and will die a happy man. But my kidneys are on their last legs, the frequency of mental lapses is increasing, and I am ninety years old. It is time to go.”
+                </blockquote>
+                <p>Kahneman is most known and recognized for his work on the psychology of judgment and decision-making. (Slightly different subject from System 1 and System 2 thinking.) In the previous lecture, I may have led you to think that Kahneman is an active researches, so I want to correct that. Further, I feel that there is something profound about the last decision made by the world’s leading thinker on decisions.</p>
+                <p><em>Reference: The last decision by the world’s leading thinker on decisions, Wall Street Journal, March 14, 2025.</em></p>
+</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="../../../assets/js/jquery.min.js"></script>
+		<script src="../../../assets/js/jquery.poptrox.min.js"></script>
+		<script src="../../../assets/js/browser.min.js"></script>
+		<script src="../../../assets/js/breakpoints.min.js"></script>
+		<script src="../../../assets/js/util.js"></script>
+		<script src="../../../assets/js/main.js"></script>
+        <script>
+            MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+                },
+                svg: {
+                    fontCache: 'global'
+                }
+            };
+        </script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+	</body>
+</html>
