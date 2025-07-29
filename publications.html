@@ -38,15 +38,26 @@
 				<div>
 					<header>
 						<h1>Publications and Preprints</h1>
+						<p>* Equal contribution, † Corresponding Author</p>
 					</header>
+					<hr>
+
+					<h2>Conference Papers</h2>
 					<ul id="publicationsList">
 						<!-- 
 						<li><a href="__link__">__title__</a>, __authors__, <i>__publisher__</i>, __year__.</li>
 						-->
 					</ul>
-					<p>* Equal contribution</p>
+					<hr>
+
+					<h2>Workshop Papers</h2>
+					<ul id="workshopsList"></ul>
+					<hr>
+
+					<h2>Preprints</h2>
+					<ul id="preprintsList"></ul>
+					<hr>
 				</div>
-				<hr>
 
 				<div>
 					<header>
@@ -127,6 +138,68 @@
 			}
 
 			function parseBibFile(bibText) {
+				const entries = bibText.split(/@\w+{/).slice(1);
+				let publications = [];
+				entries.forEach(entry => {
+					let bibEntry = {};
+					entry = entry.replace(/}\s*$/, '');
+					let lines = entry.split(/\n/);
+					for (let line of lines) {
+						let match = line.match(/(\w+)\s*=\s*\{(.+?)\},?/);
+						if (match) {
+							bibEntry[match[1].toLowerCase()] = match[2];
+						}
+					}
+					if (bibEntry.year) {
+						publications.push(bibEntry);
+					}
+				});
+				return publications.sort((a, b) => (b.year || 0) - (a.year || 0));
+			}
+
+			function displayPublications(publications) {
+				const pubList = document.getElementById("publicationsList");
+				const preList = document.getElementById("preprintsList");
+				const wsList = document.getElementById("workshopsList");
+
+				pubList.innerHTML = "";
+				preList.innerHTML = "";
+				wsList.innerHTML = "";
+
+				publications.forEach(pub => {
+					const item = document.createElement("li");
+					const journalOrBook = pub.journal || pub.booktitle || "";
+					item.innerHTML = `<i><a href="${pub.url || '#'}">${pub.title}</a></i>, ${pub.author}, ${journalOrBook} (${pub.year})`;
+
+					const lowerJournal = journalOrBook.toLowerCase();
+
+					if (lowerJournal.includes("arxiv")) {
+						preList.appendChild(item);
+					} else if (lowerJournal.includes("workshop")) {
+						wsList.appendChild(item);
+					} else {
+						pubList.appendChild(item);
+					}
+				});
+			}
+
+			document.addEventListener("DOMContentLoaded", loadPublications);
+		</script>
+
+
+		<!-- <script>
+			async function loadPublications() {
+				try {
+					const response = await fetch('mypapers.bib');
+					const text = await response.text();
+					const publications = parseBibFile(text);
+					displayPublications(publications);
+				} catch (error) {
+					console.error("Error loading the publications:", error);
+				}
+			}
+
+			function parseBibFile(bibText) {
 				const entries = bibText.split(/@\w+{/).slice(1); // Split each entry
 				let publications = [];
 				entries.forEach(entry => {
@@ -158,7 +231,7 @@
 			}
 
 			document.addEventListener("DOMContentLoaded", loadPublications);
-		</script>
+		</script> -->
 		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 	</body>

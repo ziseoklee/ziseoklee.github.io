@@ -2594,7 +2594,7 @@ input, select, textarea {
 		justify-content: space-between;
 		background-color: #1c1b1a;
 		color: rgba(255, 255, 255, 0.5);
-		width: 10rem; /*15%*/
+		width: 12rem; /*15%*/
 		height: 100%;
 		left: 0;
 		padding: 6em 0em 3em 0em;
@@ -2691,7 +2691,7 @@ input, select, textarea {
 /* Main */
 
 	#main {
-		margin-left: 10rem; /*15%;*/
+		margin-left: 12rem; /*15%;*/
 		/* max-width: 54em; */
 		padding: 6em 3em 3em 3em;
 		/* padding: 8em 4em 4em 4em; */
