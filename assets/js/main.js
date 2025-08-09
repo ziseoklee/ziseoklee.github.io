@@ -1,3 +1,8 @@
+document.getElementById('menu-toggle').addEventListener('click', function () {
+    document.getElementById('nav-menu').classList.toggle('open');
+});
+
+
 /*
 	Strata by HTML5 UP
 	html5up.net | @ajlkn

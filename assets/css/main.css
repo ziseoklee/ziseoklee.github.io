@@ -2594,7 +2594,7 @@ input, select, textarea {
 		justify-content: space-between;
 		background-color: #1c1b1a;
 		color: rgba(255, 255, 255, 0.5);
-		width: 12rem; /*15%*/
+		width: 13rem; /*15%*/
 		height: 100%;
 		left: 0;
 		padding: 6em 0em 3em 0em;
@@ -2649,6 +2649,18 @@ input, select, textarea {
 			width: 4.5em;
 		}
 
+/* Menu Toggle */
+
+/* Hide menu by default */
+#nav-menu {
+	display: none;
+}
+
+/* Default: hide hamburger icon */
+#menu-toggle {
+	display: none;
+}
+
 /* Footer */
 
 	#footer .icons {
@@ -2691,11 +2703,11 @@ input, select, textarea {
 /* Main */
 
 	#main {
-		margin-left: 12rem; /*15%;*/
+		margin-left: 13rem; /*15%;*/
 		/* max-width: 54em; */
 		padding: 6em 3em 3em 3em;
 		/* padding: 8em 4em 4em 4em; */
-		width: 100%-10rem; /*calc(100% - 15%)*/
+		width: calc(100% - 13rem); /*calc(100% - 15%)*/
 		/* background-color: #F4EDE320; */
 	}
 
@@ -2703,6 +2715,7 @@ input, select, textarea {
 			border-top: solid 2px #efefef;
 			margin: 4em 0 0 0;
 			padding: 4em 0 0 0;
+			width: min(100%, 70rem);
 		}
 
 			#main > section:first-child {
@@ -3010,7 +3023,7 @@ input, select, textarea {
 
 			#header {
 				padding: 6em 0em 3em 0em;
-				width: 10rem; /*15%;*/
+				/* width: 10rem;*/ /*15%;*/
 			}
 
 				#header h1 {
@@ -3038,10 +3051,10 @@ input, select, textarea {
 		/* Main */
 
 			#main {
-				margin-left: 10rem; /*15%;*/
+				/*margin-left: 10rem;*/ /*15%;*/
 				max-width: none;
 				padding: 6em 3em 3em 3em;
-				width: 100% - 10rem; /*calc(100% - 15%);*/
+				/*width: 100% - 10rem;*/ /*calc(100% - 15%);*/
 			}
 
 	}
@@ -3069,13 +3082,16 @@ input, select, textarea {
 				background-position: top left, center center;
 				background-size: auto,		cover;
 				left: auto;
-				padding: 6em 0em;
+				padding: 0em 0em; /* 6em 0em; */
 				position: relative;
 				text-align: center;
 				top: auto;
 				width: 100%;
 				display: block;
 			}
+				header .inner {
+					display: none;
+				}
 
 				#header h1 {
 					font-size: 1.75em;
@@ -3088,6 +3104,38 @@ input, select, textarea {
 					#header h1 br {
 						display: inline;
 					}
+			/* Hide menu by default */
+			#nav-menu {
+				display: none;
+				padding: 2.5em;
+			}
+
+			/* Style menu links */
+			#nav-menu ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			#nav-menu ul li {
+				margin: 0.5em 0;
+			}
+
+			/* Show hamburger icon */
+			#menu-toggle {
+				display: block;
+				font-size: 1.5rem;
+				cursor: pointer;
+				background: transparent;
+				border: none;
+				text-align: right;
+				padding: 0.5em 1em;
+			}
+
+			/* Optional: animate open/close */
+			#nav-menu.open {
+				display: block;
+			}
 
 		/* Footer */
 
@@ -3177,7 +3225,7 @@ input, select, textarea {
 		/* Header */
 
 			#header {
-				padding: 2.25em 0em;
+				/* padding: 2.25em 0em; */
 			}
 
 				#header h1 {
@@ -3221,7 +3269,7 @@ input, select, textarea {
 		/* Header */
 
 			#header {
-				padding: 4.5em 0em;
+				/* padding: 4.5em 0em; */
 			}
 
 				#header h1 br {
@@ -3233,11 +3281,11 @@ input, select, textarea {
 			}
 
 			#main img {
-				width: 6em;
+				width: 10rem;
 			}
 
 			.image.right {
-				float: none;
+				/* float: none; */
 			}
 
 		/* Footer */
