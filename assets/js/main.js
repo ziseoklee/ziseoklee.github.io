@@ -1,4 +1,4 @@
-document.getElementById('menu-toggle').addEventListener('click', function () {
+document.getElementById('menu-toggle-button').addEventListener('click', function () {
     document.getElementById('nav-menu').classList.toggle('open');
 });
 

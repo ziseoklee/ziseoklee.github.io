@@ -3108,6 +3108,17 @@ input, select, textarea {
 			#nav-menu {
 				display: none;
 				padding: 2.5em;
+				transform: translateY(-20px);
+				transition: opacity 0.3s ease, transform 0.3s ease;
+				background: rgba(30, 30, 30, 0.85); /* semi-transparent dark background */
+				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+				/* border-radius: 0 0 1em 1em; */
+				position: absolute;
+				top: 3.5em; /* adjust as needed */
+				left: 0;
+				right: 0;
+				z-index: 1000;
+				padding: 1em 0;
 			}
 
 			/* Style menu links */
@@ -3125,16 +3136,22 @@ input, select, textarea {
 			#menu-toggle {
 				display: block;
 				font-size: 1.5rem;
-				cursor: pointer;
+				/* cursor: pointer; */
 				background: transparent;
 				border: none;
 				text-align: right;
 				padding: 0.5em 1em;
 			}
 
+			#menu-toggle-button{
+				cursor: pointer;
+			}
+
 			/* Optional: animate open/close */
 			#nav-menu.open {
 				display: block;
+				opacity: 1;
+			    transform: translateY(0);
 			}
 
 		/* Footer */
@@ -3171,7 +3188,6 @@ input, select, textarea {
 					}
 
 		/* Main */
-
 			#main {
 				margin: 0;
 				padding: 6em 4em;
