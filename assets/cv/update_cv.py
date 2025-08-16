@@ -129,7 +129,7 @@ async def main():
                 <style>
                     .major h1 {{font-size: 2rem;}}
                     #header, #volunteer, #contact {{ display: none !important; }}
-                    body, #main {{ background: #ffffff !important; margin: 0 !important; width: 100% !important; font-size: 85% !important; padding: 1rem !important; }}
+                    body, #main {{ background: #ffffff !important; margin: 0 !important; width: 100% !important; font-size: 90% !important; padding: 1rem !important; }}
                     * {{ background: #ffffff !important; }}
                     img, video, svg {{ width: 9rem !important; }}
                     h1, h2, h3, p {{ margin: 0 !important; padding: 0 !important; }}
