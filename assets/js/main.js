@@ -2,6 +2,16 @@ document.getElementById('menu-toggle-button').addEventListener('click', function
     document.getElementById('nav-menu').classList.toggle('open');
 });
 
+document.addEventListener('click', function (event) {
+    const navMenu = document.getElementById('nav-menu');
+    const menuToggleButton = document.getElementById('menu-toggle-button');
+
+    // Check if the clicked element is not the nav menu or its descendants,
+    // and not the menu toggle button or its descendants.
+    if (!navMenu.contains(event.target) && !menuToggleButton.contains(event.target)) {
+        navMenu.classList.remove('open');
+    }
+});
 
 /*
 	Strata by HTML5 UP

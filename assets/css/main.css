@@ -3315,3 +3315,54 @@ input, select, textarea {
 			}
 
 	}
+
+    @media (prefers-color-scheme: dark) {
+        /* Styles for dark mode */
+		#header, #header p, #footer, #footer ul {
+			background-color: #1c1b1a;
+			color: rgba(255, 255, 255, 0.5);
+		}
+		#nav-menu {
+			background: #1c1b1a85; /* semi-transparent dark background */
+			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+		}
+		#nav-menu ul {
+			background: none;
+		}
+		h1, h2, h3, h4, p, b, strong, i, table, table td, ul, ol, body, hr, input, select, textarea, code, header p {
+            background-color: #262625; /* Dark background */
+            color: #dfdfdf; /* Light text */
+        }
+		code {
+			background-color: #2f2f2f;
+		}
+        a {
+            color: #88ccff; /* Link color for dark mode */
+        }
+		hr {
+			border: 0;
+			border-bottom: solid 2px #f0f0f020;
+			margin: 2em 0;
+		}
+		input[type="submit"],
+		input[type="reset"],
+		input[type="button"],
+		.button {
+			border: solid 2px #f0f0f040;
+			color: #dfdfdf !important;
+		}
+		input[type="text"],
+		input[type="password"],
+		input[type="email"],
+		select,
+		textarea {
+			color: #dfdfdf;
+			background: #313130;
+		}
+		::-webkit-input-placeholder {
+			color: #dfdfdf80 !important;
+		}
+		blockquote {
+			border-left: solid 6px #343231;
+		}
+    }
