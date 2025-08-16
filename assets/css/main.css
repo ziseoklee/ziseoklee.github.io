@@ -3318,19 +3318,22 @@ input, select, textarea {
 
     @media (prefers-color-scheme: dark) {
         /* Styles for dark mode */
-		#header, #header p, #footer, #footer ul {
-			background-color: #1c1b1a;
+		#header, #footer, #footer ul {
+			background-color: #101010;
 			color: rgba(255, 255, 255, 0.5);
 		}
+		#header p, #header strong {
+			background-color: transparent;
+		}
 		#nav-menu {
-			background: #1c1b1a85; /* semi-transparent dark background */
+			background: #10101085; /* semi-transparent dark background */
 			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 		}
 		#nav-menu ul {
 			background: none;
 		}
 		h1, h2, h3, h4, p, b, strong, i, table, table td, ul, ol, body, hr, input, select, textarea, code, header p {
-            background-color: #262625; /* Dark background */
+            background-color: #202020; /* Dark background */
             color: #dfdfdf; /* Light text */
         }
 		code {
