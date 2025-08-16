@@ -73,7 +73,7 @@
 						Department of Mathematical Sciences<br>
 						Seoul National University
 					</p> -->
-				<hr>
+					<hr>
 				</div>
 
 				<div id="interests">
@@ -84,8 +84,38 @@
 						Probabilistic Generative Models <br>
 						Molecule Generation and Drug Design
 					</p>
-				<hr>
+					<hr>
 				</div>
+
+				<style>
+					#education table, #research table, #teaching table, #volunteer table {
+						width: min(100%, 70rem);
+						table-layout: fixed;
+					}
+					#education table th:nth-child(1), #education table td:nth-child(1), #research table th:nth-child(1), #research table td:nth-child(1), #teaching table th:nth-child(1), #teaching table td:nth-child(1), #volunteer table th:nth-child(1), #volunteer table td:nth-child(1) {
+						width: calc(100% - 10rem); 
+					}
+
+					#education table th:nth-child(2), #education table td:nth-child(2), #research table th:nth-child(2), #research table td:nth-child(2), #teaching table th:nth-child(2), #teaching table td:nth-child(2), #volunteer table th:nth-child(2), #volunteer table td:nth-child(2) {
+						padding: 0 0 0 1rem;
+						width: 10rem; 
+					}
+					@media screen and (max-width: 980px) {
+						#education table, #research table, #teaching table, #volunteer table {
+							width: 100%;
+							table-layout: auto;
+						}
+					}
+					@media screen and (max-width: 580px) {
+						#education table th:nth-child(1), #education table td:nth-child(1), #research table th:nth-child(1), #research table td:nth-child(1), #teaching table th:nth-child(1), #teaching table td:nth-child(1), #volunteer table th:nth-child(1), #volunteer table td:nth-child(1) {
+							width: calc(100% - 6rem);
+						}
+
+						#education table th:nth-child(2), #education table td:nth-child(2), #research table th:nth-child(2), #research table td:nth-child(2), #teaching table th:nth-child(2), #teaching table td:nth-child(2), #volunteer table th:nth-child(2), #volunteer table td:nth-child(2) {
+							width: 6rem;
+						}
+					}
+				</style>
 
 				<div id="education">
 					<header>
