@@ -3332,7 +3332,7 @@ input, select, textarea {
 		#nav-menu ul {
 			background: none;
 		}
-		h1, h2, h3, h4, p, b, strong, i, table, table td, ul, ol, body, hr, input, select, textarea, code, header p {
+		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, body, hr, input, select, textarea, code, header p {
             background-color: #202020; /* Dark background */
             color: #dfdfdf; /* Light text */
         }
@@ -3367,5 +3367,9 @@ input, select, textarea {
 		}
 		blockquote {
 			border-left: solid 6px #343231;
+		}
+		input[type="checkbox"] + label,
+		input[type="radio"] + label {
+			color: #dfdfdf;
 		}
     }

@@ -130,7 +130,7 @@ async def main():
                     img, video, svg {{ width: 12rem !important; }}
                     .major h1 {{font-size: 3rem !important;}}
                     #header, #volunteer, #contact, #footer, hr {{ display: none !important; }}
-                    #education, #interests, #research, #teaching, #paperList {{ padding: 1rem 0 0 0 !important; }}
+                    #education, #interests, #research, #teaching, #paperList, #awards {{ padding: 1rem 0 0 0 !important; }}
                     #publicationsList, #workshopsList, #preprintsList {{ padding: 0 0 1rem 0 !important; }}
                     body, #main {{ background: #ffffff !important; margin: 0 !important; width: 100% !important; font-size: 90% !important; padding: 0.5rem !important; }}
                     * {{ background: #ffffff !important; }}
