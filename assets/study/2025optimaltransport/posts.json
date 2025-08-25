@@ -1,0 +1,47 @@
+[
+  {
+    "file": "./md/intro_history.md",
+    "title": "Introduction to Optimal Transport",
+    "date": "2025-08-25",
+    "tags": [
+      "OT",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/intro_wasserstein.md",
+    "title": "Core Mathematical Principles and the Wasserstein Distance",
+    "date": "2025-08-25",
+    "tags": [
+      "OT",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/regularizedOT.md",
+    "title": "Regularized Optimal Transport: Enhancing Tractability and Properties",
+    "date": "2025-08-25",
+    "tags": [
+      "OT",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/regularizedOT_L2.md",
+    "title": "L2 Regularized Optimal Transport",
+    "date": "2025-08-25",
+    "tags": [
+      "OT",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/schrodingerbridge.md",
+    "title": "The Schrödinger Bridge Problem (SBP)",
+    "date": "2025-08-25",
+    "tags": [
+      "OT",
+      "math"
+    ]
+  }
+]
