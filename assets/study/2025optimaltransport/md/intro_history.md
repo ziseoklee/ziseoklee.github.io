@@ -56,7 +56,7 @@ This is also a linear program, where the variables are the potentials $f_i, g_j$
 $$
 \sum_{i,j} c_{ij} \pi_{ij} \geq \sum_i \alpha_i f_i + \sum_j \beta_j g_j 
 $$
-This implies $P_K\ geq D_K$. The weak duality theorem holds generally for any linear program and essentially states that any feasible dual solution provides a **lower bound** on the optimal primal value.
+This implies $P_K \geq D_K$. The weak duality theorem holds generally for any linear program and essentially states that any feasible dual solution provides a **lower bound** on the optimal primal value.
 
 **Strong duality theorem**: Under general conditions (e.g., in the discrete case, or for continuous spaces under mild assumptions on the cost function and measures), the value of the primal problem equals the value of the dual problem.
 $$
