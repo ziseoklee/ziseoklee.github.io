@@ -1,0 +1,34 @@
+[
+  {
+    "file": "./md/post1.md",
+    "title": "Defining the Neural Network",
+    "date": "2025-08-26",
+    "tags": [
+      ""
+    ]
+  },
+  {
+    "file": "./md/post2.md",
+    "title": "Predecessors: Sinusoidal and Polynomial Functions",
+    "date": "2025-08-27",
+    "tags": [
+      ""
+    ]
+  },
+  {
+    "file": "./md/post3.md",
+    "title": "Universal Approximation Theorems: Arbitrary Width",
+    "date": "2025-08-28",
+    "tags": [
+      ""
+    ]
+  },
+  {
+    "file": "./md/post4.md",
+    "title": "Universal Approximation Theorems: Arbitrary Depth",
+    "date": "2025-08-29",
+    "tags": [
+      ""
+    ]
+  }
+]
