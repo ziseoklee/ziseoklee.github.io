@@ -61,6 +61,11 @@
 				</div>
 				<hr>
 				<article id="markdown-content"></article>
+				<hr>
+				<h3>References</h3>
+				<ul>
+					<li><a href="https://arxiv.org/abs/2307.08423">Artificial Intelligence for Science in Quantum, Atomistic, and Continuum Systems</a>, Zhang et al., Foundations and Trends in Machine Learning (2025).</li>
+				</ul>
 			</section>
 		</div>
 
@@ -124,7 +129,7 @@
 				const response = await fetch("posts.json");
 				const posts = await response.json();
 
-				let html = "<h2>Contents</h2><ul>";
+				let html = "<h3>Contents</h3><ul>";
 				posts.forEach(post => {
 					html += `<li><a href="index.html?post=${post.file}">${post.title}</a> 
 							<small>(${post.date})</small></li>`;

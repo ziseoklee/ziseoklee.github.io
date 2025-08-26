@@ -131,7 +131,7 @@
 				const response = await fetch("posts.json");
 				const posts = await response.json();
 
-				let html = "<h2>Contents</h2><ul>";
+				let html = "<h3>Contents</h3><ul>";
 				posts.forEach(post => {
 					html += `<li><a href="index.html?post=${post.file}">${post.title}</a> 
 							<small>(${post.date})</small></li>`;
