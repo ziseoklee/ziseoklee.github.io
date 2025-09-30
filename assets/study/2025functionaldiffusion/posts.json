@@ -1,22 +1,38 @@
 [
   {
     "file": "./md/post1.md",
-    "title": "Diffusion Models Study",
-    "date": "2025-08-10",
+    "title": "Part I: The Rationale for Functional Generative Modeling",
+    "date": "2025-09-30",
     "tags": [
-      "diffusion",
-      "ai",
+      "functional",
       "math"
     ]
   },
   {
     "file": "./md/post2.md",
-    "title": "Diffusion Models Study",
-    "date": "2025-08-10",
+    "title": "Part II: Mathematical Foundations",
+    "date": "2025-09-30",
     "tags": [
-      "diffusion",
-      "math",
-      "ai"
+      "functional",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post3.md",
+    "title": "Part III: Algorithms for Generative Modeling on Function Spaces",
+    "date": "2025-09-30",
+    "tags": [
+      "functional",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post4.md",
+    "title": "Part IV: Applications and Frontiers",
+    "date": "2025-09-30",
+    "tags": [
+      "functional",
+      "math"
     ]
   }
 ]
