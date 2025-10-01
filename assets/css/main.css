@@ -113,6 +113,7 @@ input, select, textarea {
 			border-bottom-color: transparent;
 			color: #49bf9d !important;
 			text-decoration: none;
+			cursor: pointer;
 		}
 
 	strong, b {
@@ -3315,8 +3316,7 @@ input, select, textarea {
 			}
 
 	}
-
-    @media (prefers-color-scheme: dark) {
+	:root[data-theme="dark"] {
         /* Styles for dark mode */
 		#header, #footer, #footer ul {
 			background-color: #101010;
@@ -3332,7 +3332,7 @@ input, select, textarea {
 		#nav-menu ul {
 			background: none;
 		}
-		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, body, hr, input, select, textarea, code, header p {
+		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, body, hr, input, select, textarea, code, header p, blockquote {
             background-color: #202020; /* Dark background */
             color: #dfdfdf; /* Light text */
         }
@@ -3373,3 +3373,122 @@ input, select, textarea {
 			color: #dfdfdf;
 		}
     }
+	@media (prefers-color-scheme: dark) {
+        /* Styles for dark mode */
+		#header, #footer, #footer ul {
+			background-color: #101010;
+			color: rgba(255, 255, 255, 0.5);
+		}
+		#header p, #header strong {
+			background-color: transparent;
+		}
+		#nav-menu {
+			background: #10101085; /* semi-transparent dark background */
+			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+		}
+		#nav-menu ul {
+			background: none;
+		}
+		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, body, hr, input, select, textarea, code, header p, blockquote {
+            background-color: #202020; /* Dark background */
+            color: #dfdfdf; /* Light text */
+        }
+		code {
+			background-color: #2f2f2f;
+		}
+        a {
+            color: #88ccff; /* Link color for dark mode */
+        }
+		hr {
+			border: 0;
+			border-bottom: solid 2px #f0f0f020;
+			margin: 2em 0;
+		}
+		input[type="submit"],
+		input[type="reset"],
+		input[type="button"],
+		.button {
+			border: solid 2px #f0f0f040;
+			color: #dfdfdf !important;
+		}
+		input[type="text"],
+		input[type="password"],
+		input[type="email"],
+		select,
+		textarea {
+			color: #dfdfdf;
+			background: #313130;
+		}
+		::-webkit-input-placeholder {
+			color: #dfdfdf80 !important;
+		}
+		blockquote {
+			border-left: solid 6px #343231;
+		}
+		input[type="checkbox"] + label,
+		input[type="radio"] + label {
+			color: #dfdfdf;
+		}
+    }
+	
+	:root[data-theme="light"] {
+		 /* Styles for light mode */
+		#header, #footer, #footer ul {
+			background-color: #1c1b1a;
+			color: rgba(255, 255, 255, 0.5);
+		}
+		#header p, #header strong {
+			background-color: transparent;
+		}
+		#nav-menu {
+			background: rgba(30, 30, 30, 0.85); /* semi-transparent dark background */
+			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+		}
+		#nav-menu ul {
+			background: none;
+		}
+		body {
+            background-color: #F4EDE320; /* Light background */
+            color: #1c1b1a; /* Dark text */
+		}
+		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, hr, input, select, textarea, code, header p, blockquote {
+            background-color: transparent; /* Light background */
+            color: #1c1b1a; /* Dark text */
+        }
+		code {
+			background-color: #f7f7f7;
+		}
+        a {
+            color: #11644b; /* Link color for light mode */
+        }
+		hr {
+			border: 0;
+			border-bottom: solid 2px #1c1b1a20;
+			margin: 2em 0;
+		}
+		input[type="submit"],
+		input[type="reset"],
+		input[type="button"],
+		.button {
+			border: solid 2px #1c1b1a20;
+			color: #1c1b1a !important;
+		}
+		input[type="text"],
+		input[type="password"],
+		input[type="email"],
+		select,
+		textarea {
+			color: #1c1b1a;
+			background: #1c1b1a20;
+		}
+		::-webkit-input-placeholder {
+			color: #1c1b1a60 !important;
+		}
+		blockquote {
+			border-left: solid 6px #1c1b1a20;
+		}
+		input[type="checkbox"] + label,
+		input[type="radio"] + label {
+			color: #1c1b1a;
+		}
+}

@@ -62,27 +62,29 @@
 
 				<p>
 					We define a forward SDE that perturbs data \( \mathbf{x}_0 \sim p_{\text{data}} \) into noise:
+					$$
+					d\mathbf{x}_t = \mathbf{f}(\mathbf{x}_t, t) \, dt + g(t) \, d\mathbf{w}_t
+					$$
 				</p>
 
-				\[
-				d\mathbf{x}_t = \mathbf{f}(\mathbf{x}_t, t) \, dt + g(t) \, d\mathbf{w}_t
-				\]
+
 
 				<p>
 					where \( \mathbf{w}_t \) is standard Brownian motion. For example, in the variance-exploding (VE) setting:
+					$$
+					d\mathbf{x}_t = \sqrt{d\sigma^2(t)} \, d\mathbf{w}_t, \quad \text{with } \sigma(t) \text{ increasing.}
+					$$
 				</p>
 
-				\[
-				d\mathbf{x}_t = \sqrt{d\sigma^2(t)} \, d\mathbf{w}_t, \quad \text{with } \sigma(t) \text{ increasing.}
-				\]
+
 
 				<p>
 					Under mild regularity conditions, the time-reversal of the above SDE is:
-				</p>
 
-				\[
+				$$
 				d\mathbf{x}_t = \left[ \mathbf{f}(\mathbf{x}_t, t) - g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x}_t) \right] dt + g(t) d\bar{\mathbf{w}}_t
-				\]
+				$$
+				</p>
 
 				<p>
 					where \( \bar{\mathbf{w}}_t \) is standard Brownian motion in reverse time.
@@ -93,19 +95,19 @@
 
 				<p>
 					The Fokker–Planck equation describes the evolution of the density \( p_t(\mathbf{x}) \) over time for an SDE of the form:
-				</p>
 
-				\[
+				$$
 				d\mathbf{x}_t = \mathbf{f}(\mathbf{x}_t, t) \, dt + g(t) \, d\mathbf{w}_t
-				\]
+				$$
+				</p>
 
 				<p>
 					The associated Fokker–Planck PDE is:
-				</p>
 
-				\[
+				$$
 				\frac{\partial p}{\partial t} = -\nabla \cdot (\mathbf{f} p) + \frac{1}{2} \nabla \cdot \left( g^2 \nabla p \right)
-				\]
+				$$
+				</p>
 
 				<p>
 					This equation governs the forward density evolution of the stochastic process.
@@ -120,20 +122,20 @@
 
 				<p>
 					Let \( s_\theta(\mathbf{x}, t) \approx \nabla_{\mathbf{x}} \log p_t(\mathbf{x}) \) be the learned score function. Then the PF-ODE is:
-				</p>
 
-				\[
+				$$
 				\frac{d\mathbf{x}_t}{dt} = \mathbf{f}(\mathbf{x}_t, t) - \frac{1}{2} g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x}_t)
-				\]
+				$$
+				</p>
 
 				<p>
 					<strong>Proof sketch:</strong> Assume both the SDE and the ODE induce the same marginal densities \( p_t \).
 					From the Fokker–Planck equation, the drift of the equivalent ODE must match the instantaneous probability flux:
-				</p>
 
-				\[
+				$$
 				\mathbf{v}(\mathbf{x}, t) = \mathbf{f}(\mathbf{x}, t) - \frac{1}{2} g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x})
-				\]
+				$$
+				</p>
 
 				<p>
 					This shows that both the SDE and PF-ODE induce the same dynamics of \( p_t \), even though their trajectories differ.
@@ -153,11 +155,11 @@
 
 				<p>
 					In particular, DDIM sampling solves:
-				</p>
 
-				\[
+				$$
 				d\mathbf{x}_t = \left( \mathbf{f}(\mathbf{x}_t, t) - \frac{1}{2} g(t)^2 s_\theta(\mathbf{x}_t, t) \right) dt
-				\]
+				$$
+				</p>
 
 				<p>
 					Hence, DDIM is the ODE counterpart of DDPM. This unifies the picture: DDPM ↔ SDE, DDIM ↔ ODE.
@@ -193,6 +195,7 @@
 				</ul>
 				<ul class="copyright">
 					<li>&copy; Ziseok Lee</li>
+					<li><a id="theme-toggle">Theme</a></li>
 					<li><a href="http://html5up.net">HTML5 UP</a></li>
 				</ul>
 			</div>

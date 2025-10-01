@@ -10,6 +10,19 @@ tags: [functional, math]
 
 ## Introduction
 
+The last decade has witnessed a revolution in generative modeling, with deep learning frameworks such as [Generative Adversarial Networks (GANs)](https://arxiv.org/abs/1406.2661), [Variational Autoencoders (VAEs)](https://arxiv.org/abs/1312.6114), and more recently, [score-based diffusion models](https://arxiv.org/abs/2011.13456) achieving unprecedented success in synthesizing high-fidelity data across numerous domains. 
+A common thread uniting these powerful models is their formulation on finite-dimensional spaces, typically the Euclidean space $\mathbb{R}^d$.
+This paradigm has proven remarkably effective for data that is inherently discrete or can be naturally represented by fixed-size vectors.
+
+
+However, a vast and critically important class of data does not fit this mold. 
+Data such as physical fields, time-series measurements, images, videos, and geometric shapes are most naturally understood not as collections of discrete points, but as continuous functions. 
+The standard practice of forcing this functional data onto a fixed computational grid (e.g., pixels for an image, voxels for a 3D shape) introduces a fundamental disconnect between the model's assumptions and the data's intrinsic nature, leading to significant practical and theoretical limitations.
+
+This study surveys a paradigm shift in generative modeling: <b>the move from learning distributions of discretized vectors to learning distributions over infinite-dimensional function spaces</b>. 
+By embracing a functional perspective, these next-generation models aim to overcome the core limitations of their finite-dimensional predecessors, offering principled solutions for resolution invariance, handling of irregularly sampled data, and the incorporation of geometric and physical priors. 
+We will begin by motivating this shift, then build the requisite mathematical foundations from functional analysis and stochastic calculus, survey the state-of-the-art algorithms that extend diffusion, flow matching, and stochastic interpolants to function spaces, and finally, explore their transformative applications across the scientific landscape.
+
 ### 1.1 The Limitations of Finite-Dimensional Generative Models
 
 Traditional deep generative models are designed to operate on data represented as vectors in $\mathbb{R}^d$. This necessitates a discretization step for any data that is continuous in nature. While pragmatic, this approach creates several deeply embedded problems:

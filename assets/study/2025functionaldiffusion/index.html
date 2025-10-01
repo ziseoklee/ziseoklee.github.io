@@ -57,23 +57,24 @@
 						<h3>Abstract</h3>
 					</header>
 					<p>
-						The last decade has witnessed a revolution in generative modeling, with deep learning frameworks such as Generative Adversarial Networks (GANs), Variational Autoencoders (VAEs), and more recently, score-based diffusion models achieving unprecedented success in synthesizing high-fidelity data across numerous domains. 
-						A common thread uniting these powerful models is their formulation on finite-dimensional spaces, typically the Euclidean space $\mathbb{R}^d$.
-						This paradigm has proven remarkably effective for data that is inherently discrete or can be naturally represented by fixed-size vectors.
+						Generative AI has made remarkable progress with GANs, VAEs, and diffusion models, but almost all of these methods live in the world of finite-dimensional vectors. Many real problems, however, are best described as continuous functions: signals, images, shapes, or even physical fields. Forcing them onto grids like pixels or voxels hides their true structure.
 
-						
-						However, a vast and critically important class of data does not fit this mold. 
-						Data such as physical fields, time-series measurements, images, videos, and geometric shapes are most naturally understood not as collections of discrete points, but as continuous functions. 
-						The standard practice of forcing this functional data onto a fixed computational grid (e.g., pixels for an image, voxels for a 3D shape) introduces a fundamental disconnect between the model's assumptions and the data's intrinsic nature, leading to significant practical and theoretical limitations.
-					</p>
-					<p>
-						This study surveys a paradigm shift in generative modeling: <b>the move from learning distributions of discretized vectors to learning distributions over infinite-dimensional function spaces</b>. 
-						By embracing a functional perspective, these next-generation models aim to overcome the core limitations of their finite-dimensional predecessors, offering principled solutions for resolution invariance, handling of irregularly sampled data, and the incorporation of geometric and physical priors. 
-						We will begin by motivating this shift, then build the requisite mathematical foundations from functional analysis and stochastic calculus, survey the state-of-the-art algorithms that extend diffusion, flow matching, and stochastic interpolants to function spaces, and finally, explore their transformative applications across the scientific landscape.
+						This series explores a new frontier—generative modeling in function spaces. We look at the mathematical ideas, the algorithms extending diffusion and flow models, and the possibilities they unlock for science and beyond.
 					</p>
 				</div>
 				<hr>
 				<article id="markdown-content"></article>
+				<hr>
+				<h3>References</h3>
+				<ul>
+					<li><a href="https://openreview.net/forum?id=X1VzbBU6xZ">Generative Adversarial Neural Operators</a> (TMLR 2022)</li>
+					<li><a href="https://arxiv.org/abs/2302.07400">Score-based Diffusion Models in Function Space</a> (2023)</li>
+					<li><a href="https://openreview.net/forum?id=ik91mY-2GN">Diffusion Probabilistic Fields</a> (ICLR 2023)</li>
+					<li><a href="https://openreview.net/forum?id=BZtEthuXRF">Manifold Diffusion Fields</a> (ICLR 2024)</li>
+					<li><a href="https://arxiv.org/abs/2305.17209">Functional Flow Matching</a> (Oral, AISTATS 2024)</li>
+					<li><a href="https://arxiv.org/abs/2506.07902">FunDiff: Diffusion Models over Function Spaces for Physics-Informed Generative Modeling</a> (2025)</li>
+					<li><a href="https://arxiv.org/abs/2508.04605">Multitask Learning with Stochastic Interpolants</a> (2025)</li>
+				</ul>
 			</section>
 		</div>
 
@@ -88,6 +89,7 @@
 				</ul>
 				<ul class="copyright">
 					<li>&copy; Ziseok Lee</li>
+					<li><a id="theme-toggle">Theme</a></li>
 					<li><a href="http://html5up.net">HTML5 UP</a></li>
 				</ul>
 			</div>

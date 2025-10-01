@@ -592,3 +592,32 @@ window.MathJax = {
 	};
 
 })(jQuery);
+
+
+const toggleBtn = document.getElementById("theme-toggle");
+const root = document.documentElement;
+
+// Load saved preference
+let theme = localStorage.getItem("theme") || "system";
+applyTheme(theme);
+
+toggleBtn.addEventListener("click", () => {
+// Cycle: system → dark → light → system ...
+// if (theme === "system") theme = "dark";
+// else if (theme === "dark") theme = "light";
+// else theme = "system";
+if (theme === "light") theme = "dark";
+else if (theme === "dark") theme = "light";
+// else theme = "system";
+
+localStorage.setItem("theme", theme);
+applyTheme(theme);
+});
+
+function applyTheme(mode) {
+root.removeAttribute("data-theme"); // reset
+if (mode !== "system") {
+	root.setAttribute("data-theme", mode); 
+}
+toggleBtn.textContent = mode.toUpperCase();
+}
