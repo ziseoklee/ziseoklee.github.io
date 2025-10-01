@@ -186,10 +186,10 @@ Diffusion-based generative models are fundamentally described by stochastic diff
 The first challenge in infinite dimensions is the non-existence of a Lebesgue measure, which serves as the standard reference for defining probability densities in $\mathbb{R}^d$. This necessitates a shift to using Gaussian measures as the canonical reference.
 
 **Definition 3.1. (Gaussian measure)**   
-A probability measure $\mu$ on a separable Hilbert space $\mathcal{H}$ is called a (centered) Gaussian measure if, for every continuous linear functional $l\in\mathcal{H}^*$, the pushforward measure on $\mathbb{R}$ is a one-dimensional Gaussian distribution. Such a measure is uniquely characterized by its mean element (here, assumed to be 0) and its covariance operator ${C}:\mathcal{H}\to \mathcal{H}$.
+A probability measure $\mu$ on a separable Hilbert space $\mathcal{H}$ is called a (centered) Gaussian measure if, for every continuous linear functional $l\in\mathcal{H}^*$, the pushforward measure on $\mathbb{R}$ is a one-dimensional Gaussian distribution. Such a measure is uniquely characterized by its mean element (here, assumed to be 0) and its covariance operator $C:\mathcal{H}\to \mathcal{H}$.
 
-* **Covariance Operator:** For a measure to be well-defined, the covariance operator ${C}$ must be a symmetric, positive-semidefinite, and, crucially, *trace-class* operator. The trace-class condition
-$$\operatorname{Tr}(C)=\sum _k \braket{{C} e_k, e_k} < \infty \text{ for any orthonormal basis }\\{e_k\\}$$
+* **Covariance Operator:** For a measure to be well-defined, the covariance operator $C$ must be a symmetric, positive-semidefinite, and, crucially, *trace-class* operator. The trace-class condition
+$$\operatorname{Tr}(C)=\sum _k \braket{C e_k, e_k} < \infty \text{ for any orthonormal basis }\\{e_k\\}$$
 is a strict requirement in infinite dimensions that ensures the total variance is finite. This makes the choice of the noise covariance a critical modeling decision, as it dictates the properties (e.g., smoothness) of the random functions being sampled.
 
 **Definition 3.2. (Cameron-Martin Space)**   
