@@ -602,13 +602,8 @@ let theme = localStorage.getItem("theme") || "system";
 applyTheme(theme);
 
 toggleBtn.addEventListener("click", () => {
-// Cycle: system → dark → light → system ...
-// if (theme === "system") theme = "dark";
-// else if (theme === "dark") theme = "light";
-// else theme = "system";
 if (theme === "light") theme = "dark";
 else if (theme === "dark") theme = "light";
-// else theme = "system";
 
 localStorage.setItem("theme", theme);
 applyTheme(theme);
