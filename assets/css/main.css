@@ -3373,8 +3373,7 @@ input, select, textarea {
 			color: #dfdfdf;
 		}
     }
-	@media (prefers-color-scheme: dark) {
-        /* Styles for dark mode */
+	/* @media (prefers-color-scheme: dark) {
 		#header, #footer, #footer ul {
 			background-color: #101010;
 			color: rgba(255, 255, 255, 0.5);
@@ -3383,21 +3382,21 @@ input, select, textarea {
 			background-color: transparent;
 		}
 		#nav-menu {
-			background: #10101085; /* semi-transparent dark background */
+			background: #10101085; 
 			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 		}
 		#nav-menu ul {
 			background: none;
 		}
 		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, body, hr, input, select, textarea, code, header p, blockquote {
-            background-color: #202020; /* Dark background */
-            color: #dfdfdf; /* Light text */
+            background-color: #202020; 
+            color: #dfdfdf; 
         }
 		code {
 			background-color: #2f2f2f;
 		}
         a {
-            color: #88ccff; /* Link color for dark mode */
+            color: #88ccff; 
         }
 		hr {
 			border: 0;
@@ -3429,7 +3428,7 @@ input, select, textarea {
 		input[type="radio"] + label {
 			color: #dfdfdf;
 		}
-    }
+    } */
 	
 	:root[data-theme="light"] {
 		 /* Styles for light mode */
