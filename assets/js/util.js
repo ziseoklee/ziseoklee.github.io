@@ -620,7 +620,7 @@ window.MathJax = {
 const toggles = document.querySelectorAll(".theme-toggle");
 const root = document.documentElement;
 
-let theme = localStorage.getItem("theme") || "system";
+let theme = localStorage.getItem("theme") || "light";
 applyTheme(theme);
 
 toggles.forEach(btn => {
