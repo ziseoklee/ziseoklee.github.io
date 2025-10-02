@@ -594,25 +594,48 @@ window.MathJax = {
 })(jQuery);
 
 
-const toggleBtn = document.getElementById("theme-toggle");
+// const toggleBtn = document.getElementById("theme-toggle");
+// const root = document.documentElement;
+
+// // Load saved preference
+// let theme = localStorage.getItem("theme") || "system";
+// applyTheme(theme);
+
+// toggleBtn.addEventListener("click", () => {
+// if (theme === "light") theme = "dark";
+// else if (theme === "dark") theme = "light";
+
+// localStorage.setItem("theme", theme);
+// applyTheme(theme);
+// });
+
+// function applyTheme(mode) {
+// root.removeAttribute("data-theme"); // reset
+// if (mode !== "system") {
+// 	root.setAttribute("data-theme", mode); 
+// }
+// toggleBtn.textContent = mode.toUpperCase();
+// }
+
+const toggles = document.querySelectorAll(".theme-toggle");
 const root = document.documentElement;
 
-// Load saved preference
 let theme = localStorage.getItem("theme") || "system";
 applyTheme(theme);
 
-toggleBtn.addEventListener("click", () => {
-if (theme === "light") theme = "dark";
-else if (theme === "dark") theme = "light";
-
-localStorage.setItem("theme", theme);
-applyTheme(theme);
+toggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    theme = theme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", theme);
+    applyTheme(theme);
+  });
 });
 
 function applyTheme(mode) {
-root.removeAttribute("data-theme"); // reset
-if (mode !== "system") {
-	root.setAttribute("data-theme", mode); 
-}
-toggleBtn.textContent = mode.toUpperCase();
+  root.removeAttribute("data-theme");
+  if (mode !== "system") root.setAttribute("data-theme", mode);
+
+  toggles.forEach(btn => {
+    btn.textContent = mode.toUpperCase();
+  });
 }
