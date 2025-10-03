@@ -1,0 +1,13 @@
+[
+  {
+    "file": "./md/post1.md",
+    "title": "Discrete Diffusion vs Autoregressive Modeling",
+    "date": "2025-10-03",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  }
+]
