@@ -4,5 +4,5 @@ Department of Biomedical Sciences \
 Seoul National Univeristy
 
 # Research Interests
-Density Estimation with Stochastic Interpolants \
+Probabilistic Generative Modeling \
 AI4Science: Molecule Generation and Drug Design
