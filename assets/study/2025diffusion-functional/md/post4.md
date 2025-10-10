@@ -1,6 +1,6 @@
 <!--
 title: Part IV: Applications and Frontiers
-date: 2025-09-30
+date: 2025-10-11
 tags: [functional, math]
 -->
 

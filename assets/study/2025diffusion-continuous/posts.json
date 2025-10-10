@@ -1,0 +1,63 @@
+[
+  {
+    "file": "./md/post1.md",
+    "title": "Part I: Mathematical Foundation",
+    "date": "2025-06-03",
+    "tags": [
+      "diffusion",
+      "flow",
+      "interpolant",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post2.md",
+    "title": "Part II: Diffusion Model",
+    "date": "2025-06-10",
+    "tags": [
+      "diffusion",
+      "flow",
+      "interpolant"
+    ]
+  },
+  {
+    "file": "./md/post3.md",
+    "title": "Part III: Stochastic Interpolant",
+    "date": "2025-06-17",
+    "tags": [
+      "diffusion",
+      "flow",
+      "interpolant"
+    ]
+  },
+  {
+    "file": "./md/post4.md",
+    "title": "Part IV: Measure Transport",
+    "date": "2025-06-24",
+    "tags": [
+      "diffusion",
+      "flow",
+      "interpolant"
+    ]
+  },
+  {
+    "file": "./md/post5.md",
+    "title": "Part V: Conditional Generation and its Practical Applications",
+    "date": "2025-07-01",
+    "tags": [
+      "diffusion",
+      "flow",
+      "interpolant"
+    ]
+  },
+  {
+    "file": "./md/post6.md",
+    "title": "Part VI: Distillation and Acceleration",
+    "date": "2025-07-08",
+    "tags": [
+      "diffusion",
+      "flow",
+      "interpolant"
+    ]
+  }
+]

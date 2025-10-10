@@ -1,8 +1,85 @@
 [
   {
     "file": "./md/post1.md",
-    "title": "Discrete Diffusion vs Autoregressive Modeling",
-    "date": "2025-10-03",
+    "title": "1. The Discretization of Diffusion: From Continuous Processes to Categorical Data",
+    "date": "2025-10-12 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post2.md",
+    "title": "2. The Mathematical Physics of Discrete Generative Processes",
+    "date": "2025-10-13 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post3.md",
+    "title": "3. Beyond Diffusion: Alternative Pathways for Discrete Generation",
+    "date": "2025-10-14 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post4.md",
+    "title": "4. Unifying Theories and Variational Perspectives",
+    "date": "2025-10-15 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post5.md",
+    "title": "5. A Taxonomy of Modern Discrete Generative Algorithms",
+    "date": "2025-10-16 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post6.md",
+    "title": "6. Engineering for State-of-the-Art Performance",
+    "date": "2025-10-17 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post7.md",
+    "title": "7. High-Impact Applications of Discrete Sequence Generation",
+    "date": "2025-10-18 (TODO)",
+    "tags": [
+      "discrete",
+      "autoregressive",
+      "diffusion",
+      "math"
+    ]
+  },
+  {
+    "file": "./md/post8.md",
+    "title": "8. Synthesis, Open Challenges, and Future Trajectories",
+    "date": "2025-10-19 (TODO)",
     "tags": [
       "discrete",
       "autoregressive",

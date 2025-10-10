@@ -45,15 +45,10 @@
 
 		<!-- Main Division -->
 		<div id="main">
-			<!-- HOME -->
 			<section>
-				<!-- <img src="figures/cover.png" alt="" width=250rem class="image right"/> -->
 				<div>
-					<h1>Generative Modeling by Transport: Diffusions, Flows, and Interpolants</h1>
+					<h1>Generative Modeling in Continuous Spaces</h1>
 					<p>From Theory to Practical Applications</p>
-					<!-- <p>Ziseok Lee</p> -->
-					<!-- , Wooyeol Lee, Minyeong Hwang, Eunji Jeong, Donghwan Lee, Kyungsu Kim -->
-					<!-- <p>2025.06.03 ~ </p> -->
 				</div>
 				
 				<hr>
@@ -61,67 +56,14 @@
 					<header>
 						<h3>Abstract</h3>
 					</header>
-					<p>Diffusion models have emerged as a powerful class of generative models, achieving state-of-the-art performance in various tasks such as image synthesis, text-to-image generation, and video generation. 
+					<p>
+						Diffusion models have emerged as a powerful class of generative models, achieving state-of-the-art performance in various tasks such as image synthesis, text-to-image generation, and video generation. 
 						This study provides a comprehensive overview of diffusion models, covering their theoretical foundations, practical implementations, and applications across different domains. 
+					</p>
 				</div>
 				<hr>
-				<div>
-					<header>
-						<h3>Contents</h3>
-					</header>
-					<b>Part I: Mathematical Foundation</b>
-					<ul>
-						<li><a href="1.1.stochastic.html">Stochastic processes, Brownian motion, Itô calculus</a></li>
-						<li><a href="1.2.sdes.html">SDEs and Fokker–Planck equations (forward & backward)</a></li>
-						<li><a href="1.3.girsanov.html">Girsanov's Theorem: Change of Measure in Stochastic Processes</a></li>
-					</ul>
-					<b>Part II: Diffusion Model</b>
-					<ul>
-						<li><a href="2.1.scorematching.html">Score matching (denoising, score estimation)</a></li>
-						<li><a href="2.2.ddpm.html">DDPM (Ho et al.), Score-based models (Song et al.)</a></li>
-						<li><a href="2.3.reversetime.html">Sampling in Diffusion Models: Reverse-time SDEs and ODEs</a></li>
-					</ul>
-					<b>Part III: Stochastic Interpolant</b>
-					<ul>
-						<li><a href="3.1.consistency.html">Consistency models, Flow matching, and Stochastic Interpolants</a></li>
-					</ul>
-					<b>Part IV: Measure Transport</b>
-					<ul>
-						<li><a href="3.2.schrodingerbridge.html">Schrödinger Bridges, Optimal Transport, and Diffusion Models</a></li>
-						<li><a href="3.3.functionaldiffusion.html">Diffusion bridges, functional diffusion processes</a></li>
-					</ul>
-					<b>Application I: Text-to-Image Generation</b>
-					<ul>
-						<!-- <li><a href="4.3.texttoimage.html">Text-to-image (DALLE, Imagen, SD)</a></li> -->
-						<!-- <li><a href="4.4.multimodal.html">Text-to-3D, multimodal alignment with LLMs</a></li> -->
-						<li><a href="2.4.latentdiffusion.html">Advanced Sampling: Latent diffusion, Conditional Generation, CFG, Manifold Hypothesis (CFG++)</a></li>
-					</ul>
-					<!-- <b>Application 2: Molecule Generation</b>
-					<ul>
-						<li><a href="4.1.protein.html">Protein folding/design (e.g., AlphaFold, RFdiffusion)</a></li>
-						<li><a href="4.2.dnarna.html">DNA/RNA generation</a></li>
-					</ul>
-					<b>Application 3: Diffusion Language Model</b>
-					<ul>
-						<li><a href="4.5.diffusionllm.html">Diffusion + LLM</a></li>
-					</ul>
-					<b>Application 4: Robotic Control</b>
-					<ul>
-						<li><a href="4.6.diffusionpolicy.html">Diffusion + RL (diffusion policy)</a></li>
-					</ul> -->
-				</div>
+				<article id="markdown-content"></article>
 				<hr>
-				<div>
-					<header>
-						<h3>Implementations</h3>
-					</header>
-					<ul>
-						<li><a href="DDPM_CIFAR10.html">Train a DDPM on CIFAR-10</a></li>
-						<!-- <li><a href="FLOW_CIFAR10.html">Train a Flow Model on CIFAR-10</a></li> -->
-					</ul>
-				</div>
-				<hr>
-				<div>
 					<header>
 						<h3>References</h3>
 					</header>
@@ -144,7 +86,11 @@
 						<li><a href="https://diffusion.csail.mit.edu/">MIT Computer Science Class 6.S184: Generative AI with Stochastic Differential Equations</a></li>
 						<li><a href="https://diffusion.csail.mit.edu/docs/lecture-notes.pdf">An Introduction to Flow Matching and Diffusion Models</a></li>
 					</ul>
-				</div>
+					<b>Implementations (Google Colab)</b>
+					<ul>
+						<li><a href="DDPM_CIFAR10.html">Train a DDPM on CIFAR-10</a></li>
+						<li><a href="FLOW_CIFAR10.html">Train a Flow Model on CIFAR-10</a></li>
+					</ul>
 			</section>
 		</div>
 
@@ -155,7 +101,7 @@
 				<ul class="icons">
 					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="../../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					<li><a href="../../index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
 				<ul class="copyright">
 					<li>&copy; Ziseok Lee</li>
@@ -172,6 +118,58 @@
 		<script src="../../../assets/js/util.js"></script>
 		<script src="../../../assets/js/main.js"></script>
 		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		
+		<script>
+		function getQueryParam(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		async function loadMarkdown() {
+			const file = getQueryParam("post");
+			
+			// If no specific post, show index
+			if (!file) {
+				loadIndex();
+				return;
+			}
+
+			try {
+				const response = await fetch(file);
+				if (!response.ok) throw new Error("Markdown file not found");
+				const text = await response.text();
+				document.getElementById("markdown-content").innerHTML = marked.parse(text);
+
+				if (window.MathJax) MathJax.typesetPromise();
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Error: ${err.message}</p>`;
+			}
+		}
+
+		async function loadIndex() {
+			try {
+				// GitHub Pages doesn’t allow directory listing.
+				// So: maintain a `posts.json` file manually.
+				const response = await fetch("posts.json");
+				const posts = await response.json();
+
+				let html = "<h3>Contents</h3><ul>";
+				posts.forEach(post => {
+					html += `<li><a href="index.html?post=${post.file}">${post.title}</a> 
+							<small>(${post.date})</small></li>`;
+				});
+				html += "</ul>";
+				document.getElementById("markdown-content").innerHTML = html;
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Could not load index. Create <code>posts.json</code>.</p>`;
+			}
+		}
+
+		loadMarkdown();
+		</script>
 
 	</body>
 </html>

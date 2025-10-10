@@ -2381,7 +2381,7 @@ input, select, textarea {
 		}
 
 			table tbody tr:nth-child(2n + 1) {
-				background-color: #f7f7f7;
+				background-color: #f1f1f1;
 			}
 
 		table td {
@@ -2391,7 +2391,7 @@ input, select, textarea {
 
 		table th {
 			color: #1c1b1a;
-			font-size: 0.9em;
+			/* font-size: 0.9em; */
 			font-weight: 400;
 			padding: 0 0.75em 0.75em 0.75em;
 			text-align: left;
@@ -3332,10 +3332,13 @@ input, select, textarea {
 		#nav-menu ul {
 			background: none;
 		}
-		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, table td, ul, ol, body, hr, input, select, textarea, code, header p, blockquote {
+		h1, h2, h3, h4, h5, p, b, strong, i, table, table th, ul, ol, body, hr, input, select, textarea, code, header p, blockquote { /*table td, */
             background-color: #202020; /* Dark background */
             color: #dfdfdf; /* Light text */
         }
+		table tbody tr:nth-child(2n + 1) {
+			background-color: #383838;
+		}
 		code {
 			background-color: #2f2f2f;
 		}
