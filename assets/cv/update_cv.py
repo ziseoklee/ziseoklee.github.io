@@ -127,14 +127,15 @@ async def main():
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <link rel="stylesheet" href="assets/css/main.css" />
                 <style>
-                    img, video, svg {{ width: 12rem !important; }}
-                    .major h1 {{font-size: 3rem !important;}}
-                    #header, #volunteer, #contact, #footer, hr {{ display: none !important; }}
-                    #education, #interests, #research, #teaching, #paperList, #awards {{ padding: 1rem 0 0 0 !important; }}
-                    #publicationsList, #workshopsList, #preprintsList {{ padding: 0 0 1rem 0 !important; }}
-                    body, #main {{ background: #ffffff !important; margin: 0 !important; width: 100% !important; font-size: 90% !important; padding: 0.5rem !important; }}
+                    img, video, svg {{ width: 8rem !important; }}
+                    .major h1 {{font-size: 2rem !important;}}
+                    #header, #volunteer, #contact, #footer {{ display: none !important; }}
+                    hr {{ margin: 0 !important; }}
+                    #education, #interests, #research, #teaching, #paperList, #awards, #biography, #publications {{ padding: 1rem 0 0 0 !important; }}
+                    #publicationsList, #workshopsList, #preprintsList {{ padding: 0 0 0.5rem 0 !important; }}
+                    body, #main {{ background: #ffffff !important; margin: 0 !important; width: 100% !important; font-size: 10pt !important; padding: 0.1rem !important; }}
                     * {{ background: #ffffff !important; }}
-                    h1, h2, h3, h4, p, b, i, a, ul, ol, table {{ margin: 0 !important; padding: 0 !important; font-family: "Times New Roman", serif !important; }}
+                    h1, h2, h3, h4, p, b, i, a, ul, ol, table, .major p {{ margin: 0 !important; padding: 0 !important; font-family: "Times New Roman", serif !important; font-size: 10pt !important;}}
                 </style>
             </head>
             <body>
