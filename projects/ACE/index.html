@@ -616,7 +616,7 @@
 
     .gallery-slide {
       min-width: 100%;
-      flex-shrink: 0;
+      flex-shrink: 100;
     }
 
     .gallery-slide img {
@@ -1033,6 +1033,9 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
         and OSR; lower (more negative) is better for Vina scores. Best values are bold; second-best are
         underlined. O indicates the method requires a reference scaffold pose; X indicates it does not.
         </p>
+        <img src="static/images/table_e10.png" alt="COCO-MIG Benchmark Results for Compositional Image Generation" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
+       <p class="figure-caption">
+        <strong>Table E.10:</strong> COCO-MIG instance attribute success ratio (%) with the corresponding mIoU (%) shown in parentheses. Higher is better. L2-L6 denote the success ratios for tasks with 2 to 6 region-wise guidance conditions. 'CLIP' and 'Local CLIP' refer to CLIP scores computed on the entire image versus the full prompt, and on local crops versus the corresponding local prompts, respectively.</p>
     </div>
   </section>
 
