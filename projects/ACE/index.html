@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
+  <meta name="description" content="We identify Marginal Path Collapse in diffusion steering and introduce ACE, a framework that guarantees valid probability paths for heterogeneous model composition.">
+  <meta name="keywords" content="diffusion models, generative models, flow matching, molecular design, drug discovery, scaffold decoration, inference-time control, machine learning">
+  <meta name="author" content="Ziseok Lee, Minyeong Hwang, Sanghyun Jo, Wooyeol Lee, Jihyung Ko, Young Bin Park, Jae-Mun Choi, Eunho Yang, Kyungsu Kim">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ACE Project">
+  <meta property="og:title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
+  <meta property="og:description" content="A principled framework for guaranteed path stability in diffusion steering with heterogeneous experts.">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="On the Collapse of Generative Paths">
+  <meta name="twitter:description" content="A principled framework for guaranteed path stability in diffusion steering with heterogeneous experts.">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
+  <meta name="citation_author" content="Lee, Ziseok">
+  <meta name="citation_author" content="Hwang, Minyeong">
+  <meta name="citation_author" content="Jo, Sanghyun">
+  <meta name="citation_author" content="Lee, Wooyeol">
+  <meta name="citation_author" content="Ko, Jihyung">
+  <meta name="citation_author" content="Park, Young Bin">
+  <meta name="citation_author" content="Choi, Jae-Mun">
+  <meta name="citation_author" content="Yang, Eunho">
+  <meta name="citation_author" content="Kim, Kyungsu">
+  <meta name="citation_publication_date" content="2025">
+  <!-- <meta name="citation_conference_title" content="ICLR 2026"> -->
+  <meta name="citation_conference_title" content="Preprint">
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>On the Collapse of Generative Paths | Preprint</title>
+  <!-- <title>On the Collapse of Generative Paths | ICLR 2026</title> -->
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="data:,">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- MathJax -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <style>
+    /* TL;DR Banner Style */
+    .tldr-banner {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tldr-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+    
+    .tldr-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .tldr-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    
+    .tldr-text {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin: 0;
+      font-weight: 400;
+    }
+    
+    .tldr-text strong {
+      color: #7dd3fc;
+      font-weight: 600;
+    }
+    
+    .tldr-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(125, 211, 252, 0.15);
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      margin: 0 0.25rem;
+      border: 1px solid rgba(125, 211, 252, 0.3);
+    }
+
+    /* Abstract Box Style */
+    .abstract-box {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+      max-width: 900px;
+    }
+    
+    .abstract-box .abstract-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+    
+    .abstract-box .abstract-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 2px;
+    }
+    
+    .abstract-box .abstract-content {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #475569;
+      text-align: justify;
+    }
+    
+    .abstract-box .abstract-content p {
+      margin-bottom: 1rem;
+    }
+    
+    .abstract-box .abstract-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Criterion Box */
+    .criterion-box {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .criterion-box .equation {
+      font-size: 1.3rem;
+      color: #1e293b;
+      margin: 1rem 0;
+    }
+    
+    /* Comparison Table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      font-size: 0.95rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .comparison-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    
+    .comparison-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    
+    .checkmark {
+      color: #10b981;
+      font-weight: bold;
+    }
+    
+    .crossmark {
+      color: #ef4444;
+      font-weight: bold;
+    }
+    
+    /* Result Cards */
+    .result-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      margin-bottom: 1.5rem;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .result-card h4 {
+      color: #1e293b;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .metric-highlight {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+    
+    .metric-label {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    
+    /* Key Insight Box */
+    .key-insight {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border-left: 4px solid #f59e0b;
+      padding: 1rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+    }
+    
+    .key-insight strong {
+      color: #92400e;
+    }
+    
+    /* Section Divider */
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 2px;
+      margin: 3rem auto;
+      width: 100px;
+    }
+    
+    /* Figure Placeholder */
+    .figure-placeholder {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      color: #64748b;
+      border: 2px dashed #cbd5e1;
+    }
+    
+    .figure-placeholder i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+      color: #94a3b8;
+    }
+    
+    .figure-caption {
+      font-size: 0.95rem;
+      color: #64748b;
+      text-align: center;
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+
+    /* Understanding ACE Section */
+    .understanding-section {
+      /* background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); */
+      padding: 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .understanding-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .understanding-section .section-title {
+      color: white;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .understanding-section .section-subtitle {
+      color: #94a3b8;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Applications Showcase Section */
+    .applications-section {
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      padding: 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .applications-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .applications-section .section-title {
+      color: white;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .applications-section .section-subtitle {
+      color: #94a3b8;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+    
+    /* Application Cards Grid */
+    .app-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    @media (max-width: 968px) {
+      .app-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .app-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .app-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    
+    .app-card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .app-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    
+    .app-card-icon.molecular {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+    
+    .app-card-icon.image {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+    }
+    
+    .app-card-icon.theory {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+    }
+    
+    .app-card-title {
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .app-card-badge {
+      margin-left: auto;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .app-card-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .app-card-content {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .app-card-description {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .app-card-description strong {
+      color: #94a3b8;
+      font-weight: 1000;
+    }
+
+    /* Full-width application card */
+    .app-card.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .app-card.full-width .app-card-image {
+      max-height: 400px;
+      object-fit: contain;
+      background: #0a0f1a;
+    }
+
+    /* Slider styles for multiple images */
+    .app-slider {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .app-slider-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    
+    .app-slider-slide {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+    
+    .app-slider-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .app-slider-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .app-slider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    
+    .app-slider-dot.active {
+      background: #6366f1;
+      transform: scale(1.3);
+    }
+    
+    .app-slider-dot:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+    
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+    
+    .slider-btn:hover {
+      background: rgba(99, 102, 241, 0.8);
+    }
+    
+    .slider-btn.prev {
+      left: 10px;
+    }
+    
+    .slider-btn.next {
+      right: 10px;
+    }
+
+    /* Feature Pills */
+    .feature-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .feature-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .feature-pill i {
+      color: #6366f1;
+    }
+
+    .app-card-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Image Gallery */
+    .gallery-container {
+      position: relative;
+      background: #0a0f1a;
+    }
+
+    .gallery-wrapper {
+      overflow: hidden;
+    }
+
+    .gallery-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-slide {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+
+    .gallery-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .gallery-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0,0,0,0.5);
+    }
+
+    .gallery-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-dot.active {
+      background: var(--color-accent);
+      transform: scale(1.2);
+    }
+
+    .gallery-dot:hover {
+      background: rgba(255,255,255,0.6);
+    }
+
+    .gallery-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .gallery-btn:hover {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    .gallery-counter {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      /* color: var(--color-text); */
+      color: #94a3b8;
+    }
+
+    .gallery-prompt {
+      padding: 1rem 1.25rem;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .gallery-prompt-text {
+      font-size: 0.9rem;
+      /* color: var(--color-text); */
+      text-align: center;
+      color: #94a3b8;
+      font-style: italic;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+
+  <!-- TL;DR Banner -->
+  <div class="tldr-banner">
+    <div class="tldr-content">
+      
+      <p class="tldr-text">
+        <span class="tldr-badge">TL;DR</span>
+          &nbsp;ACE fixes the hidden failures of <strong>CFG</strong> and <strong>Feynman-Kac Correctors</strong> when combining multiple diffusion models. 
+        <span class="tldr-highlight"><i class="fas fa-plug"></i> Plug-and-play</span> — instantly boost guidance quality for 
+        <span class="tldr-highlight"><i class="fas fa-atom"></i> Molecules</span> and 
+        <span class="tldr-highlight"><i class="fas fa-image"></i> Images</span> 
+        with <strong>no retraining required</strong>.
+      </p>
+    </div>
+  </div>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">On the Collapse of Generative Paths:<br/> A Criterion and Correction for Diffusion Steering</h1>
+            
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="#" target="_blank">Ziseok Lee</a><sup>1*</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Minyeong Hwang</a><sup>2*</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Sanghyun Jo</a><sup>3</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Wooyeol Lee</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Jihyung Ko</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Young Bin Park</a><sup>4</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Jae-Mun Choi</a><sup>4</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Eunho Yang</a><sup>2†</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Kyungsu Kim</a><sup>1†</sup></span>
+            </div>
+
+            <div class="is-size-6 publication-authors" style="margin-top: 1rem;">
+              <span class="author-block"><sup>1</sup>Seoul National University, <sup>2</sup>KAIST, <sup>3</sup>OGQ, <sup>4</sup>Calici, <sup>5</sup>Korea University</span>
+              <br>
+              <span class="eql-cntrb"><small><sup>*</sup>Equal Contribution, <sup>†</sup>Corresponding Author</small></span>
+            </div>
+            
+            <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
+              <span class="author-block" style="font-weight: 600;">Preprint</span>
+              <!-- <span class="author-block" style="font-weight: 600;">ICLR 2026 (Under Review)</span> -->
+            </div>
+
+            <div class="column has-text-centered" style="margin-top: 1.5rem;">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2512.10339" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2512.10339" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Abstract -->
+  <section class="section" style="padding-top: 3rem; padding-bottom: 3rem; margin-top: -6rem;">
+    <div class="container is-max-desktop">
+      <div class="abstract-box" style="background-color: rgb(234, 234, 234);">
+        <h2 class="abstract-title">Abstract</h2>
+        <div class="abstract-content">
+          <p>
+            Inference-time steering enables pretrained diffusion/flow models to be adapted to
+            new tasks without retraining. A widely used approach is the ratio-of-densities
+            method, which defines a time-indexed target path by reweighting probability-density trajectories from multiple models with positive, or in some cases, negative exponents. This construction, however, harbors a critical and previously
+            unformalized failure mode: Marginal Path Collapse, where intermediate densities
+            become non-normalizable even though endpoints remain valid. Collapse arises
+            systematically when composing heterogeneous models trained on different noise
+            schedules or datasets, including a common setting in molecular design where de-novo, conformer, and pocket-conditioned models must be combined for tasks such
+            as flexible-pose scaffold decoration. 
+          </p>
+          <p>
+            We provide a novel and complete solution
+            for the problem. First, we derive a simple <strong>path existence criterion</strong> that predicts exactly when collapse occurs from noise schedules and exponents alone. Second, we
+            introduce <strong>Adaptive path Correction with Exponents (ACE)</strong>, which extends Feynman–Kac steering to time-varying exponents and guarantees a valid probability
+            path. On a synthetic 2D benchmark and on flexible-pose scaffold decoration,
+            ACE eliminates collapse and enables high-guidance compositional generation,
+            improving distributional and docking metrics over constant-exponent baselines
+            and even specialized task-specific scaffold decoration models. Our work turns
+            ratio-of-densities steering with heterogeneous experts from an unstable heuristic
+            into a reliable tool for controllable generation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Understanding ACE -->
+  <section class="section hero is-light">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Understanding ACE</h2>
+      <p class="section-subtitle" style="color: #3f443b; text-align: center; font-size: 1.1rem; margin-bottom: 3rem;">
+        ACE prevents Marginal Path Collapse by adaptively ensuring C(t)>0, replacing unstable steering heuristics with a reliable, guaranteed generative framework.
+      </p> 
+      <div class="columns is-multiline">
+        <div class="column is-6">
+          <div class="result-card">
+            <h4>Marginal Path Collapse & ACE Solution</h4>
+            <div class="criterion-box" style="background-color: white;">
+              <img src="static/images/figure1.png" alt="Marginal Path Collapse and ACE Solution" class="app-card-image" style="background: white; padding: 1rem;">
+            </div>
+            <p>
+              <strong>Figure 1:</strong> (a) Constant exponents cause paths to diverge into invalid regions. (b) ACE uses adaptive exponent schedules to guarantee C(t) > 0 for all t, enabling smooth transport to the target. (c) The criterion C(t) stays positive with ACE while constant schedules dip below zero.
+            </p>
+          </div>
+        </div>
+
+        <div class="column is-6">
+          <div class="result-card">
+            <h4>Understanding Path Collapse</h4>
+            <div class="criterion-box" style="background-color: white;">
+              <img src="static/images/figure2.png" alt="Non-integrable Region in Gaussian Path" class="app-card-image" style="background: white; padding: 1rem;">
+            </div>
+            <p>
+              <strong>Figure 2:</strong> Even with valid endpoints, the intermediate effective variance can explode, causing Marginal Path Collapse. The ratio becomes non-integrable at certain timesteps.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Applications of ACE Showcase -->
+  <section class="applications-section">
+    <div class="container">
+      <h2 class="section-title">Applications of ACE</h2>
+      <p class="section-subtitle">One framework, multiple domains — from drug discovery to image generation</p>
+      
+      <div class="app-cards-grid">
+        
+
+        <!-- Card 1: Molecular Generation (Figure 5) -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <div class="app-card-icon molecular">
+              <i class="fas fa-atom"></i>
+            </div>
+            <h3 class="app-card-title">Flexible-Pose Scaffold Decoration</h3>
+            <span class="app-card-badge">Drug Discovery</span>
+          </div>
+          <img src="static/images/figure5.png" alt="Scaffold Decoration Results" class="app-card-image" style="background: white; padding: 1rem;"/>
+          <div class="app-card-content">
+            <p class="app-card-description">
+              <strong>Figure 5:</strong>  Diffusion Steering Framework for Flexible-Pose Scaffold Decoration. Qualitative
+results reveal that ACE, successfully modeling the ratio-of-density path, generates valid molecules
+containing the scaffold topology, while FKC (constant exponent baseline) generates invalid, fragmented molecules as a result of following an ill-defined probability path.
+            </p>
+          </div>
+        </div>
+
+        <div class="app-card">
+          <div class="app-card-header">
+            <div class="app-card-icon molecular">
+              <i class="fas fa-atom"></i>
+            </div>
+            <h3 class="app-card-title">Impact of Path Collapse on Molecules</h3>
+            <span class="app-card-badge">Drug Discovery</span>
+          </div>
+          <img src="static/images/figure_e4.png" alt="Impact of Marginal Path Collapse" class="app-card-image" style="background: white; padding: 1rem;"/>
+          <div class="app-card-content">
+            <p class="app-card-description">
+              <strong>Figure E.4:</strong> Impact of Marginal Path Collapse on Molecular Generation. FKC and ACE are compared on the scaffold-decoration task (ω = 1.3, 500 steps), targeting the same distribution. FKC collapses near the end of sampling (( C(t) < 0 )), resulting in fragmented molecules. In contrast, ACE maintains ( C(t) > 0 ) via a bump correction ( B(t) = 30t(1 - t) ), consistently producing connected, valid molecules.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 6: Image Generation -->
+        <div class="app-card" style="grid-column: 1 / -1;">
+          <div class="app-card-header">
+            <div class="app-card-icon image">
+              <i class="fas fa-image"></i>
+            </div>
+            <span class="app-card-title">Compositional Image Generation</span>
+            <span class="app-card-badge image">Vision</span>
+          </div>
+          <div class="gallery-container" id="imageGallery">
+            <div class="gallery-wrapper">
+              <div class="gallery-track" id="galleryTrack">
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_1.png" alt="Red chair, yellow chair, white teddy bear, brown dining table">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_2.png" alt="Black cup, black donut, green dining table, blue donut">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_3.png" alt="Blue boat, red boat, white boat, green boat">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_4.png" alt="White couch, yellow dining table, white oven, brown chair">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_5.png" alt="Brown airplane, red airplane, blue airplane">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_6.png" alt="White bird, red boat, blue boat">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_7.png" alt="Blue dog, white bed, green tie">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_8.png" alt="Black dog, blue dog, brown dog">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_9.png" alt="White umbrella, red umbrella">
+                </div>
+                <div class="gallery-slide">
+                  <img src="static/images/gallery/e13_10.png" alt="Brown boat, brown boat, yellow boat, black boat, white boat, green boat">
+                </div>
+              </div>
+            </div>
+            <div class="gallery-nav">
+              <button class="gallery-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+              <div class="gallery-dots" id="galleryDots"></div>
+              <span class="gallery-counter"><span id="currentSlide">1</span> / <span id="totalSlides">6</span></span>
+              <button class="gallery-btn" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="gallery-prompt">
+              <p class="gallery-prompt-text" id="galleryPrompt">"A photo of a red chair and a yellow chair and a white teddy bear and a brown dining table"</p>
+            </div>
+          </div>
+          <div class="app-card-content">
+            <p class="app-card-description">
+              <strong>Figure E.13:</strong> Compositional image generation results. Left: base Stable Diffusion 2.1. Right: ACE yields better prompt alignment and layout guidance — completely without additional training or external models. Even in homogeneous settings, ACE achieves +9.57%p improvement on COCO-MIG benchmark.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Contributions -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Key Contributions</h2>
+      
+      <div class="columns is-multiline">
+        <div class="column is-6">
+          <div class="result-card">
+            <h4><i class="fas fa-search" style="color: #ef4444; margin-right: 0.5rem;"></i> Diagnosis: Path Existence Criterion</h4>
+            <p style="color: #64748b;">We derive a rigorous and easy-to-compute criterion that predicts exactly when collapse occurs from the noise schedules and exponents alone.</p>
+            <div class="criterion-box">
+              <div class="equation">
+                \( C_k(t) := \sum_{i: k \in I_i} \frac{\gamma_i(t)}{(\alpha_t^{(i)})^2} > 0 \)
+              </div>
+              <p style="font-size: 0.9rem; color: #64748b;">Path exists ⟺ C(t) > 0 for all t ∈ [0,1)</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="column is-6">
+          <div class="result-card">
+            <h4><i class="fas fa-tools" style="color: #10b981; margin-right: 0.5rem;"></i> Solution: ACE Framework</h4>
+            <p style="color: #64748b;">Building on this diagnosis, we extend the Feynman–Kac PDE to support time-varying exponents, dynamically adjusting steering weights throughout generation.</p>
+            <div class="criterion-box">
+              <div class="equation">
+                \( \tilde{\gamma}_j(t) = \gamma_j(t) + B \cdot t(1-t) \)
+              </div>
+              <p style="font-size: 0.9rem; color: #64748b;">Bump function protocol guarantees C(t) > 0</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="key-insight">
+        <strong>Key Insight:</strong> Marginal Path Collapse occurs when the variances of the numerator terms shrink "slower" than the variances of the denominator terms, creating a temporary fatal imbalance where the combined density becomes explosive rather than decaying at infinity.
+      </div>
+    </div>
+  </section>
+
+  <!-- Method Comparison -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Method Comparison</h2>
+      <img src="static/images/table1.png" alt="Method comparison" style="width: 100%; border-radius: 12px; ">
+      <p class="figure-caption">
+        <strong>Table 1:</strong> Comparison of inference-time control methodologies. Unlike heuristics (e.g., CFG) or
+        FKC (Skreta et al., 2025a), our framework provides a principled criterion with adaptive correction
+        (ACE), guaranteeing valid paths even under heterogeneous or time-varying settings.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quantitative Results -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
+      
+      <!-- Detailed Table -->
+      <img src="static/images/table3.png" alt="Comparison of NR, FKC, and ACE" style="width: 100%; border-radius: 12px;">
+      <p class="figure-caption">
+        <strong>Table 3:</strong> Comparison of NR, FKC, and ACE for CrossDock-Weak and CrossDock-SBDD. Higher
+        is better for Validity and OSR; lower (more negative) is better for Vina scores. Best values are bold;
+        second-best are underlined. FKC and ACE share all hyperparameters with the only difference being
+        the addition of the bump function in the exponents of ACE. NR is FKC without resampling.
+       </p>
+       <img src="static/images/table4.png" alt="CrossDock Results Table" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
+       <p class="figure-caption">
+        <strong>Table 4:</strong> Comparison on CrossDock-Weak and CrossDock-SBDD. Higher is better for Validity
+        and OSR; lower (more negative) is better for Vina scores. Best values are bold; second-best are
+        underlined. O indicates the method requires a reference scaffold pose; X indicates it does not.
+        </p>
+    </div>
+  </section>
+
+  <!-- BibTeX -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@misc{lee2025collapsegenerativepathscriterion,
+      title={On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering}, 
+      author={Ziseok Lee and Minyeong Hwang and Sanghyun Jo and Wooyeol Lee and Jihyung Ko and Young Bin Park and Jae-Mun Choi and Eunho Yang and Kyungsu Kim},
+      year={2025},
+      eprint={2512.10339},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2512.10339}, 
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+function copyBibTeX() {
+  const bibtexCode = document.getElementById('bibtex-code').innerText;
+  navigator.clipboard.writeText(bibtexCode).then(() => {
+    const btn = document.querySelector('.copy-bibtex-btn');
+    btn.classList.add('copied');
+    btn.innerHTML = '<i class="fas fa-check"></i><span class="copy-text">Copied!</span>';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<i class="fas fa-copy"></i><span class="copy-text">Copy</span>';
+    }, 2000);
+  });
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.addEventListener('scroll', () => {
+  const btn = document.querySelector('.scroll-to-top');
+  if (window.pageYOffset > 300) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+});
+const galleryPrompts = [
+      '"A photo of a red chair and a yellow chair and a white teddy bear and a brown dining table"',
+      '"A photo of a black cup and a black donut and a green dining table and a blue donut"',
+      '"A photo of a blue boat and a red boat and a white boat and a green boat"',
+      '"A photo of a white couch and a yellow dining table and a white oven and a brown chair"',
+      '"A photo of a brown airplane and a red airplane and a blue airplane"',
+      '"A photo of a white bird and a red boat and a blue boat"',
+      '"A photo of a blue dog and a white bed and a green tie"',
+      '"A photo of a black dog and a blue dog and a brown dog"',
+      '"A photo of a white umbrella and a red umbrella"',
+      '"A photo of a brown boat and a brown boat and a yellow boat and a black boat and a white boat and a green boat"'
+    ];
+
+    let currentIndex = 0;
+    const totalSlides = galleryPrompts.length;
+
+    function initGallery() {
+      const dotsContainer = document.getElementById('galleryDots');
+      document.getElementById('totalSlides').textContent = totalSlides;
+      
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function updateGallery() {
+      const track = document.getElementById('galleryTrack');
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      document.getElementById('currentSlide').textContent = currentIndex + 1;
+      document.getElementById('galleryPrompt').textContent = galleryPrompts[currentIndex];
+      
+      const dots = document.querySelectorAll('.gallery-dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+      });
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateGallery();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateGallery();
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateGallery();
+    }
+
+    // Auto-advance gallery
+    let autoAdvance = setInterval(nextSlide, 5000);
+
+    document.getElementById('imageGallery').addEventListener('mouseenter', () => {
+      clearInterval(autoAdvance);
+    });
+
+    document.getElementById('imageGallery').addEventListener('mouseleave', () => {
+      autoAdvance = setInterval(nextSlide, 5000);
+    });
+
+    // Copy BibTeX
+    function copyBibTeX() {
+      const code = document.getElementById('bibtexCode').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.classList.add('copied');
+        btn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = '<i class="fas fa-copy"></i><span>Copy</span>';
+        }, 2000);
+      });
+    }
+
+    // Scroll to top
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const btn = document.querySelector('.scroll-to-top');
+      if (window.pageYOffset > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', initGallery);
+</script>
+
+</body>
+</html>
