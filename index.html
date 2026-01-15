@@ -25,6 +25,7 @@
 					<li><a href="publications.html">PUBLICATIONS</a></li>
 					<li><a href="https://aibl.snu.ac.kr/team">TEAM</a></li>
 					<li><a href="assets/study/">STUDY</a></li>
+					<li><a href="projects/">PROJECTS</a></li>
 					<li><a href="assets/cv/Ziseok_Lee_CV.pdf">CV</a></li>
 				</ul>
 			</div>
@@ -36,6 +37,7 @@
 				<p><a href="publications.html">PUBLICATIONS</a></p>
 				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
 				<p><a href="assets/study/">STUDY</a></p>
+				<p><a href="projects/">PROJECTS</a></p>
 				<p><a href="assets/cv/Ziseok_Lee_CV.pdf">CV</a></p>
 			</div>
 		</header>
@@ -115,6 +117,185 @@
 						}
 					}
 				</style>
+
+				<div id="projects">
+					<header>
+						<h2>Projects</h2>
+					</header>
+					<div id="project-card-grid"></div>
+					<hr>
+				</div>
+
+				<style>
+					/* Grid Layout */
+					#project-card-grid {
+						display: grid;
+						grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+						gap: 30px;
+						width: 100%; /* Adapts to parent div */
+						margin: 0 auto;
+					}
+				</style>
+
+				<script>
+				(function() {
+					// We target the specific ID we defined above
+					const container = document.getElementById('project-card-grid');
+					// Path to your JSON file. Adjust '../projects.json' if needed based on your folder structure.
+					const jsonPath = 'myprojects.json'; 
+
+					async function fetchLinkData(url) {
+						const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}`;
+						try {
+							const response = await fetch(apiUrl);
+							const data = await response.json();
+							return data.status === 'success' ? data.data : null;
+						} catch (error) {
+							return null;
+						}
+					}
+					// A. Modified createCard to accept an image override
+					function createCard(data, originalEntry) {
+						// Check if originalEntry is an object with a manual image
+						const manualImage = (typeof originalEntry === 'object' && originalEntry.image) ? originalEntry.image : null;
+						const linkUrl = (typeof originalEntry === 'object') ? originalEntry.url : originalEntry;
+
+						const card = document.createElement('a');
+						card.href = linkUrl;
+						card.target = "_blank";
+						card.className = 'p-card';
+						
+						const title = data.title || 'Untitled Project';
+						const desc = data.description || 'No description available.';
+						
+						// PRIORITIZE MANUAL IMAGE
+						const finalImage = manualImage || (data.image ? data.image.url : null);
+
+						const imageHtml = finalImage 
+							? `<img src="${finalImage}" alt="${title}" class="p-card-image" onerror="this.style.display='none'">`
+							: ''; 
+
+						card.innerHTML = `
+							<div class="p-card-image-wrapper">
+								${imageHtml}
+							</div>
+							<div class="p-card-content">
+								<h2 class="p-card-title">${title}</h2>
+								<p class="p-card-desc">${desc}</p>
+							</div>
+						`;
+						return card;
+					}
+
+					// B. Modified Init to handle objects vs strings
+					async function init() {
+						try {
+							const response = await fetch('myprojects.json');
+							if (!response.ok) throw new Error(`Status: ${response.status}`);
+							
+							const projectList = await response.json();
+
+							// Render Skeletons
+							projectList.forEach(() => {
+								const skeleton = document.createElement('div');
+								skeleton.className = 'p-card p-skeleton';
+								container.appendChild(skeleton);
+							});
+
+							// Fetch Previews
+							// We map through the list. If it's a string, use it. If it's an object, use .url
+							const cardDataPromises = projectList.map(entry => {
+								const url = (typeof entry === 'object') ? entry.url : entry;
+								return fetchLinkData(url);
+							});
+							
+							const results = await Promise.all(cardDataPromises);
+
+							container.innerHTML = '';
+							results.forEach((data, index) => {
+								// Even if data is null (fetch failed), we might still want to show the card if we have a manual image
+								const entry = projectList[index];
+								const safeData = data || { title: 'Project', description: '' }; // Fallback data
+								
+								container.appendChild(createCard(safeData, entry));
+							});
+
+						} catch (err) {
+							console.error(err);
+						}
+					}
+
+					// function createCard(data, originalUrl) {
+					// 	const card = document.createElement('a');
+					// 	card.href = originalUrl;
+					// 	card.target = "_blank";
+					// 	// We use 'p-card' class to ensure styles don't clash with other frameworks (like Bootstrap)
+					// 	card.className = 'p-card';
+						
+					// 	const title = data.title || 'Untitled Project';
+					// 	const desc = data.description || 'No description available.';
+					// 	const hasImage = data.image && data.image.url;
+
+					// 	const imageHtml = hasImage 
+					// 		? `<img src="${data.image.url}" alt="${title}" class="p-card-image" onerror="this.style.display='none'">`
+					// 		: ''; 
+
+					// 	card.innerHTML = `
+					// 		<div class="p-card-image-wrapper">
+					// 			${imageHtml}
+					// 		</div>
+					// 		<div class="p-card-content">
+					// 			<h2 class="p-card-title">${title}</h2>
+					// 			<p class="p-card-desc">${desc}</p>
+					// 		</div>
+					// 	`;
+					// 	return card;
+					// }
+
+					// async function init() {
+					// 	try {
+					// 		const response = await fetch(jsonPath);
+							
+					// 		if (!response.ok) {
+					// 			throw new Error(`Could not load ${jsonPath} (Status: ${response.status}).`);
+					// 		}
+							
+					// 		const projectLinks = await response.json();
+
+					// 		// Render Skeletons
+					// 		projectLinks.forEach(() => {
+					// 			const skeleton = document.createElement('div');
+					// 			skeleton.className = 'p-card p-skeleton';
+					// 			container.appendChild(skeleton);
+					// 		});
+
+					// 		// Fetch Previews
+					// 		const cardDataPromises = projectLinks.map(url => fetchLinkData(url));
+					// 		const results = await Promise.all(cardDataPromises);
+
+					// 		// Clear and Render Real Cards
+					// 		container.innerHTML = '';
+					// 		results.forEach((data, index) => {
+					// 			if (data) {
+					// 				container.appendChild(createCard(data, projectLinks[index]));
+					// 			} else {
+					// 				const errorCard = document.createElement('div');
+					// 				errorCard.className = 'p-card p-error-msg';
+					// 				errorCard.innerText = `Could not preview: ${projectLinks[index]}`;
+					// 				container.appendChild(errorCard);
+					// 			}
+					// 		});
+
+					// 	} catch (err) {
+					// 		container.innerHTML = `<div class="p-error-msg"><strong>Error loading projects:</strong> ${err.message}</div>`;
+					// 		console.error(err);
+					// 	}
+					// }
+
+					// Run
+					init();
+				})();
+				</script>
 
 				<div id="education">
 					<header>

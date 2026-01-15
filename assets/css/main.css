@@ -3316,6 +3316,87 @@ input, select, textarea {
 			}
 
 	}
+
+
+
+	/* Card Component */
+	.p-card {
+		background: white; 
+		border-radius: 12px; 
+		overflow: hidden;
+		box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+		transition: transform 0.2s, box-shadow 0.2s;
+		display: flex; 
+		flex-direction: column; 
+		text-decoration: none; 
+		color: inherit; /* Inherit font color from your site */
+		border: 1px solid rgba(0,0,0,0.05); /* Subtle border for contrast */
+	}
+
+	.p-card:hover { 
+		transform: translateY(-5px); 
+		box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+	}
+
+	.p-card-image-wrapper { 
+		width: 100%; 
+		height: 150px; 
+		background-color: #cfd8dc; 
+		overflow: hidden; 
+		position: relative; 
+		display: flex; 
+		align-items: center; 
+		justify-content: center; 
+	}
+
+	.p-card-image { 
+		width: 100%; 
+		height: 100%; 
+		object-fit: cover; 
+	}
+
+	.p-card-content { 
+		padding: 20px; 
+		flex-grow: 1; 
+		display: flex; 
+		flex-direction: column; 
+	}
+
+	.p-card-title { 
+		margin: 0 0 10px 0; 
+		font-size: 1.25rem; 
+		font-weight: 700; 
+		color: #2c3e50; /* Adjust if your site uses a specific heading color */
+	}
+
+	.p-card-desc { 
+		font-size: 0.95rem; 
+		color: #666; 
+		line-height: 1.5; 
+		display: -webkit-box; 
+		-webkit-line-clamp: 3; 
+		-webkit-box-orient: vertical; 
+		overflow: hidden; 
+	}
+
+	/* Loading States */
+	.p-skeleton { 
+		animation: p-skeleton-loading 1s linear infinite alternate; 
+		height: 350px; 
+	}
+
+	@keyframes p-skeleton-loading { 
+		0% { background-color: #e0e0e0; } 
+		100% { background-color: #f0f0f0; } 
+	}
+
+	.p-error-msg { 
+		padding: 20px; 
+		color: red; 
+		text-align: center; 
+		grid-column: 1 / -1; /* Make error span full width */
+	}
+
 	:root[data-theme="dark"] {
         /* Styles for dark mode */
 		#header, #footer, #footer ul {
@@ -3375,6 +3456,28 @@ input, select, textarea {
 		input[type="radio"] + label {
 			color: #dfdfdf;
 		}
+		/* --- Project Card Section Overrides --- */
+        .p-card {
+            background-color: transparent; /* Matches your code block background */
+            border: 1px solid #484848; /* Subtle border for definition */
+            color: #dfdfdf; /* Override the blue link color */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .p-card-title {
+            color: #dfdfdf;
+        }
+        .p-card-desc {
+            color: #aaaaaa; /* Slightly dimmed for hierarchy */
+        }
+        .p-card-image-wrapper {
+            background-color: #cfd8dc; /* Darker placeholder for images */
+        }
+        .p-skeleton {
+            animation-name: p-skeleton-loading-dark; /* Switch to dark animation */
+        }
+        .p-error-msg {
+            color: #ff6b6b; /* Softer red for dark mode */
+        }
     }
 	/* @media (prefers-color-scheme: dark) {
 		#header, #footer, #footer ul {
@@ -3493,4 +3596,10 @@ input, select, textarea {
 		input[type="radio"] + label {
 			color: #1c1b1a;
 		}
+}
+
+/* Paste this at the very bottom of your style sheet */
+@keyframes p-skeleton-loading-dark {
+    0% { background-color: #383838; }
+    100% { background-color: #484848; }
 }

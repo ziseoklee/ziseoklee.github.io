@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <style>
+        /* --- Styles remain mostly the same --- */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f4f9; padding: 40px; margin: 0; }
+        h1 { text-align: center; color: #333; margin-bottom: 40px; }
+        
+        #card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s;
+            display: flex; flex-direction: column; text-decoration: none; color: inherit;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .card-image-wrapper { width: 100%; height: 200px; background-color: #cfd8dc; /*#e0e0e0*/ overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+        .card-image { width: 100%; height: 100%; object-fit: cover; }
+        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700; color: #2c3e50; }
+        .card-desc { font-size: 0.95rem; color: #666; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .skeleton { animation: skeleton-loading 1s linear infinite alternate; height: 350px; }
+        @keyframes skeleton-loading { 0% { background-color: #e0e0e0; } 100% { background-color: #f0f0f0; } }
+        .error-msg { padding: 20px; color: red; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <h1>Projects</h1>
+    <div id="card-container">
+        </div>
+
+    <script>
+        const container = document.getElementById('card-container');
+
+        // 1. Fetch Microlink Data
+        async function fetchLinkData(url) {
+            const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                return data.status === 'success' ? data.data : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        // // 2. Create Card HTML
+        // function createCard(data, originalUrl) {
+        //     const card = document.createElement('a');
+        //     card.href = originalUrl;
+        //     card.target = "_blank";
+        //     card.className = 'card';
+            
+        //     const imageSrc = data.image ? data.image.url : 'https://via.placeholder.com/400x200?text=No+Preview';
+        //     const title = data.title || 'Untitled Project';
+        //     const desc = data.description || 'No description available.';
+
+        //     card.innerHTML = `
+        //         <div class="card-image-wrapper">
+        //             <img src="${imageSrc}" alt="${title}" class="card-image">
+        //         </div>
+        //         <div class="card-content">
+        //             <h2 class="card-title">${title}</h2>
+        //             <p class="card-desc">${desc}</p>
+        //         </div>
+        //     `;
+        //     return card;
+        // }
+        // // 2. Create Card HTML
+        // function createCard(data, originalUrl) {
+        //     const card = document.createElement('a');
+        //     card.href = originalUrl;
+        //     card.target = "_blank";
+        //     card.className = 'card';
+            
+        //     const title = data.title || 'Untitled Project';
+        //     const desc = data.description || 'No description available.';
+        //     const hasImage = data.image && data.image.url;
+
+        //     // Logic:
+        //     // 1. If we have an image URL, create the <img> tag.
+        //     // 2. We add 'onerror' to the img tag. If the image link is broken (404),
+        //     //    this inline script runs: "this.style.display='none'".
+        //     //    This hides the broken image icon and reveals the neutral background div behind it.
+            
+        //     const imageHtml = hasImage 
+        //         ? `<img src="${data.image.url}" alt="${title}" class="card-image" onerror="this.style.display='none'">`
+        //         : ''; // If no image, render nothing (showing the background color)
+
+        //     card.innerHTML = `
+        //         <div class="card-image-wrapper">
+        //             ${imageHtml}
+        //         </div>
+        //         <div class="card-content">
+        //             <h2 class="card-title">${title}</h2>
+        //             <p class="card-desc">${desc}</p>
+        //         </div>
+        //     `;
+        //     return card;
+        // }
+
+        // // 3. Main Execution
+        // async function init() {
+        //     try {
+        //         // A. Load the JSON file
+        //         const response = await fetch('../myprojects.json');
+                
+        //         if (!response.ok) {
+        //             throw new Error(`Could not load myprojects.json (Status: ${response.status}). Ensure you are running on a local server.`);
+        //         }
+                
+        //         const projectLinks = await response.json();
+
+        //         // B. Render Skeletons based on list length
+        //         projectLinks.forEach(() => {
+        //             const skeleton = document.createElement('div');
+        //             skeleton.className = 'card skeleton';
+        //             container.appendChild(skeleton);
+        //         });
+
+        //         // C. Fetch Previews
+        //         const cardDataPromises = projectLinks.map(url => fetchLinkData(url));
+        //         const results = await Promise.all(cardDataPromises);
+
+        //         // D. Clear and Render Real Cards
+        //         container.innerHTML = '';
+        //         results.forEach((data, index) => {
+        //             if (data) {
+        //                 container.appendChild(createCard(data, projectLinks[index]));
+        //             } else {
+        //                 // Fallback for failed links
+        //                 const errorCard = document.createElement('div');
+        //                 errorCard.className = 'card error-msg';
+        //                 errorCard.innerText = `Could not preview: ${projectLinks[index]}`;
+        //                 container.appendChild(errorCard);
+        //             }
+        //         });
+
+        //     } catch (err) {
+        //         container.innerHTML = `<div class="error-msg"><strong>Error:</strong> ${err.message}</div>`;
+        //         console.error(err);
+        //     }
+        // }
+
+        // 2. Create Card HTML (Updated to support manual image override)
+        function createCard(data, originalEntry) {
+            // Determine if the entry is an object (manual override) or just a string URL
+            const isObject = typeof originalEntry === 'object' && originalEntry !== null;
+            const linkUrl = isObject ? originalEntry.url : originalEntry;
+            const manualImage = isObject ? originalEntry.image : null;
+
+            const card = document.createElement('a');
+            card.href = linkUrl;
+            card.target = "_blank";
+            card.className = 'card';
+            
+            const title = data.title || 'Untitled Project';
+            const desc = data.description || 'No description available.';
+            
+            // Logic: Use manual image if provided; otherwise fallback to API image
+            const finalImage = manualImage || (data.image ? data.image.url : null);
+            
+            const imageHtml = finalImage 
+                ? `<img src="${finalImage}" alt="${title}" class="card-image" onerror="this.style.display='none'">`
+                : ''; 
+
+            card.innerHTML = `
+                <div class="card-image-wrapper">
+                    ${imageHtml}
+                </div>
+                <div class="card-content">
+                    <h2 class="card-title">${title}</h2>
+                    <p class="card-desc">${desc}</p>
+                </div>
+            `;
+            return card;
+        }
+
+        // 3. Main Execution (Updated to handle mixed JSON types)
+        async function init() {
+            try {
+                // A. Load the JSON file
+                const response = await fetch('../myprojects.json');
+                
+                if (!response.ok) {
+                    throw new Error(`Could not load myprojects.json (Status: ${response.status}). Ensure you are running on a local server.`);
+                }
+                
+                const projectLinks = await response.json();
+
+                // B. Render Skeletons based on list length
+                projectLinks.forEach(() => {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'card skeleton';
+                    container.appendChild(skeleton);
+                });
+
+                // C. Fetch Previews
+                // We map through the list. If it's an object, we extract .url; if string, we use it directly.
+                const cardDataPromises = projectLinks.map(entry => {
+                    const url = (typeof entry === 'object' && entry !== null) ? entry.url : entry;
+                    return fetchLinkData(url);
+                });
+                
+                const results = await Promise.all(cardDataPromises);
+
+                // D. Clear and Render Real Cards
+                container.innerHTML = '';
+                results.forEach((data, index) => {
+                    // We pass the original JSON entry (string or object) to createCard
+                    if (data) {
+                        container.appendChild(createCard(data, projectLinks[index]));
+                    } else {
+                        // Fallback: If API fails, check if we have a manual image to save the day?
+                        // If you want to force render even if API fails (using manual image), uncomment the logic below.
+                        // For now, we stick to the error message if API fails, to keep it simple.
+                        
+                        const errorCard = document.createElement('div');
+                        errorCard.className = 'card error-msg';
+                        const urlString = (typeof projectLinks[index] === 'object') ? projectLinks[index].url : projectLinks[index];
+                        errorCard.innerText = `Could not preview: ${urlString}`;
+                        container.appendChild(errorCard);
+                    }
+                });
+
+            } catch (err) {
+                container.innerHTML = `<div class="error-msg"><strong>Error:</strong> ${err.message}</div>`;
+                console.error(err);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
