@@ -3111,7 +3111,7 @@ input, select, textarea {
 				padding: 2.5em;
 				transform: translateY(-20px);
 				transition: opacity 0.3s ease, transform 0.3s ease;
-				background: rgba(30, 30, 30, 0.85); /* semi-transparent dark background */
+				background: rgb(30, 30, 30); /* semi-transparent dark background */
 				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 				/* border-radius: 0 0 1em 1em; */
 				position: absolute;

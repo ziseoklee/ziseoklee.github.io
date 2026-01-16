@@ -617,6 +617,29 @@ window.MathJax = {
 // toggleBtn.textContent = mode.toUpperCase();
 // }
 
+// const toggles = document.querySelectorAll(".theme-toggle");
+// const root = document.documentElement;
+
+// let theme = localStorage.getItem("theme") || "light";
+// applyTheme(theme);
+
+// toggles.forEach(btn => {
+//   btn.addEventListener("click", () => {
+//     theme = theme === "light" ? "dark" : "light";
+//     localStorage.setItem("theme", theme);
+//     applyTheme(theme);
+//   });
+// });
+
+// function applyTheme(mode) {
+//   root.removeAttribute("data-theme");
+//   if (mode !== "system") root.setAttribute("data-theme", mode);
+
+//   toggles.forEach(btn => {
+//     btn.textContent = mode.toUpperCase();
+//   });
+// }
+
 const toggles = document.querySelectorAll(".theme-toggle");
 const root = document.documentElement;
 
@@ -624,7 +647,8 @@ let theme = localStorage.getItem("theme") || "light";
 applyTheme(theme);
 
 toggles.forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault(); // Stop the link from navigating/jumping
     theme = theme === "light" ? "dark" : "light";
     localStorage.setItem("theme", theme);
     applyTheme(theme);
@@ -634,8 +658,6 @@ toggles.forEach(btn => {
 function applyTheme(mode) {
   root.removeAttribute("data-theme");
   if (mode !== "system") root.setAttribute("data-theme", mode);
-
-  toggles.forEach(btn => {
-    btn.textContent = mode.toUpperCase();
-  });
+  
+  // I removed the code block here that was changing the text content
 }
