@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<link rel="icon" href="/assets/images/pageicon.svg" type="image/svg+xml">
+		<link rel="icon" href="/assets/images/pageicon.png" type="image/png">
+		<link rel="apple-touch-icon" href="/assets/images/pageicon.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div id="menu-toggle"><a id="menu-toggle-button">☰</a></div>
+			<div id="nav-menu">
+				<ul>
+					<li><a href="#" class="theme-toggle"><img src="/assets/images/lovebulb.svg" /></a></li>
+					<li><a href="/index.html">HOME</a></li>
+					<li><a href="/bio.html">BIO</a></li>
+					<li><a href="/news.html">NEWS</a></li>
+					<li><a href="/publications.html">PUBLICATIONS</a></li>
+					<li><a href="https://aibl.snu.ac.kr/team">TEAM</a></li>
+					<li><a href="/assets/study/">STUDY</a></li>
+				</ul>
+			</div>
+			<div class="inner">
+				<a href="#" class="theme-toggle"><img src="/assets/images/lovebulb.svg" /></a>
+				<p><a href="/index.html">HOME</a></p>
+				<p><a href="/bio.html">BIO</a></p>
+				<p><a href="/news.html">NEWS</a></p>
+				<p><a href="/publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="/assets/study/">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<section>
+				<div>
+					<h1>Universal Approximation Theorems</h1>
+					<p>2026.02.13.</p>
+				</div>
+				
+				<hr>
+				<div>
+					<header>
+						<h3>Abstract</h3>
+					</header>
+					<p>
+						This post discusses various theorems on the approximation capabilities of neural networks. These results are known as universal approximation theorems (UATs).
+					</p>
+					<p>
+						<i>Notations:</i> Let $\mathbb{N}$ and $\mathbb{R}$ denote the set of natural numbers and real numbers, respectively. Matrices and vectors are denoted by boldface letters $(\mathbf{A}, \mathbf{a})$, scalars by normal font $(A,a)$, and sets by blackboard bold font $(\mathbb{A})$.
+						The $p-$norm of $\mathcal{l}^p$ norm of a vector $\mathbf{x}\in\mathbb{X}\subseteq \mathbb{R}^n$ is defined as:
+						$$
+						\| \mathbf{x} \|_p = \left( \sum_{i=1}^n |x_i|^p \right)^{1/p}, \quad 1 \leq p < \infty
+						$$
+						The $L^p$ norm of a function $f:\mathbb{X}\to\mathbb{R}$ is defined as:
+						$$
+						\| f \|_{L^p} = \left( \int_{\mathbb{X}} \|f(\mathbf{x})\|_p^p d\mu(\mathbf{x}) \right)^{1/p}, \quad 1 \leq p < \infty
+						$$
+						Lebesgue spaces or $\mathbb{L}^p$ spaces are function spaces containing measurable functions $f$ satisfying $\| f \|_{L^p} < \infty$.
+						A subset $\mathbb{X}$ of $\mathbb{R}^n$ is said to be compact if it is closed and bounded. A subset $\mathbb{S}$ of a topological space $\mathbb{T}$ is said to be dense in $\mathbb{T}$, 
+						if every element of $\mathbb{T}$ is either in $\mathbb{S}$ or a limit point of $\mathbb{S}$. 
+					</p>
+				</div>
+				<hr>
+				<article id="markdown-content"></article>
+				<hr>
+				<div id="references-container" style="display: none;">
+					<h3>References</h3>
+					<div id="references-list"></div>
+				</div>
+			</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en" class="icon solid fa-graduation-cap"><span class="label">Scholar</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<!-- <li><a class="theme-toggle">Theme</a></li> -->
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="https://cdn.jsdelivr.net/npm/citation-js@0.6.8/build/citation.min.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/jquery.poptrox.min.js"></script>
+		<script src="/assets/js/browser.min.js"></script>
+		<script src="/assets/js/breakpoints.min.js"></script>
+		<script src="/assets/js/util.js"></script>
+		<script src="/assets/js/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		
+		<script>
+		function getQueryParam(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		async function loadMarkdown() {
+			const file = getQueryParam("post");
+			
+			// If no specific post, show index
+			if (!file) {
+				loadIndex();
+				return;
+			}
+
+			try {
+				const response = await fetch(file);
+				if (!response.ok) throw new Error("Markdown file not found");
+				const text = await response.text();
+				document.getElementById("markdown-content").innerHTML = marked.parse(text);
+
+				if (window.MathJax) MathJax.typesetPromise();
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Error: ${err.message}</p>`;
+			}
+		}
+
+		async function loadIndex() {
+			try {
+				// GitHub Pages doesn’t allow directory listing.
+				// So: maintain a `posts.json` file manually.
+				const response = await fetch("posts.json");
+				const posts = await response.json();
+
+				let html = "<h3>Contents</h3><ul>";
+				posts.forEach(post => {
+					html += `<li><a href="index.html?post=${post.file}">${post.title}</a> 
+							<small>(${post.date})</small></li>`;
+				});
+				html += "</ul>";
+				document.getElementById("markdown-content").innerHTML = html;
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Could not load index. Create <code>posts.json</code>.</p>`;
+			}
+		}
+
+		loadMarkdown();
+
+		async function loadBibtexReferences() {
+			try {
+				// Hardcoded to fetch the fixed file
+				const response = await fetch("references.bib");
+				if (!response.ok) {
+					console.log("references.bib not found or could not be loaded.");
+					return; 
+				}
+				
+				const bibtex = await response.text();
+				
+				// Initialize Citation.js
+				const Cite = require('citation-js');
+				const citations = new Cite(bibtex);
+				
+				// Format to standard APA HTML
+				const htmlOutput = citations.format('bibliography', {
+					format: 'html',
+					template: 'apa',
+					lang: 'en-US'
+				});
+
+				// Inject the HTML and reveal the container
+				document.getElementById("references-list").innerHTML = htmlOutput;
+				document.getElementById("references-container").style.display = "block";
+				
+			} catch (err) {
+				console.error("Error parsing references.bib:", err);
+			}
+		}
+
+		// Call the function independently of your markdown loader
+		loadBibtexReferences();
+		</script>
+
+	</body>
+</html>

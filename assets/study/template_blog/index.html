@@ -22,7 +22,7 @@
 					<li><a href="/news.html">NEWS</a></li>
 					<li><a href="/publications.html">PUBLICATIONS</a></li>
 					<li><a href="https://aibl.snu.ac.kr/team">TEAM</a></li>
-					<li><a href="/assets/study/"><strong>STUDY</strong></a></li>
+					<li><a href="/assets/study/">STUDY</a></li>
 				</ul>
 			</div>
 			<div class="inner">
@@ -32,7 +32,7 @@
 				<p><a href="/news.html">NEWS</a></p>
 				<p><a href="/publications.html">PUBLICATIONS</a></p>
 				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
-				<p><a href="/assets/study/"><strong>STUDY</strong></a></p>
+				<p><a href="/assets/study/">STUDY</a></p>
 			</div>
 		</header>
 
@@ -43,29 +43,27 @@
 
 		<!-- Main Division -->
 		<div id="main">
-			<!-- HOME -->
 			<section>
 				<div>
-					<h1>Study Interests</h1>
-					<ol>
-						<li>
-							<b>[Generative Artificial Intelligence]</b> <br>
-							Exploring the theoretical principles and algorithmic implementations of probabilistic and transport-based generative models across continuous, discrete, Hilbert state spaces.
-						</li>
-						<li>
-							<b>[Artificial Intelligence for Science]</b> <br>
-							Applying machine learning techniques to solve complex scientific problems, particularly in molecular generation, molecular interaction modeling, and protein science, with applications in drug discovery.
-						</li>
-						<li>
-							<b>[Mathematical Foundations]</b> <br>
-							Studying mathematical foundations of learning systems, including symmetry (equivariance, group and representation theory), <a href="/assets/study/2026-UAT/">approximation (UATs)</a>, dynamical systems theory, and transport theory.
-						</li>
-						<li>
-							<b>[Human Intelligence]</b> <br>
-							Exploring intelligence systems from multiple persepctives including neuroscience and chaos theory (the brain as a complex system), information theory (uncertainty and entropy), psychology (psychological entropy), sociology, philosophy, and religion (The Denial of Death).
-						</li>
-					</ol>
+					<h1>Topic of the Study</h1>
 				</div>
+				
+				<hr>
+				<div>
+					<header>
+						<h3>Abstract</h3>
+					</header>
+					<p>
+						A brief introduction to what the study is about, its significance, and the main topics covered.
+					</p>
+				</div>
+				<hr>
+				<article id="markdown-content"></article>
+				<hr>
+				<h3>References</h3>
+				<ul>
+					<li><a href=".">Reference 1</a>, Name, etc.</li>
+				</ul>
 			</section>
 		</div>
 
@@ -93,6 +91,58 @@
 		<script src="/assets/js/util.js"></script>
 		<script src="/assets/js/main.js"></script>
 		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		
+		<script>
+		function getQueryParam(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		async function loadMarkdown() {
+			const file = getQueryParam("post");
+			
+			// If no specific post, show index
+			if (!file) {
+				loadIndex();
+				return;
+			}
+
+			try {
+				const response = await fetch(file);
+				if (!response.ok) throw new Error("Markdown file not found");
+				const text = await response.text();
+				document.getElementById("markdown-content").innerHTML = marked.parse(text);
+
+				if (window.MathJax) MathJax.typesetPromise();
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Error: ${err.message}</p>`;
+			}
+		}
+
+		async function loadIndex() {
+			try {
+				// GitHub Pages doesn’t allow directory listing.
+				// So: maintain a `posts.json` file manually.
+				const response = await fetch("posts.json");
+				const posts = await response.json();
+
+				let html = "<h3>Contents</h3><ul>";
+				posts.forEach(post => {
+					html += `<li><a href="index.html?post=${post.file}">${post.title}</a> 
+							<small>(${post.date})</small></li>`;
+				});
+				html += "</ul>";
+				document.getElementById("markdown-content").innerHTML = html;
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Could not load index. Create <code>posts.json</code>.</p>`;
+			}
+		}
+
+		loadMarkdown();
+		</script>
 
 	</body>
 </html>
