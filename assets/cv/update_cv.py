@@ -136,6 +136,7 @@ async def main():
                     body, #main {{ background: #ffffff !important; margin: 0 !important; width: 100% !important; font-size: 10pt !important; padding: 0.1rem !important; }}
                     * {{ background: #ffffff !important; }}
                     h1, h2, h3, h4, p, b, i, a, ul, ol, table, .major p {{ margin: 0 !important; padding: 0 !important; font-family: "Times New Roman", serif !important; font-size: 10pt !important;}}
+                    #projects {{ display: none !important; }}
                 </style>
             </head>
             <body>
@@ -147,8 +148,11 @@ async def main():
                 <ul class="icons">
 					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="https://ziseoklee.github.io/index.html#contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					<li><a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en" class="icon solid fa-graduation-cap"><span class="label">Scholar</span></a></li>
 				</ul>
+                <p>Personal Website: <a href="https://ziseoklee.github.io/">https://ziseoklee.github.io/</a></p>
+                <p>Google Scholar: <a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en">https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en</a></p>
+                <hr>
         """
         # Add contact info inside the class=major element
         with open(temp_html, "r+", encoding="utf-8") as f:

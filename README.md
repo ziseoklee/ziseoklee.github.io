@@ -10,8 +10,10 @@ Computer Vision
 
 To view the most recently updated CV, run the following code:
 ```bash
+python3 -m venv .venv
 pip install playwright bibtexparser bs4
-python -m playwright install
+python3 -m playwright install
+python3 -m playwright install-deps
 cd assets/cv
 python update_cv.py
 ```
