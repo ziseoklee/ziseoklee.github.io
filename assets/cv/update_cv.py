@@ -141,6 +141,18 @@ async def main():
             </head>
             <body>
                 {all_content}
+                <hr>
+                <h1>Technical Skills</h1>
+                <p>Programming Languages: Python, C/C++, Java, JavaScript, HTML/CSS</p>
+                <p>Frameworks & Libraries: PyTorch, Scikit-learn, OpenCV, React</p>
+                <p>Tools & Platforms: Git, Docker, Linux</p>
+                <p>Languages: Korean (native), English (fluent)</p>
+                <hr>
+                <h1>References</h1>
+                <p><b>Dr. Kyungsu Kim</b> (Primary advicsor)<br>
+                Professor, School of Transdisciplinary Innovations<br>
+                Seoul National University<br>
+                Email: kyskim@snu.ac.kr</p>
             </body>
             </html>
             """)
@@ -152,6 +164,7 @@ async def main():
 				</ul>
                 <p>Personal Website: <a href="https://ziseoklee.github.io/">https://ziseoklee.github.io/</a></p>
                 <p>Google Scholar: <a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en">https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en</a></p>
+                <p>Contact: ziseoklee@snu.ac.kr</p>
                 <hr>
         """
         # Add contact info inside the class=major element
@@ -169,6 +182,10 @@ async def main():
             page = await browser.new_page()
             await page.set_viewport_size({"width": 1800, "height": 1800})
             await page.goto("file://" + temp_html, wait_until="networkidle")
+
+            # This evaluates JavaScript in the browser to set the 'open' property on all <details> elements
+            await page.evaluate("document.querySelectorAll('details').forEach(detail => detail.open = true);")
+
             output_pdf = "Ziseok_Lee_CV.pdf"
             await page.pdf(
                 path=output_pdf,
