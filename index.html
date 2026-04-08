@@ -125,7 +125,7 @@
 					<hr>
 				</div>
 
-				<style>
+				<!-- <style>
 					/* Grid Layout */
 					#project-card-grid {
 						display: grid;
@@ -133,6 +133,25 @@
 						gap: 30px;
 						width: 100%; /* Adapts to parent div */
 						margin: 0 auto;
+					}
+				</style> -->
+				<style>
+					/* Horizontal Slider Layout */
+					#project-card-grid {
+						display: grid;
+						grid-auto-flow: column;       /* Forces items into a single horizontal row */
+						grid-auto-columns: 300px;     /* Sets the fixed width of each project card */
+						gap: 30px;
+						width: 100%; 
+						margin: 0 auto;
+						overflow-x: auto;             /* Enables the horizontal scrollbar */
+						padding-bottom: 15px;         /* Prevents the scrollbar from overlapping your cards */
+						scroll-snap-type: x mandatory; /* Optional: Makes scrolling snap to cards nicely */
+					}
+
+					/* Optional: Ensures child cards snap into place if you use scroll-snap-type */
+					#project-card-grid > * {
+						scroll-snap-align: start;
 					}
 				</style>
 
