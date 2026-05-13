@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ziseok Lee</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<link rel="icon" href="/assets/images/pageicon.svg" type="image/svg+xml">
+		<link rel="icon" href="/assets/images/pageicon.png" type="image/png">
+		<link rel="apple-touch-icon" href="/assets/images/pageicon.png">
+	</head>
+
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<div id="menu-toggle"><a id="menu-toggle-button">☰</a></div>
+			<div id="nav-menu">
+				<ul>
+					<li><a href="#" class="theme-toggle"><img src="/assets/images/lovebulb.svg" /></a></li>
+					<li><a href="/index.html">HOME</a></li>
+					<li><a href="/bio.html">BIO</a></li>
+					<li><a href="/news.html">NEWS</a></li>
+					<li><a href="/publications.html">PUBLICATIONS</a></li>
+					<li><a href="https://aibl.snu.ac.kr/team">TEAM</a></li>
+					<li><a href="/assets/study/">STUDY</a></li>
+				</ul>
+			</div>
+			<div class="inner">
+				<a href="#" class="theme-toggle"><img src="/assets/images/lovebulb.svg" /></a>
+				<p><a href="/index.html">HOME</a></p>
+				<p><a href="/bio.html">BIO</a></p>
+				<p><a href="/news.html">NEWS</a></p>
+				<p><a href="/publications.html">PUBLICATIONS</a></p>
+				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+				<p><a href="/assets/study/">STUDY</a></p>
+			</div>
+		</header>
+
+
+
+
+
+
+		<!-- Main Division -->
+		<div id="main">
+			<section>
+				<div>
+					<h1>Generative Modeling by Transport: Mathematical Foundations</h1>
+				</div>
+				
+				<hr>
+				<div>
+					<header>
+						<h3>Generative Intelligence: Bridging Two Communities</h3>
+					</header>
+					<p>
+						Generative AI is reshaping everything from content creation to structure-based drug design. But beyond the applications, what are the underlying principles? Generating data, whether images, text, or molecules, ultimately means sampling from a complex probability distribution. This series explores this process through the mathematical lens of <strong>transport</strong>: learning to transform a simple, known prior into a target distribution via a probability path. This single concept unifies diffusion models, flow networks, optimal transport, and Schrödinger bridges.
+					</p>
+					<p>
+						The conceptual shift from regression and one-step generation to probability path construction is profound. Creating order from noise and entropy is fundamentally a transport problem that must respect the underlying geometry of the data. Yet, critical questions remain: Are our current transport paths optimal? How do we efficiently construct and navigate these paths? And can we model a type of "collective intelligence" by composing multiple probability paths learned by individual experts, to create an intelligence system greater than the sum of its parts?
+					</p>
+					<p>
+						This material serves as a bridge between two communities. It is an invitation for mathematicians and physicists to apply stochastic processes and statistical physics to generative AI, and a call for AI researchers to embrace deeper mathematical rigor. The mathematical and physical principles underlying these systems are not just theoretical curiosities; they are the key to expanding their practical capabilities.
+					</p>
+					<p>
+						While implementation and architecture are crucial, this series focuses on the mathematical foundations often missing in existing literature. Mathematics provides:
+						(1) a unifying language connecting seemingly disparate models,
+						(2) a transparent view of the underlying assumptions and limitations, and
+						(3) a principled foundation for designing novel algorithms. 
+					</p>
+					<p>
+						By the end of this material, you will understand today's most advanced generative models not as isolated technologies, but as diverse instantiations of a single, elegant mathematical framework.
+					</p>
+				</div>
+				<hr>
+				<div>
+					<header>
+						<h3>Lecture Notes</h3>
+					</header>
+					Introduction and Overview [<a href="/assets/study/2026-GMT/files/2026-GMT-lec0.pdf">pdf</a>]
+					<ol>
+						<li>
+							Mathematical Preliminaries, Background, Motivation, and Related Work [<a href="/assets/study/2026-GMT/files/2026-GMT-lec1.pdf">pdf</a>]<br>
+							Homework 1 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw1.pdf">pdf</a>]
+						</li>
+						<li>
+							Stochastic Interpolant Definitions, Transport Equations, and Quadratic Objectives [<a href="/assets/study/2026-GMT/files/2026-GMT-lec2.pdf">pdf</a>]<br>
+							Homework 2 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw2.pdf">pdf</a>]
+						</li>
+						<li>
+							Generative Models, Likelihood Control, Density Estimation [<a href="/assets/study/2026-GMT/files/2026-GMT-lec3.pdf">pdf</a>]<br>
+							Homework 3 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw3.pdf">pdf</a>]
+						</li>
+						<li>
+							Instantiations of Stochastic Interpolants: Diffusive, One-sided, Mirror, and Schrodinger Bridge Interpolants [<a href="/assets/study/2026-GMT/files/2026-GMT-lec4.pdf">pdf</a>]<br>
+							Homework 4 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw4.pdf">pdf</a>]
+						</li>
+						<li>
+							Spatially Linear Interpolants [<a href="/assets/study/2026-GMT/files/2026-GMT-lec5.pdf">pdf</a>]<br>
+							Homework 5 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw5.pdf">pdf</a>]
+						</li>
+						<li>
+							Connections, Algorithms, Implementations, and Numerical Experiments [<a href="/assets/study/2026-GMT/files/2026-GMT-lec6.pdf">pdf</a>]<br>
+							Homework 6 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw6.pdf">pdf</a>]
+						</li>
+						<li>
+							Composing Generative Paths: Feynman-Kac Formula, Correctors, and SMC [<a href="/assets/study/2026-GMT/files/2026-GMT-lec7.pdf">pdf</a>]<br>
+							Homework 7 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw7.pdf">pdf</a>]
+						</li>
+						<li>
+							ACE: Path Existence, Marginal Path Collapse, Adaptive Exponents, and Generator Composition [<a href="/assets/study/2026-GMT/files/2026-GMT-lec8.pdf">pdf</a>]<br>
+							Homework 8 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw8.pdf">pdf</a>]
+						</li>
+					</ol>
+				</div>
+				<!-- <article id="markdown-content"></article> -->
+				<hr>
+				<h3>References</h3>
+				<ul>
+					<li>Albergo, M., Boffi, N. M., & Vanden-Eijnden, E. (2025). Stochastic interpolants: A unifying framework for flows and diffusions. Journal of Machine Learning Research, 26(209), 1-80.</li>
+					<li>Lee, Z., Hwang, M., Jo, S., Lee, W., Ko, J., Park, Y. B., ... & Kim, K. (2026). On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering. International Conference on Machine Learning (ICML), 2026.</li>
+					<li>Skreta, M., Akhound-Sadegh, T., Ohanesian, V., Bondesan, R., Aspuru-Guzik, A., Doucet, A., ... & Neklyudov, K. (2025). Feynman-kac correctors in diffusion: Annealing, guidance, and product of experts. International Conference on Machine Learning (ICML), 2025.</li>
+					<li>Holderrieth, P., Havasi, M., Yim, J., Shaul, N., Gat, I., Jaakkola, T., ... & Lipman, Y. (2025, May). Generator matching: Generative modeling with arbitrary markov processes. In International Conference on Learning Representations (Vol. 2025, pp. 52153-52219).</li>
+					<li>Pauline, V., Höppe, T., Neklyudov, K., Tong, A., Bauer, S., & Dittadi, A. (2025). Foundations of diffusion models in general state spaces: A self-contained introduction. arXiv preprint arXiv:2512.05092.</li>
+				</ul>
+			</section>
+		</div>
+
+		
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en" class="icon solid fa-graduation-cap"><span class="label">Scholar</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Ziseok Lee</li>
+					<!-- <li><a class="theme-toggle">Theme</a></li> -->
+					<li><a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/jquery.poptrox.min.js"></script>
+		<script src="/assets/js/browser.min.js"></script>
+		<script src="/assets/js/breakpoints.min.js"></script>
+		<script src="/assets/js/util.js"></script>
+		<script src="/assets/js/main.js"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		
+		<script>
+		function getQueryParam(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		async function loadMarkdown() {
+			const file = getQueryParam("post");
+			
+			// If no specific post, show index
+			if (!file) {
+				loadIndex();
+				return;
+			}
+
+			try {
+				const response = await fetch(file);
+				if (!response.ok) throw new Error("Markdown file not found");
+				const text = await response.text();
+				document.getElementById("markdown-content").innerHTML = marked.parse(text);
+
+				if (window.MathJax) MathJax.typesetPromise();
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Error: ${err.message}</p>`;
+			}
+		}
+
+		async function loadIndex() {
+			try {
+				// GitHub Pages doesn’t allow directory listing.
+				// So: maintain a `posts.json` file manually.
+				const response = await fetch("posts.json");
+				const posts = await response.json();
+
+				let html = "<h3>Contents</h3><ul>";
+				posts.forEach(post => {
+					html += `<li><a href="index.html?post=${post.file}">${post.title}</a> 
+							<small>(${post.date})</small></li>`;
+				});
+				html += "</ul>";
+				document.getElementById("markdown-content").innerHTML = html;
+			} catch (err) {
+				document.getElementById("markdown-content").innerHTML =
+					`<p style="color:red;">Could not load index. Create <code>posts.json</code>.</p>`;
+			}
+		}
+
+		loadMarkdown();
+		</script>
+
+	</body>
+</html>
