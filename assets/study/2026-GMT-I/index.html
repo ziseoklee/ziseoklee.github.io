@@ -45,28 +45,19 @@
 		<div id="main">
 			<section>
 				<div>
-					<h1>Generative Modeling by Transport: Mathematical Foundations</h1>
+					<h1>Generative Modeling by Transport I: Stochastic Interpolants and Continuous Probability Paths</h1>
 				</div>
 				
 				<hr>
 				<div>
 					<header>
-						<h3>Introduction to Generative Modeling via Measure Transport</h3>
+						<h3>Introduction</h3>
 					</header>
 					<p>
-						Generative modeling fundamentally constitutes the process of sampling from high-dimensional probability distributions. This text formalizes generative processes through the mathematical framework of measure transport, defining data generation as the continuous transformation of a tractable prior distribution into a target empirical distribution via a probability path. This framework provides a unified theoretical basis for diffusion models, normalizing flows, optimal transport models, and Schrödinger bridges.
+						Modern generative modeling can be understood as the problem of transporting probability measures through continuous stochastic dynamics. This series develops a unified mathematical framework for diffusion models, flow matching, Schrödinger bridges, and related methods through the theory of stochastic interpolants. Beginning from rigorous probabilistic and analytical foundations—including stochastic calculus, transport equations, and measure-valued dynamics—we derive the governing objectives, likelihood formulations, and geometric principles underlying contemporary generative models from first principles. Rather than treating these systems as isolated architectures or engineering heuristics, the course presents them as different realizations of a single transport-theoretic formalism over probability paths.
 					</p>
 					<p>
-						The paradigm shift from single-step mapping to continuous probability path construction frames data generation as a transport problem governed by the underlying geometry of the data manifold. Consequently, open problems in the field center on determining path optimality, improving computational efficiency in path navigation, and formulating hierarchical compositions of multiple probability paths—referred to herein as collective generative intelligence—to systematically scale system capabilities.
-					</p>
-					<p>
-						This material aims to integrate the analytical rigor of stochastic processes and statistical physics with applied machine learning. The formal mathematical principles underlying these systems are a necessary prerequisite for expanding their empirical capabilities and theoretical guarantees.
-					</p>
-					<p>
-						While architectural design and algorithmic implementation remain relevant, this series prioritizes theoretical foundations. A rigorous mathematical formulation provides: (1) a unified taxonomy for seemingly disparate generative models, (2) an explicit characterization of underlying statistical assumptions and topological limitations, and (3) a principled methodology for deriving novel algorithms.
-					</p>
-					<p>
-						The primary objective of this text is to establish that contemporary state-of-the-art generative models are diverse instantiations of a singular, coherent mathematical framework.
+						The latter portion of the series studies compositional and ratio-based probability paths via the Feynman–Kac framework, sequential Monte Carlo transport, and recent FKC/ACE-style samplers. These topics motivate the broader perspective that generation itself is fundamentally a problem of constructing, composing, and controlling probability flows. By the end of the series, students will possess a rigorous understanding of continuous-time generative modeling theory and the mathematical tools necessary to derive and analyze new transport-based generative systems.
 					</p>
 				</div>
 				<hr>
@@ -74,39 +65,39 @@
 					<header>
 						<h3>Study Notes</h3>
 					</header>
-					Introduction and Overview [<a href="/assets/study/2026-GMT/files/2026-GMT-lec0.pdf">pdf</a>]
+					Introduction and Overview [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec0.pdf">pdf</a>]
 					<ol>
 						<li>
-							Mathematical Preliminaries, Background, Motivation, and Related Work [<a href="/assets/study/2026-GMT/files/2026-GMT-lec1.pdf">pdf</a>]<br>
-							Homework 1 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw1.pdf">pdf</a>]
+							Mathematical Preliminaries, Background, Motivation, and Related Work [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec1.pdf">pdf</a>]<br>
+							Homework 1 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw1.pdf">pdf</a>]
 						</li>
 						<li>
-							Stochastic Interpolant Definitions, Transport Equations, and Quadratic Objectives [<a href="/assets/study/2026-GMT/files/2026-GMT-lec2.pdf">pdf</a>]<br>
-							Homework 2 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw2.pdf">pdf</a>]
+							Stochastic Interpolant Definitions, Transport Equations, and Quadratic Objectives [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec2.pdf">pdf</a>]<br>
+							Homework 2 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw2.pdf">pdf</a>]
 						</li>
 						<li>
-							Generative Models, Likelihood Control, Density Estimation [<a href="/assets/study/2026-GMT/files/2026-GMT-lec3.pdf">pdf</a>]<br>
-							Homework 3 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw3.pdf">pdf</a>]
+							Generative Models, Likelihood Control, Density Estimation [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec3.pdf">pdf</a>]<br>
+							Homework 3 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw3.pdf">pdf</a>]
 						</li>
 						<li>
-							Instantiations of Stochastic Interpolants: Diffusive, One-sided, Mirror, and Schrodinger Bridge Interpolants [<a href="/assets/study/2026-GMT/files/2026-GMT-lec4.pdf">pdf</a>]<br>
-							Homework 4 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw4.pdf">pdf</a>]
+							Instantiations of Stochastic Interpolants: Diffusive, One-sided, Mirror, and Schrodinger Bridge Interpolants [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec4.pdf">pdf</a>]<br>
+							Homework 4 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw4.pdf">pdf</a>]
 						</li>
 						<li>
-							Spatially Linear Interpolants [<a href="/assets/study/2026-GMT/files/2026-GMT-lec5.pdf">pdf</a>]<br>
-							Homework 5 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw5.pdf">pdf</a>]
+							Spatially Linear Interpolants [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec5.pdf">pdf</a>]<br>
+							Homework 5 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw5.pdf">pdf</a>]
 						</li>
 						<li>
-							Connections, Algorithms, Implementations, and Numerical Experiments [<a href="/assets/study/2026-GMT/files/2026-GMT-lec6.pdf">pdf</a>]<br>
-							Homework 6 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw6.pdf">pdf</a>]
+							Connections, Algorithms, Implementations, and Numerical Experiments [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec6.pdf">pdf</a>]<br>
+							Homework 6 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw6.pdf">pdf</a>]
 						</li>
 						<li>
-							Composing Generative Paths: Feynman-Kac Formula, Correctors, and SMC [<a href="/assets/study/2026-GMT/files/2026-GMT-lec7.pdf">pdf</a>]<br>
-							Homework 7 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw7.pdf">pdf</a>]
+							Composing Generative Paths: Feynman-Kac Formula, Correctors, and SMC [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec7.pdf">pdf</a>]<br>
+							Homework 7 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw7.pdf">pdf</a>]
 						</li>
 						<li>
-							ACE: Path Existence, Marginal Path Collapse, Adaptive Exponents, and Generator Composition [<a href="/assets/study/2026-GMT/files/2026-GMT-lec8.pdf">pdf</a>]<br>
-							Homework 8 [<a href="/assets/study/2026-GMT/files/2026-GMT-hw8.pdf">pdf</a>]
+							ACE: Path Existence, Marginal Path Collapse, Adaptive Exponents, and Generator Composition [<a href="/assets/study/2026-GMT-I/files/2026-GMT-lec8.pdf">pdf</a>]<br>
+							Homework 8 [<a href="/assets/study/2026-GMT-I/files/2026-GMT-hw8.pdf">pdf</a>]
 						</li>
 					</ol>
 				</div>
