@@ -10,9 +10,13 @@ import re
 
 pages = [
     "../../index.html",
-    "../../publications_temp.html",
-    "../../bio.html"
+    "../../publications_temp.html"
 ]
+# pages = [
+#     "../../index.html",
+#     "../../publications_temp.html",
+#     "../../bio.html"
+# ]
 bib_file = "../../mypapers.bib"  # adjust path if needed
 
 
@@ -145,11 +149,11 @@ async def main():
                 <h1>Technical Skills</h1>
                 <p>Programming Languages: Python, C/C++, Java, JavaScript, HTML/CSS</p>
                 <p>Frameworks & Libraries: PyTorch, Scikit-learn, OpenCV</p>
-                <p>Tools & Platforms: Git, Docker, Linux</p>
+                <p>Tools & Platforms: High-performance GPU server management, Linux system administration</p>
                 <p>Languages: Korean (native), English (fluent)</p>
                 <hr>
                 <h1>References</h1>
-                <p><b>Dr. Kyungsu Kim</b> (Primary advicsor)<br>
+                <p><b>Dr. Kyungsu Kim</b> (Primary advisor)<br>
                 Professor, School of Transdisciplinary Innovations<br>
                 Seoul National University<br>
                 Email: kyskim@snu.ac.kr</p>
