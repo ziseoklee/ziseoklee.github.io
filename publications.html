@@ -149,7 +149,10 @@
 
 					if (lowerJournal.includes("arxiv")) {
 						preList.appendChild(item);
-					} else if (lowerJournal.includes("workshop")) {
+					} else if (lowerJournal === "") {
+						preList.appendChild(item);
+					}
+					else if (lowerJournal.includes("workshop")) {
 						wsList.appendChild(item);
 					} else {
 						pubList.appendChild(item);
