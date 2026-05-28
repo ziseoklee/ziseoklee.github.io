@@ -71,7 +71,7 @@ def update_publications_page(html_file_path, bib_file_path, output_file_path):
             
             lower_journal = journal_or_book.lower()
             
-            if "arxiv" in lower_journal:
+            if "arxiv" in lower_journal or lower_journal == "":
                 if pre_list:
                     pre_list.append(new_li)
             elif "workshop" in lower_journal:
@@ -144,7 +144,7 @@ async def main():
                 <hr>
                 <h1>Technical Skills</h1>
                 <p>Programming Languages: Python, C/C++, Java, JavaScript, HTML/CSS</p>
-                <p>Frameworks & Libraries: PyTorch, Scikit-learn, OpenCV, React</p>
+                <p>Frameworks & Libraries: PyTorch, Scikit-learn, OpenCV</p>
                 <p>Tools & Platforms: Git, Docker, Linux</p>
                 <p>Languages: Korean (native), English (fluent)</p>
                 <hr>
