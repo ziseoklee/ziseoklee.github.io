@@ -6,9 +6,9 @@
   
   <!-- Primary Meta Tags -->
   <meta name="title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
-  <meta name="description" content="We identify Marginal Path Collapse in diffusion steering and introduce ACE, a framework that guarantees valid probability paths for heterogeneous model composition.">
+  <meta name="description" content="We identify Marginal Path Collapse in diffusion and flow steering and introduce ACE, a framework for diagnosing and correcting collapsed probability paths in compositional generation.">
   <meta name="keywords" content="diffusion models, generative models, flow matching, molecular design, drug discovery, scaffold decoration, inference-time control, machine learning">
-  <meta name="author" content="Ziseok Lee, Minyeong Hwang, Sanghyun Jo, Wooyeol Lee, Jihyung Ko, Young Bin Park, Jae-Mun Choi, Eunho Yang, Kyungsu Kim">
+  <meta name="author" content="Ziseok Lee, Minyeong Hwang, Wooyeol Lee, Sanghyun Jo, Jihyung Ko, Young Bin Park, Jae-Mun Choi, Eunho Yang, Kyungsu Kim">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
   
@@ -16,19 +16,19 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ACE Project">
   <meta property="og:title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
-  <meta property="og:description" content="A principled framework for guaranteed path stability in diffusion steering with heterogeneous experts.">
+  <meta property="og:description" content="A criterion and correction method for reliable compositional sampling with heterogeneous diffusion and flow experts.">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="On the Collapse of Generative Paths">
-  <meta name="twitter:description" content="A principled framework for guaranteed path stability in diffusion steering with heterogeneous experts.">
+  <meta name="twitter:description" content="A criterion and correction method for reliable compositional sampling with heterogeneous diffusion and flow experts.">
 
   <!-- Academic/Research Specific -->
   <meta name="citation_title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
   <meta name="citation_author" content="Lee, Ziseok">
   <meta name="citation_author" content="Hwang, Minyeong">
-  <meta name="citation_author" content="Jo, Sanghyun">
   <meta name="citation_author" content="Lee, Wooyeol">
+  <meta name="citation_author" content="Jo, Sanghyun">
   <meta name="citation_author" content="Ko, Jihyung">
   <meta name="citation_author" content="Park, Young Bin">
   <meta name="citation_author" content="Choi, Jae-Mun">
@@ -36,6 +36,8 @@
   <meta name="citation_author" content="Kim, Kyungsu">
   <meta name="citation_publication_date" content="2026">
   <meta name="citation_conference_title" content="ICML 2026">
+  <meta name="citation_url" content="https://openreview.net/forum?id=emv2qsi3TG">
+  <meta name="citation_code_url" content="https://github.com/ziseoklee/ACE">
   
   <!-- Additional SEO -->
   <meta name="theme-color" content="#2563eb">
@@ -713,10 +715,10 @@
       
       <p class="tldr-text">
         <span class="tldr-badge">TL;DR</span>
-          &nbsp;ACE fixes the hidden failures of <strong>CFG</strong> and <strong>Feynman-Kac Correctors</strong> when combining multiple diffusion models. 
-        <span class="tldr-highlight"><i class="fas fa-plug"></i> Plug-and-play</span> — instantly boost guidance quality for 
-        <span class="tldr-highlight"><i class="fas fa-atom"></i> Molecules</span> and 
-        <span class="tldr-highlight"><i class="fas fa-image"></i> Images</span> 
+          &nbsp;ACE diagnoses and corrects <strong>Marginal Path Collapse</strong>, a hidden failure mode in ratio-of-densities steering with heterogeneous diffusion/flow experts.
+        <span class="tldr-highlight"><i class="fas fa-plug"></i> Plug-and-play</span> steering for
+        <span class="tldr-highlight"><i class="fas fa-atom"></i> Molecules</span> and
+        <span class="tldr-highlight"><i class="fas fa-image"></i> Images</span>
         with <strong>no retraining required</strong>.
       </p>
     </div>
@@ -734,16 +736,16 @@
               <span class="author-block"><a href="#" target="_blank">Ziseok Lee</a><sup>1*†</sup>,</span>
               <span class="author-block"><a href="#" target="_blank">Minyeong Hwang</a><sup>2*</sup>,</span>
               <span class="author-block"><a href="#" target="_blank">Wooyeol Lee</a><sup>1</sup>,</span>
-              <span class="author-block"><a href="#" target="_blank">Sanghyun Jo</a><sup>3</sup>,</span>
-              <span class="author-block"><a href="#" target="_blank">Jihyung Ko</a><sup>1</sup>,</span>
-              <span class="author-block"><a href="#" target="_blank">Young Bin Park</a><sup>4</sup>,</span>
-              <span class="author-block"><a href="#" target="_blank">Jae-Mun Choi</a><sup>4</sup>,</span>
-              <span class="author-block"><a href="#" target="_blank">Eunho Yang</a><sup>2†</sup>,</span>
-              <span class="author-block"><a href="#" target="_blank">Kyungsu Kim</a><sup>1†</sup></span>
+              <span class="author-block"><a href="#" target="_blank">Sanghyun Jo</a><sup>3,4</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Jihyung Ko</a><sup>4</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Young Bin Park</a><sup>5</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Jae-Mun Choi</a><sup>5</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Eunho Yang</a><sup>2,6†</sup>,</span>
+              <span class="author-block"><a href="#" target="_blank">Kyungsu Kim</a><sup>1,4,7†</sup></span>
             </div>
 
             <div class="is-size-6 publication-authors" style="margin-top: 1rem;">
-              <span class="author-block"><sup>1</sup>Seoul National University, <sup>2</sup>KAIST, <sup>3</sup>OGQ, <sup>4</sup>Calici, <sup>5</sup>Korea University</span>
+              <span class="author-block"><sup>1</sup>SNU Biomedical Sciences, <sup>2</sup>KAIST AI, <sup>3</sup>OGQ, <sup>4</sup>SNU IPAI, <sup>5</sup>Calici, <sup>6</sup>AITRICS, <sup>7</sup>SNU Transdisciplinary Innovations</span>
               <br>
               <span class="eql-cntrb"><small><sup>*</sup>Equal Contribution, <sup>†</sup>Corresponding Author</small></span>
             </div>
@@ -757,12 +759,12 @@
                 <span class="link-block">
                   <a href="https://openreview.net/forum?id=emv2qsi3TG" target="_blank" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                    <span>Paper</span>
+                    <span>OpenReview</span>
                   </a>
                 </span>
 
                 <span class="link-block">
-                  <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <a href="https://github.com/ziseoklee/ACE" target="_blank" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fab fa-github"></i></span>
                     <span>Code</span>
                   </a>
@@ -790,25 +792,10 @@
         <h2 class="abstract-title">Abstract</h2>
         <div class="abstract-content">
           <p>
-            Inference-time steering enables pretrained diffusion/flow models to be adapted to
-            new tasks without retraining. A widely used approach is the ratio-of-densities
-            method, which defines a time-indexed target path by reweighting probability-density trajectories from multiple models with positive, or in some cases, negative exponents. This construction, however, harbors a critical and previously
-            unformalized failure mode: Marginal Path Collapse, where intermediate densities
-            become non-normalizable even though endpoints remain valid. Collapse arises
-            systematically when composing heterogeneous models trained on different noise
-            schedules or datasets, including a common setting in molecular design where de-novo, conformer, and pocket-conditioned models must be combined for tasks such
-            as flexible-pose scaffold decoration. 
+            Inference-time steering adapts pretrained diffusion and flow models to new tasks without retraining, often using ratio-of-densities constructions that reweight time-indexed marginals with fixed exponents. We identify <strong>Marginal Path Collapse</strong>, a failure mode in which the intermediate density defined by such compositions becomes non-normalizable despite valid endpoints. This collapse can arise when composing heterogeneous experts trained with mismatched noise schedules, negative exponents, or partial supports.
           </p>
           <p>
-            We provide a novel and complete solution
-            for the problem. First, we derive a simple <strong>path existence criterion</strong> that predicts exactly when collapse occurs from noise schedules and exponents alone. Second, we
-            introduce <strong>Adaptive path Correction with Exponents (ACE)</strong>, which extends Feynman–Kac steering to time-varying exponents and guarantees a valid probability
-            path. On a synthetic 2D benchmark and on flexible-pose scaffold decoration,
-            ACE eliminates collapse and enables high-guidance compositional generation,
-            improving distributional and docking metrics over constant-exponent baselines
-            and even specialized task-specific scaffold decoration models. Our work turns
-            ratio-of-densities steering with heterogeneous experts from an unstable heuristic
-            into a reliable tool for controllable generation.
+            To address this, we provide a sharp sufficient <strong>Path Existence Criterion</strong> that certifies well-defined composed intermediate densities when \(C(t)>0\) and detects collapse when \(C(t)<0\), together with <strong>Adaptive Path Correction with Exponents (ACE)</strong>. ACE generalizes Feynman–Kac steering to time-varying exponents and dynamically adjusts expert weights to keep the path valid. On flexible-pose scaffold decoration and compositional image generation, ACE prevents collapse and improves sample reliability over constant-exponent baselines.
           </p>
         </div>
       </div>
@@ -820,17 +807,17 @@
     <div class="container">
       <h2 class="title is-3 has-text-centered">Understanding ACE</h2>
       <p class="section-subtitle" style="color: #3f443b; text-align: center; font-size: 1.1rem; margin-bottom: 3rem;">
-        ACE prevents Marginal Path Collapse by adaptively ensuring C(t)>0, replacing unstable steering heuristics with a reliable, guaranteed generative framework.
+        ACE detects when a composed path collapses via the Path Existence Criterion and corrects exponent schedules so that \(C_k(t)>0\) along the sampling path.
       </p> 
       <div class="columns is-multiline">
         <div class="column is-6">
           <div class="result-card">
-            <h4>Marginal Path Collapse & ACE Solution</h4>
+            <h4>Marginal Path Collapse & ACE Correction</h4>
             <div class="criterion-box" style="background-color: white;">
               <img src="static/images/figure1.png" alt="Marginal Path Collapse and ACE Solution" class="app-card-image" style="background: white; padding: 1rem;">
             </div>
             <p>
-              <strong>Figure 1:</strong> (a) Constant exponents cause paths to diverge into invalid regions. (b) ACE uses adaptive exponent schedules to guarantee C(t) > 0 for all t, enabling smooth transport to the target. (c) The criterion C(t) stays positive with ACE while constant schedules dip below zero.
+              <strong>Figure 1:</strong> Marginal Path Collapse breaks heterogeneous composition. Standard steering and constant-exponent FKC can transport samples along biased or collapsed paths, while ACE dynamically adjusts exponents to keep the criterion positive and recover the target.
             </p>
           </div>
         </div>
@@ -842,7 +829,16 @@
               <img src="static/images/figure2.png" alt="Non-integrable Region in Gaussian Path" class="app-card-image" style="background: white; padding: 1rem;">
             </div>
             <p>
-              <strong>Figure 2:</strong> Even with valid endpoints, the intermediate effective variance can explode, causing Marginal Path Collapse. The ratio becomes non-integrable at certain timesteps.
+              <strong>Figure 2:</strong> Even when the endpoints are valid, an intermediate ratio-of-Gaussians path can become non-integrable. The sampler may still run numerically, but it no longer follows the intended probability path.
+            </p>
+          </div>
+          <div class="result-card">
+            <h4>Schedule Mismatch and Criterion Repair</h4>
+            <div class="criterion-box" style="background-color: white;">
+              <img src="static/images/figure3.png" alt="Common noise schedules and the path existence criterion with and without ACE" class="app-card-image" style="background: white; padding: 1rem;">
+            </div>
+            <p>
+              <strong>Figure 3:</strong> Different experts may use different noise schedules. Constant-exponent composition can push the criterion into a collapsed regime, while ACE applies adaptive exponent correction to keep the composed path valid.
             </p>
           </div>
         </div>
@@ -869,12 +865,10 @@
             <h3 class="app-card-title">Flexible-Pose Scaffold Decoration</h3>
             <span class="app-card-badge">Drug Discovery</span>
           </div>
-          <img src="static/images/figure5.png" alt="Scaffold Decoration Results" class="app-card-image" style="background: white; padding: 1rem;"/>
+          <img src="static/images/figure6.png" alt="Scaffold Decoration Results" class="app-card-image" style="background: white; padding: 1rem;"/>
           <div class="app-card-content">
             <p class="app-card-description">
-              <strong>Figure 5:</strong>  Diffusion Steering Framework for Flexible-Pose Scaffold Decoration. Qualitative
-results reveal that ACE, successfully modeling the ratio-of-density path, generates valid molecules
-containing the scaffold topology, while FKC (constant exponent baseline) generates invalid, fragmented molecules as a result of following an ill-defined probability path.
+              <strong>Figure 6:</strong> Diffusion steering framework for flexible-pose scaffold decoration. ACE composes de-novo, conformer, and pocket-conditioned experts to generate valid molecules containing the desired scaffold topology, while constant-exponent FKC can fragment molecules by following an ill-defined path.
             </p>
           </div>
         </div>
@@ -887,10 +881,10 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
             <h3 class="app-card-title">Impact of Path Collapse on Molecules</h3>
             <span class="app-card-badge">Drug Discovery</span>
           </div>
-          <img src="static/images/figure_e4.png" alt="Impact of Marginal Path Collapse" class="app-card-image" style="background: white; padding: 1rem;"/>
+          <img src="static/images/figure_e9.png" alt="Impact of Marginal Path Collapse" class="app-card-image" style="background: white; padding: 1rem;"/>
           <div class="app-card-content">
             <p class="app-card-description">
-              <strong>Figure E.4:</strong> Impact of Marginal Path Collapse on Molecular Generation. FKC and ACE are compared on the scaffold-decoration task (ω = 1.3, 500 steps), targeting the same distribution. FKC collapses near the end of sampling (( C(t) < 0 )), resulting in fragmented molecules. In contrast, ACE maintains ( C(t) > 0 ) via a bump correction ( B(t) = 30t(1 - t) ), consistently producing connected, valid molecules.
+              <strong>Figure E.9:</strong> Impact of Marginal Path Collapse on molecular generation. FKC collapses near the end of sampling (\(C(t)<0\)), resulting in fragmented molecules. ACE maintains a valid counterpart (\(C(t)>0\)) via adaptive exponent correction and produces connected molecules.
             </p>
           </div>
         </div>
@@ -908,41 +902,41 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
             <div class="gallery-wrapper">
               <div class="gallery-track" id="galleryTrack">
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_1.png" alt="Red chair, yellow chair, white teddy bear, brown dining table">
+                  <img src="static/images/gallery/e18_1.png" alt="Red chair, yellow chair, white teddy bear, brown dining table">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_2.png" alt="Black cup, black donut, green dining table, blue donut">
+                  <img src="static/images/gallery/e18_2.png" alt="Black cup, black donut, green dining table, blue donut">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_3.png" alt="Blue boat, red boat, white boat, green boat">
+                  <img src="static/images/gallery/e18_3.png" alt="Blue boat, red boat, white boat, green boat">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_4.png" alt="White couch, yellow dining table, white oven, brown chair">
+                  <img src="static/images/gallery/e18_4.png" alt="White couch, yellow dining table, white oven, brown chair">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_5.png" alt="Brown airplane, red airplane, blue airplane">
+                  <img src="static/images/gallery/e18_5.png" alt="Brown airplane, red airplane, blue airplane">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_6.png" alt="White bird, red boat, blue boat">
+                  <img src="static/images/gallery/e18_6.png" alt="White bird, red boat, blue boat">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_7.png" alt="Blue dog, white bed, green tie">
+                  <img src="static/images/gallery/e18_7.png" alt="Blue dog, white bed, green tie">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_8.png" alt="Black dog, blue dog, brown dog">
+                  <img src="static/images/gallery/e18_8.png" alt="Black dog, blue dog, brown dog">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_9.png" alt="White umbrella, red umbrella">
+                  <img src="static/images/gallery/e18_9.png" alt="White umbrella, red umbrella">
                 </div>
                 <div class="gallery-slide">
-                  <img src="static/images/gallery/e13_10.png" alt="Brown boat, brown boat, yellow boat, black boat, white boat, green boat">
+                  <img src="static/images/gallery/e18_10.png" alt="Brown boat, brown boat, yellow boat, black boat, white boat, green boat">
                 </div>
               </div>
             </div>
             <div class="gallery-nav">
               <button class="gallery-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
               <div class="gallery-dots" id="galleryDots"></div>
-              <span class="gallery-counter"><span id="currentSlide">1</span> / <span id="totalSlides">6</span></span>
+              <span class="gallery-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></span>
               <button class="gallery-btn" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
             </div>
             <div class="gallery-prompt">
@@ -951,7 +945,7 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
           </div>
           <div class="app-card-content">
             <p class="app-card-description">
-              <strong>Figure E.13:</strong> Compositional image generation results. Left: base Stable Diffusion 2.1. Right: ACE yields better prompt alignment and layout guidance — completely without additional training or external models. Even in homogeneous settings, ACE achieves +9.57%p improvement on COCO-MIG benchmark.
+              <strong>Figure E.18:</strong> Compositional image generation results. Left: base Stable Diffusion 2.1. Right: ACE yields better prompt alignment and layout guidance — completely without additional training or external models. Even in homogeneous settings, ACE improves attribute success rates by +9.6 percentage points on the COCO-MIG benchmark.
             </p>
           </div>
         </div>
@@ -968,12 +962,12 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
         <div class="column is-6">
           <div class="result-card">
             <h4><i class="fas fa-search" style="color: #ef4444; margin-right: 0.5rem;"></i> Diagnosis: Path Existence Criterion</h4>
-            <p style="color: #64748b;">We derive a rigorous and easy-to-compute criterion that predicts exactly when collapse occurs from the noise schedules and exponents alone.</p>
+            <p style="color: #64748b;">We derive an easy-to-compute criterion that certifies path existence when \(C_k(t)>0\) and detects collapse when \(C_k(t)<0\), using only schedules and exponents.</p>
             <div class="criterion-box">
               <div class="equation">
                 \( C_k(t) := \sum_{i: k \in I_i} \frac{\gamma_i(t)}{(\alpha_t^{(i)})^2} > 0 \)
               </div>
-              <p style="font-size: 0.9rem; color: #64748b;">Path exists ⟺ C(t) > 0 for all t ∈ [0,1)</p>
+              <p style="font-size: 0.9rem; color: #64748b;">Positive criterion certifies a valid path; negative criterion detects collapse.</p>
             </div>
           </div>
         </div>
@@ -981,12 +975,12 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
         <div class="column is-6">
           <div class="result-card">
             <h4><i class="fas fa-tools" style="color: #10b981; margin-right: 0.5rem;"></i> Solution: ACE Framework</h4>
-            <p style="color: #64748b;">Building on this diagnosis, we extend the Feynman–Kac PDE to support time-varying exponents, dynamically adjusting steering weights throughout generation.</p>
+            <p style="color: #64748b;">Building on this diagnosis, ACE extends Feynman–Kac steering to support time-varying exponents, dynamically adjusting expert weights throughout generation.</p>
             <div class="criterion-box">
               <div class="equation">
                 \( \tilde{\gamma}_j(t) = \gamma_j(t) + B \cdot t(1-t) \)
               </div>
-              <p style="font-size: 0.9rem; color: #64748b;">Bump function protocol guarantees C(t) > 0</p>
+              <p style="font-size: 0.9rem; color: #64748b;">Bump function protocol keeps the criterion positive</p>
             </div>
           </div>
         </div>
@@ -1004,9 +998,7 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
       <h2 class="title is-3 has-text-centered">Method Comparison</h2>
       <img src="static/images/table1.png" alt="Method comparison" style="width: 100%; border-radius: 12px; ">
       <p class="figure-caption">
-        <strong>Table 1:</strong> Comparison of inference-time control methodologies. Unlike heuristics (e.g., CFG) or
-        FKC (Skreta et al., 2025a), our framework provides a principled criterion with adaptive correction
-        (ACE), guaranteeing valid paths even under heterogeneous or time-varying settings.
+        <strong>Table 1:</strong> Comparison of steering methodologies. Unlike heuristic guidance or standard Feynman–Kac correctors, ACE provides an explicit criterion and adaptive correction for path validity under heterogeneous settings.
       </p>
     </div>
   </section>
@@ -1019,20 +1011,20 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
       <!-- Detailed Table -->
       <img src="static/images/table3.png" alt="Comparison of NR, FKC, and ACE" style="width: 100%; border-radius: 12px;">
       <p class="figure-caption">
-        <strong>Table 3:</strong> Comparison of NR, FKC, and ACE for CrossDock-Weak and CrossDock-SBDD. Higher
+        <strong>Table 3:</strong> Performance comparison on CrossDocked, evaluating NR, FKC, and ACE under CrossDock-Weak and CrossDock-SBDD settings. Higher
         is better for Validity and OSR; lower (more negative) is better for Vina scores. Best values are bold;
         second-best are underlined. FKC and ACE share all hyperparameters with the only difference being
         the addition of the bump function in the exponents of ACE. NR is FKC without resampling.
        </p>
        <img src="static/images/table4.png" alt="CrossDock Results Table" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
        <p class="figure-caption">
-        <strong>Table 4:</strong> Comparison on CrossDock-Weak and CrossDock-SBDD. Higher is better for Validity
+        <strong>Table 4:</strong> Comparison against fixed-pose scaffold decoration baselines on CrossDocked. Higher is better for Validity
         and OSR; lower (more negative) is better for Vina scores. Best values are bold; second-best are
         underlined. O indicates the method requires a reference scaffold pose; X indicates it does not.
         </p>
-        <img src="static/images/table_e10.png" alt="COCO-MIG Benchmark Results for Compositional Image Generation" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
+        <img src="static/images/table_e16.png" alt="COCO-MIG Benchmark Results for Compositional Image Generation" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
        <p class="figure-caption">
-        <strong>Table E.10:</strong> COCO-MIG instance attribute success ratio (%) with the corresponding mIoU (%) shown in parentheses. Higher is better. L2-L6 denote the success ratios for tasks with 2 to 6 region-wise guidance conditions. 'CLIP' and 'Local CLIP' refer to CLIP scores computed on the entire image versus the full prompt, and on local crops versus the corresponding local prompts, respectively.</p>
+        <strong>Table E.16:</strong> COCO-MIG instance attribute success ratio (%) with the corresponding mIoU (%) shown in parentheses. Higher is better. L2-L6 denote the success ratios for tasks with 2 to 6 region-wise guidance conditions. 'CLIP' and 'Local CLIP' refer to CLIP scores computed on the entire image versus the full prompt, and on local crops versus the corresponding local prompts, respectively.</p>
     </div>
   </section>
 
@@ -1046,14 +1038,13 @@ containing the scaffold topology, while FKC (constant exponent baseline) generat
           <span class="copy-text">Copy</span>
         </button>
       </div>
-      <pre id="bibtex-code"><code>@misc{lee2025collapsegenerativepathscriterion,
-      title={On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering}, 
-      author={Ziseok Lee and Minyeong Hwang and Sanghyun Jo and Wooyeol Lee and Jihyung Ko and Young Bin Park and Jae-Mun Choi and Eunho Yang and Kyungsu Kim},
-      year={2025},
-      eprint={2512.10339},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2512.10339}, 
+      <pre id="bibtex-code"><code>@inproceedings{
+    lee2026collapse,
+    title={On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering},
+    author={Ziseok Lee and Minyeong Hwang and Wooyeol Lee and Jihyung Ko and Young Bin Park and Jae-Mun Choi and Eunho Yang and Kyungsu Kim},
+    booktitle={Forty-third International Conference on Machine Learning},
+    year={2026},
+    url={https://openreview.net/forum?id=emv2qsi3TG}
 }</code></pre>
     </div>
   </section>
@@ -1164,20 +1155,6 @@ const galleryPrompts = [
     document.getElementById('imageGallery').addEventListener('mouseleave', () => {
       autoAdvance = setInterval(nextSlide, 5000);
     });
-
-    // Copy BibTeX
-    function copyBibTeX() {
-      const code = document.getElementById('bibtexCode').textContent;
-      navigator.clipboard.writeText(code).then(() => {
-        const btn = document.getElementById('copyBtn');
-        btn.classList.add('copied');
-        btn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          btn.innerHTML = '<i class="fas fa-copy"></i><span>Copy</span>';
-        }, 2000);
-      });
-    }
 
     // Scroll to top
     function scrollToTop() {
