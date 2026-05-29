@@ -6,7 +6,7 @@
   
   <!-- Primary Meta Tags -->
   <meta name="title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
-  <meta name="description" content="We identify Marginal Path Collapse in diffusion and flow steering and introduce ACE, a framework for diagnosing and correcting collapsed probability paths in compositional generation.">
+  <meta name="description" content="ACE diagnoses and corrects Marginal Path Collapse, enabling reliable no-retraining composition of pretrained diffusion and flow experts for multi-constraint generation tasks.">
   <meta name="keywords" content="diffusion models, generative models, flow matching, molecular design, drug discovery, scaffold decoration, inference-time control, machine learning">
   <meta name="author" content="Ziseok Lee, Minyeong Hwang, Wooyeol Lee, Sanghyun Jo, Jihyung Ko, Young Bin Park, Jae-Mun Choi, Eunho Yang, Kyungsu Kim">
   <meta name="robots" content="index, follow">
@@ -16,12 +16,12 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ACE Project">
   <meta property="og:title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
-  <meta property="og:description" content="A criterion and correction method for reliable compositional sampling with heterogeneous diffusion and flow experts.">
+  <meta property="og:description" content="A criterion and correction method for reliable multi-constraint sampling with heterogeneous diffusion and flow experts.">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="On the Collapse of Generative Paths">
-  <meta name="twitter:description" content="A criterion and correction method for reliable compositional sampling with heterogeneous diffusion and flow experts.">
+  <meta name="twitter:description" content="A criterion and correction method for reliable multi-constraint sampling with heterogeneous diffusion and flow experts.">
 
   <!-- Academic/Research Specific -->
   <meta name="citation_title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
@@ -698,6 +698,69 @@
       font-style: italic;
     }
 
+
+    /* Problem formulation section */
+    .formulation-section {
+      background: #ffffff;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .formula-intro {
+      color: #475569;
+      font-size: 1.03rem;
+      line-height: 1.75;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 1.5rem auto;
+    }
+
+    .problem-equation {
+      background: #f8fafc;
+      border: 1px solid #dbeafe;
+      max-width: 850px;
+      margin: 1.5rem auto;
+    }
+
+    .problem-equation .equation {
+      font-size: 1.15rem;
+      line-height: 2.0;
+    }
+
+    .formula-card {
+      height: 100%;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 16px -8px rgba(15, 23, 42, 0.2);
+    }
+
+    .formula-card h4 {
+      color: #1e293b;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .formula-card p {
+      color: #64748b;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 0.65rem;
+    }
+
+    .formula-card .mini-equation {
+      color: #1e293b;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 0.65rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+
   </style>
 </head>
 <body>
@@ -715,7 +778,7 @@
       
       <p class="tldr-text">
         <span class="tldr-badge">TL;DR</span>
-          &nbsp;ACE diagnoses and corrects <strong>Marginal Path Collapse</strong>, a hidden failure mode in ratio-of-densities steering with heterogeneous diffusion/flow experts.
+          &nbsp;ACE diagnoses and corrects <strong>Marginal Path Collapse</strong>, a hidden failure mode in multi-constraint ratio-of-densities steering.
         <span class="tldr-highlight"><i class="fas fa-plug"></i> Plug-and-play</span> steering for
         <span class="tldr-highlight"><i class="fas fa-atom"></i> Molecules</span> and
         <span class="tldr-highlight"><i class="fas fa-image"></i> Images</span>
@@ -802,12 +865,60 @@
     </div>
   </section>
 
+
+  <!-- Problem Formulation -->
+  <section class="section formulation-section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">What Problems Does ACE Solve?</h2>
+      <p class="formula-intro">
+        ACE targets modular generation problems where a sample must satisfy several constraints at once. A simple template is a joint object \(X,Y\) with a local condition \(A\) on \(X\) and a joint condition \(B\) on \((X,Y)\). Under the conditional-independence structure used in the paper, Bayes' rule gives a ratio-of-densities target:
+      </p>
+      <div class="criterion-box problem-equation">
+        <div class="equation">
+          \[
+          p(X,Y\mid A,B) \propto p(X\mid A)\,\frac{p(X,Y\mid B)}{p(X)}.
+          \]
+        </div>
+        <p style="font-size: 0.95rem; color: #64748b;">
+          This decomposition lets us combine pretrained experts instead of retraining a monolithic model. ACE solves the missing piece: making the entire intermediate generative path valid when these experts have different schedules, supports, or exponent signs.
+        </p>
+      </div>
+
+      <div class="columns is-multiline">
+        <div class="column is-4">
+          <div class="formula-card">
+            <h4>Synthetic Checker</h4>
+            <p>Two coordinates \(X,Y\) are generated from heterogeneous marginal and joint experts.</p>
+            <div class="mini-equation">\(p(X,Y\mid A,B) \propto p(X\mid A)\,p(X,Y\mid B)/p(X)\)</div>
+            <p style="margin-top: 0.75rem;">This controlled setting exposes Marginal Path Collapse and tests the Path Existence Criterion.</p>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="formula-card">
+            <h4>Flexible-Pose Scaffold Decoration</h4>
+            <p>Let \(X=M^{sc}\) be the scaffold and \(Y=M^R\) the R-groups. Topology acts locally, while protein-pocket binding acts globally.</p>
+            <div class="mini-equation">\(p(M^{sc},M^R\mid A,B) \propto p(M^{sc}\mid A)\,p(M\mid B)/p(M^{sc})\)</div>
+            <p style="margin-top: 0.75rem;">ACE composes CONF, SBDD, and DN experts while repairing schedule-induced collapse.</p>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="formula-card">
+            <h4>Multi-Instance Image Generation</h4>
+            <p>Region prompts \(c_i\) constrain local foregrounds \(F_i\), while a global prompt \(C\) constrains the full image.</p>
+            <div class="mini-equation">\(p(X\mid c_{1:n},C) \propto p(X\mid C)^{\gamma_0(t)}\prod_i [p(F_i\mid c_i)/p(F_i)]^{\gamma_i(t)}\)</div>
+            <p style="margin-top: 0.75rem;">Here the path is homogeneous and valid, but ACE still improves concentration and prompt alignment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Understanding ACE -->
   <section class="section hero is-light">
     <div class="container">
       <h2 class="title is-3 has-text-centered">Understanding ACE</h2>
       <p class="section-subtitle" style="color: #3f443b; text-align: center; font-size: 1.1rem; margin-bottom: 3rem;">
-        ACE detects when a composed path collapses via the Path Existence Criterion and corrects exponent schedules so that \(C_k(t)>0\) along the sampling path.
+        ACE detects invalid composed paths with the Path Existence Criterion and corrects exponent schedules so that \(C_k(t)>0\) on the sampling timesteps.
       </p> 
       <div class="columns is-multiline">
         <div class="column is-6">
@@ -817,7 +928,7 @@
               <img src="static/images/figure1.png" alt="Marginal Path Collapse and ACE Solution" class="app-card-image" style="background: white; padding: 1rem;">
             </div>
             <p>
-              <strong>Figure 1:</strong> Marginal Path Collapse breaks heterogeneous composition. Standard steering and constant-exponent FKC can transport samples along biased or collapsed paths, while ACE dynamically adjusts exponents to keep the criterion positive and recover the target.
+              <strong>Figure 1:</strong> Marginal Path Collapse breaks heterogeneous composition. In a 2D checkerboard built from two 1D priors and a 2D constraint, standard steering is biased and FKC fails when the path-existence criterion becomes negative. ACE dynamically adjusts exponents to ensure \(C(t)>0\), recovering the target path.
             </p>
           </div>
         </div>
@@ -829,7 +940,7 @@
               <img src="static/images/figure2.png" alt="Non-integrable Region in Gaussian Path" class="app-card-image" style="background: white; padding: 1rem;">
             </div>
             <p>
-              <strong>Figure 2:</strong> Even when the endpoints are valid, an intermediate ratio-of-Gaussians path can become non-integrable. The sampler may still run numerically, but it no longer follows the intended probability path.
+              <strong>Figure 2:</strong> Non-integrable region in the ratio-of-Gaussians example. The path is well-defined at the endpoints, but the intermediate variance explodes, causing Marginal Path Collapse. The sampler may still run numerically, but it no longer follows the intended probability path.
             </p>
           </div>
           <div class="result-card">
@@ -838,7 +949,7 @@
               <img src="static/images/figure3.png" alt="Common noise schedules and the path existence criterion with and without ACE" class="app-card-image" style="background: white; padding: 1rem;">
             </div>
             <p>
-              <strong>Figure 3:</strong> Different experts may use different noise schedules. Constant-exponent composition can push the criterion into a collapsed regime, while ACE applies adaptive exponent correction to keep the composed path valid.
+              <strong>Figure 3:</strong> Common noise schedules and Marginal Path Collapse. Many heterogeneous three-expert compositions enter a region where \(C(t)<0\), implying non-normalizable intermediate densities. The corrected exponents of ACE ensure \(C(t)>0\) for all sampled times.
             </p>
           </div>
         </div>
@@ -851,12 +962,12 @@
   <section class="applications-section">
     <div class="container">
       <h2 class="section-title">Applications of ACE</h2>
-      <p class="section-subtitle">One framework, multiple domains — from drug discovery to image generation</p>
+      <p class="section-subtitle">One ratio-of-densities framework, multiple domains — from drug discovery to multi-instance image generation</p>
       
       <div class="app-cards-grid">
         
 
-        <!-- Card 1: Molecular Generation (Figure 5) -->
+        <!-- Card 1: Molecular Generation (Figure 6) -->
         <div class="app-card">
           <div class="app-card-header">
             <div class="app-card-icon molecular">
@@ -868,7 +979,7 @@
           <img src="static/images/figure6.png" alt="Scaffold Decoration Results" class="app-card-image" style="background: white; padding: 1rem;"/>
           <div class="app-card-content">
             <p class="app-card-description">
-              <strong>Figure 6:</strong> Diffusion steering framework for flexible-pose scaffold decoration. ACE composes de-novo, conformer, and pocket-conditioned experts to generate valid molecules containing the desired scaffold topology, while constant-exponent FKC can fragment molecules by following an ill-defined path.
+              <strong>Figure 6:</strong> ACE enables high-guidance steering for flexible-pose scaffold decoration. ACE generates highly dockable molecules by accurately modeling the ratio-of-density path, whereas FKC and NR produce suboptimal results due to ill-defined probability paths. The flexible-pose formulation relaxes the fixed-pose constraint of Delete and explores a larger search space.
             </p>
           </div>
         </div>
@@ -884,7 +995,7 @@
           <img src="static/images/figure_e9.png" alt="Impact of Marginal Path Collapse" class="app-card-image" style="background: white; padding: 1rem;"/>
           <div class="app-card-content">
             <p class="app-card-description">
-              <strong>Figure E.9:</strong> Impact of Marginal Path Collapse on molecular generation. FKC collapses near the end of sampling (\(C(t)<0\)), resulting in fragmented molecules. ACE maintains a valid counterpart (\(C(t)>0\)) via adaptive exponent correction and produces connected molecules.
+              <strong>Figure E.9:</strong> Impact of Marginal Path Collapse on molecular generation. On scaffold decoration at \(\omega=1.3\), FKC enters a collapsed regime near the end of sampling where \(C(t)<0\), producing disjoint fragments. ACE applies the bump correction to keep \(C(t)>0\) throughout the trajectory and produces connected, chemically valid molecules.
             </p>
           </div>
         </div>
@@ -945,7 +1056,7 @@
           </div>
           <div class="app-card-content">
             <p class="app-card-description">
-              <strong>Figure E.18:</strong> Compositional image generation results. Left: base Stable Diffusion 2.1. Right: ACE yields better prompt alignment and layout guidance — completely without additional training or external models. Even in homogeneous settings, ACE improves attribute success rates by +9.6 percentage points on the COCO-MIG benchmark.
+              <strong>Figure E.18:</strong> Qualitative results of compositional image generation with ACE. Compared to the base Stable Diffusion 2.1 model (left), simulating the same model with ACE (right) yields better prompt alignment and layout guidance without additional training or external models. Table E.16 quantifies the improvement on COCO-MIG.
             </p>
           </div>
         </div>
@@ -975,19 +1086,24 @@
         <div class="column is-6">
           <div class="result-card">
             <h4><i class="fas fa-tools" style="color: #10b981; margin-right: 0.5rem;"></i> Solution: ACE Framework</h4>
-            <p style="color: #64748b;">Building on this diagnosis, ACE extends Feynman–Kac steering to support time-varying exponents, dynamically adjusting expert weights throughout generation.</p>
+            <p style="color: #64748b;">
+              Building on this diagnosis, ACE extends Feynman–Kac steering to support time-varying exponents, dynamically adjusting expert weights throughout generation while preserving the final target distribution.
+            </p>
             <div class="criterion-box">
               <div class="equation">
-                \( \tilde{\gamma}_j(t) = \gamma_j(t) + B \cdot t(1-t) \)
+                \( \tilde{\gamma}_i(t) = \gamma_i(t) + b_i(t)\)
               </div>
-              <p style="font-size: 0.9rem; color: #64748b;">Bump function protocol keeps the criterion positive</p>
+              <p style="font-size: 0.9rem; color: #64748b;">
+                Endpoint-preserving "bump" correction \(b_i(t)\) keeps the path-existence criterion positive (\(b_i(0)=b_i(t_{\mathrm{end}})=0\)).
+                In the paper, we prove such corrections can always be constructed and empirically instantiate them with linear and quadratic bump components, selecting \(B_1,B_2\) to satisfy the criterion during sampling.
+              </p>
             </div>
           </div>
         </div>
       </div>
       
       <div class="key-insight">
-        <strong>Key Insight:</strong> Marginal Path Collapse occurs when the variances of the numerator terms shrink "slower" than the variances of the denominator terms, creating a temporary fatal imbalance where the combined density becomes explosive rather than decaying at infinity.
+        <strong>Key Insight:</strong> Marginal Path Collapse occurs when numerator and denominator experts shrink at incompatible rates, creating an intermediate imbalance where the combined density grows rather than decays at infinity. ACE repairs this by modifying the intermediate exponent path without changing the endpoint target.
       </div>
     </div>
   </section>
@@ -998,7 +1114,7 @@
       <h2 class="title is-3 has-text-centered">Method Comparison</h2>
       <img src="static/images/table1.png" alt="Method comparison" style="width: 100%; border-radius: 12px; ">
       <p class="figure-caption">
-        <strong>Table 1:</strong> Comparison of steering methodologies. Unlike heuristic guidance or standard Feynman–Kac correctors, ACE provides an explicit criterion and adaptive correction for path validity under heterogeneous settings.
+        <strong>Table 1:</strong> Comparison of steering methodologies. Unlike heuristics or standard correctors, which assume homogeneity or do not verify path existence, ACE provides an explicit criterion and adaptive correction for path validity under heterogeneous conditions.
       </p>
     </div>
   </section>
@@ -1011,20 +1127,27 @@
       <!-- Detailed Table -->
       <img src="static/images/table3.png" alt="Comparison of NR, FKC, and ACE" style="width: 100%; border-radius: 12px;">
       <p class="figure-caption">
-        <strong>Table 3:</strong> Performance comparison on CrossDocked, evaluating NR, FKC, and ACE under CrossDock-Weak and CrossDock-SBDD settings. Higher
-        is better for Validity and OSR; lower (more negative) is better for Vina scores. Best values are bold;
-        second-best are underlined. FKC and ACE share all hyperparameters with the only difference being
-        the addition of the bump function in the exponents of ACE. NR is FKC without resampling.
+        <strong>Table 3:</strong> Performance comparison on CrossDocked, evaluating docking affinity (Vina Score) and drug-likeness (QED, SA, and Lipinski). Higher is better for OSR and drug-likeness; lower, more negative Vina scores are preferred. NR and FKC suffer from path-existence-criterion violations, while ACE remains valid across the tested configurations.
        </p>
        <img src="static/images/table4.png" alt="CrossDock Results Table" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
        <p class="figure-caption">
-        <strong>Table 4:</strong> Comparison against fixed-pose scaffold decoration baselines on CrossDocked. Higher is better for Validity
-        and OSR; lower (more negative) is better for Vina scores. Best values are bold; second-best are
-        underlined. O indicates the method requires a reference scaffold pose; X indicates it does not.
+        <strong>Table 4:</strong> Comparison against fixed-pose scaffold-decoration baselines on CrossDocked, evaluating docking affinity and drug-likeness. Higher is better for OSR and drug-likeness; lower, more negative Vina scores are preferred. Asterisks denote methods that require a reference ligand pose.
         </p>
+
+        <div class="columns is-vcentered" style="margin-top: 2rem;">
+          <div class="column is-6">
+            <img src="static/images/table5.png" alt="Computational cost of ACE, ACE-lite, and baselines" style="width: 100%; border-radius: 12px; background: white;">
+          </div>
+          <div class="column is-6">
+            <p class="figure-caption" style="text-align: left; margin-top: 0;">
+              <strong>Table 5:</strong> Computational cost reported in terms of VRAM usage (GB) and runtime (min/molecule). ACE-lite significantly reduces the runtime overhead while maintaining performance, showing that the path-validity correction can be deployed efficiently alongside task-specific baselines.
+            </p>
+          </div>
+        </div>
+
         <img src="static/images/table_e16.png" alt="COCO-MIG Benchmark Results for Compositional Image Generation" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
        <p class="figure-caption">
-        <strong>Table E.16:</strong> COCO-MIG instance attribute success ratio (%) with the corresponding mIoU (%) shown in parentheses. Higher is better. L2-L6 denote the success ratios for tasks with 2 to 6 region-wise guidance conditions. 'CLIP' and 'Local CLIP' refer to CLIP scores computed on the entire image versus the full prompt, and on local crops versus the corresponding local prompts, respectively.</p>
+        <strong>Table E.16:</strong> Instance attribute success ratio (%) on COCO-MIG, with the corresponding mIoU (%) shown in parentheses. L2–L6 denote tasks with 2 to 6 region-wise guidance conditions. CLIP is computed on the full image and prompt, while Local CLIP is computed on local crops and their corresponding local prompts.</p>
     </div>
   </section>
 
@@ -1041,8 +1164,8 @@
       <pre id="bibtex-code"><code>@inproceedings{
     lee2026collapse,
     title={On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering},
-    author={Ziseok Lee and Minyeong Hwang and Wooyeol Lee and Jihyung Ko and Young Bin Park and Jae-Mun Choi and Eunho Yang and Kyungsu Kim},
-    booktitle={Forty-third International Conference on Machine Learning},
+    author={Ziseok Lee and Minyeong Hwang and Wooyeol Lee and Sanghyun Jo and Jihyung Ko and Young Bin Park and Jae-Mun Choi and Eunho Yang and Kyungsu Kim},
+    booktitle={Proceedings of the 43rd International Conference on Machine Learning},
     year={2026},
     url={https://openreview.net/forum?id=emv2qsi3TG}
 }</code></pre>
