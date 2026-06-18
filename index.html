@@ -190,7 +190,7 @@
 						const finalImage = manualImage || (data.image ? data.image.url : null);
 
 						const imageHtml = finalImage 
-							? `<img src="${finalImage}" alt="${title}" class="p-card-image" onerror="this.style.display='none'">`
+							? `<img src="${finalImage}" alt="${title}" class="p-card-image" style="object-fit: cover; object-position: top;" onerror="this.style.display='none'">`
 							: ''; 
 
 						card.innerHTML = `
