@@ -153,6 +153,29 @@
 					#project-card-grid > * {
 						scroll-snap-align: start;
 					}
+
+					:root[data-theme="dark"] #project-card-grid {
+						scrollbar-width: thin;
+						scrollbar-color: #5a5a5a #202020;
+					}
+
+					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar {
+						height: 10px;
+					}
+
+					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-track {
+						background: #202020;
+						border-radius: 999px;
+					}
+
+					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb {
+						background: #5a5a5a;
+						border-radius: 999px;
+					}
+
+					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb:hover {
+						background: #6e6e6e;
+					}
 				</style>
 
 				<script>
