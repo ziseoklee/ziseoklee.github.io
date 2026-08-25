@@ -14,5 +14,11 @@
   {
     "url": "https://elect-diffusion.github.io/",
     "image": "https://elect-diffusion.github.io/static/images/ELECT_intro.png"
+  },
+  {
+    "url": "/projects/spawtest/",
+    "image": "/projects/spawtest/images/SPAW_Types.png",
+    "title": "SPAW Romantic Relationship Test",
+    "description": "A bilingual relationship-style assessment using topological data analysis of MIMARA and ROCI-II responses."
   }
 ]

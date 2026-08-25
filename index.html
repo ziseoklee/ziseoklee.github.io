@@ -200,14 +200,16 @@
 						// Check if originalEntry is an object with a manual image
 						const manualImage = (typeof originalEntry === 'object' && originalEntry.image) ? originalEntry.image : null;
 						const linkUrl = (typeof originalEntry === 'object') ? originalEntry.url : originalEntry;
+						const manualTitle = (typeof originalEntry === 'object' && originalEntry.title) ? originalEntry.title : null;
+						const manualDescription = (typeof originalEntry === 'object' && originalEntry.description) ? originalEntry.description : null;
 
 						const card = document.createElement('a');
 						card.href = linkUrl;
 						card.target = "_blank";
 						card.className = 'p-card';
 						
-						const title = data.title || 'Untitled Project';
-						const desc = data.description || 'No description available.';
+						const title = manualTitle || data.title || 'Untitled Project';
+						const desc = manualDescription || data.description || 'No description available.';
 						
 						// PRIORITIZE MANUAL IMAGE
 						const finalImage = manualImage || (data.image ? data.image.url : null);
