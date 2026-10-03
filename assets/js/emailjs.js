@@ -32,3 +32,9 @@ function sendEmail(event) {
     alert('Failed to send email.');
     });
 }
+
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', sendEmail);
+}

@@ -1,10 +1,11 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 	<head>
 		<title>Ziseok Lee</title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="/assets/css/main.css" />
+		<link rel="stylesheet" href="/assets/css/home.css" />
 		<link rel="icon" href="/assets/images/pageicon.svg" type="image/svg+xml">
 		<link rel="icon" href="/assets/images/pageicon.png" type="image/png">
 		<link rel="apple-touch-icon" href="/assets/images/pageicon.png">
@@ -16,51 +17,34 @@
 			<div id="menu-toggle"><a id="menu-toggle-button">☰</a></div>
 			<div id="nav-menu">
 				<ul>
-					<li><a href="#" class="theme-toggle"><img src="/assets/images/lovebulb.svg" /></a></li>
+					<li><a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb.svg" alt="" /></a></li>
 					<li><a href="/index.html"><strong>HOME</strong></a></li>
 					<li><a href="/bio.html">BIO</a></li>
 					<li><a href="/news.html">NEWS</a></li>
 					<li><a href="/publications.html">PUBLICATIONS</a></li>
 					<li><a href="https://aibl.snu.ac.kr/team">TEAM</a></li>
 					<li><a href="/assets/study/">STUDY</a></li>
-					<!-- <li><a href="/projects/">PROJECTS</a></li> -->
 					<li><a href="/assets/cv/Ziseok_Lee_CV.pdf">CV</a></li>
 				</ul>
 			</div>
 			<div class="inner">
-				<a href="#" class="theme-toggle"><img src="/assets/images/lovebulb.svg" /></a>
+				<a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb.svg" alt="" /></a>
 				<p><a href="/index.html"><strong>HOME</strong></a></p>
 				<p><a href="/bio.html">BIO</a></p>
 				<p><a href="/news.html">NEWS</a></p>
 				<p><a href="/publications.html">PUBLICATIONS</a></p>
 				<p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
 				<p><a href="/assets/study/">STUDY</a></p>
-				<!-- <p><a href="/projects/">PROJECTS</a></p> -->
 				<p><a href="/assets/cv/Ziseok_Lee_CV.pdf">CV</a></p>
 			</div>
 		</header>
-
-
-
-
-
 
 		<!-- Main Division -->
 		<div id="main">
 			<!-- HOME -->
 			<section id="home">
-				<style>
-					#home .image.home {
-						width: 13rem;
-					}
-
-					#home h1 {
-						margin: 0;
-					}
-				</style>
 				<div id="ziseoklee">
-					<!-- <a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en"><img src="assets/images/profile_photo_bio.jpg" alt="profile photo" width=240rem class="image right"/></a> -->
-					<img src="assets/images/profile_photo_bio.jpg" alt="profile photo" width=240rem class="image right"/>
+					<img src="assets/images/profile_photo_bio.jpg" alt="profile photo" width="240" class="image right" />
 					<header class="major">
 						<h1>Ziseok Lee</h1>
 					</header>
@@ -69,11 +53,6 @@
 						Department of Biomedical Sciences<br>
 						Seoul National University
 					</p>
-					<!-- <p>
-						Undergraduate Student<br>
-						Department of Mathematical Sciences<br>
-						Seoul National University
-					</p> -->
 					<hr>
 				</div>
 
@@ -87,36 +66,6 @@
 					<hr>
 				</div>
 
-				<style>
-					#education table, #research table, #teaching table, #volunteer table, #awards table {
-						width: min(100%, 70rem);
-						table-layout: fixed;
-					}
-					#education table th:nth-child(1), #education table td:nth-child(1), #research table th:nth-child(1), #research table td:nth-child(1), #teaching table th:nth-child(1), #teaching table td:nth-child(1), #volunteer table th:nth-child(1), #volunteer table td:nth-child(1), #awards table th:nth-child(1), #awards table td:nth-child(1) {
-						width: calc(100% - 10rem);
-					}
-
-					#education table th:nth-child(2), #education table td:nth-child(2), #research table th:nth-child(2), #research table td:nth-child(2), #teaching table th:nth-child(2), #teaching table td:nth-child(2), #volunteer table th:nth-child(2), #volunteer table td:nth-child(2), #awards table th:nth-child(2), #awards table td:nth-child(2) {
-						padding: 0 0 0 1rem;
-						width: 10rem; 
-					}
-					@media screen and (max-width: 980px) {
-						#education table, #research table, #teaching table, #volunteer table, #awards table {
-							width: 100%;
-							table-layout: auto;
-						}
-					}
-					@media screen and (max-width: 580px) {
-						#education table th:nth-child(1), #education table td:nth-child(1), #research table th:nth-child(1), #research table td:nth-child(1), #teaching table th:nth-child(1), #teaching table td:nth-child(1), #volunteer table th:nth-child(1), #volunteer table td:nth-child(1), #awards table th:nth-child(1), #awards table td:nth-child(1) {
-							width: calc(100% - 6rem);
-						}
-
-						#education table th:nth-child(2), #education table td:nth-child(2), #research table th:nth-child(2), #research table td:nth-child(2), #teaching table th:nth-child(2), #teaching table td:nth-child(2), #volunteer table th:nth-child(2), #volunteer table td:nth-child(2), #awards table th:nth-child(2), #awards table td:nth-child(2) {
-							width: 6rem;
-						}
-					}
-				</style>
-
 				<div id="projects">
 					<header>
 						<h2>Projects</h2>
@@ -125,230 +74,10 @@
 					<hr>
 				</div>
 
-				<!-- <style>
-					/* Grid Layout */
-					#project-card-grid {
-						display: grid;
-						grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-						gap: 30px;
-						width: 100%; /* Adapts to parent div */
-						margin: 0 auto;
-					}
-				</style> -->
-				<style>
-					/* Horizontal Slider Layout */
-					#project-card-grid {
-						display: grid;
-						grid-auto-flow: column;       /* Forces items into a single horizontal row */
-						grid-auto-columns: 300px;     /* Sets the fixed width of each project card */
-						gap: 30px;
-						width: 100%; 
-						margin: 0 auto;
-						overflow-x: auto;             /* Enables the horizontal scrollbar */
-						padding-bottom: 15px;         /* Prevents the scrollbar from overlapping your cards */
-						scroll-snap-type: x mandatory; /* Optional: Makes scrolling snap to cards nicely */
-					}
-
-					/* Optional: Ensures child cards snap into place if you use scroll-snap-type */
-					#project-card-grid > * {
-						scroll-snap-align: start;
-					}
-
-					:root[data-theme="dark"] #project-card-grid {
-						scrollbar-width: thin;
-						scrollbar-color: #5a5a5a #202020;
-					}
-
-					/*:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar {
-						height: 10px;
-					}*/
-
-					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-track {
-						background: #202020;
-						border-radius: 999px;
-					}
-
-					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb {
-						background: #5a5a5a;
-						border-radius: 999px;
-					}
-
-					:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb:hover {
-						background: #6e6e6e;
-					}
-				</style>
-
-				<script>
-				(function() {
-					// We target the specific ID we defined above
-					const container = document.getElementById('project-card-grid');
-					// Path to your JSON file. Adjust '../projects.json' if needed based on your folder structure.
-					const jsonPath = 'myprojects.json'; 
-
-					async function fetchLinkData(url) {
-						const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}`;
-						try {
-							const response = await fetch(apiUrl);
-							const data = await response.json();
-							return data.status === 'success' ? data.data : null;
-						} catch (error) {
-							return null;
-						}
-					}
-					// A. Modified createCard to accept an image override
-					function createCard(data, originalEntry) {
-						// Check if originalEntry is an object with a manual image
-						const manualImage = (typeof originalEntry === 'object' && originalEntry.image) ? originalEntry.image : null;
-						const linkUrl = (typeof originalEntry === 'object') ? originalEntry.url : originalEntry;
-						const manualTitle = (typeof originalEntry === 'object' && originalEntry.title) ? originalEntry.title : null;
-						const manualDescription = (typeof originalEntry === 'object' && originalEntry.description) ? originalEntry.description : null;
-
-						const card = document.createElement('a');
-						card.href = linkUrl;
-						card.target = "_blank";
-						card.className = 'p-card';
-						
-						const title = manualTitle || data.title || 'Untitled Project';
-						const desc = manualDescription || data.description || 'No description available.';
-						
-						// PRIORITIZE MANUAL IMAGE
-						const finalImage = manualImage || (data.image ? data.image.url : null);
-
-						const imageHtml = finalImage 
-							? `<img src="${finalImage}" alt="${title}" class="p-card-image" style="object-fit: cover; object-position: top;" onerror="this.style.display='none'">`
-							: ''; 
-
-						card.innerHTML = `
-							<div class="p-card-image-wrapper">
-								${imageHtml}
-							</div>
-							<div class="p-card-content">
-								<h3 class="p-card-title">${title}</h3>
-								<p class="p-card-desc">${desc}</p>
-							</div>
-						`;
-						return card;
-					}
-
-					// B. Modified Init to handle objects vs strings
-					async function init() {
-						try {
-							const response = await fetch('myprojects.json');
-							if (!response.ok) throw new Error(`Status: ${response.status}`);
-							
-							const projectList = await response.json();
-
-							// Render Skeletons
-							projectList.forEach(() => {
-								const skeleton = document.createElement('div');
-								skeleton.className = 'p-card p-skeleton';
-								container.appendChild(skeleton);
-							});
-
-							// Fetch Previews
-							// We map through the list. If it's a string, use it. If it's an object, use .url
-							const cardDataPromises = projectList.map(entry => {
-								const url = (typeof entry === 'object') ? entry.url : entry;
-								return fetchLinkData(url);
-							});
-							
-							const results = await Promise.all(cardDataPromises);
-
-							container.innerHTML = '';
-							results.forEach((data, index) => {
-								// Even if data is null (fetch failed), we might still want to show the card if we have a manual image
-								const entry = projectList[index];
-								const safeData = data || { title: 'Project', description: '' }; // Fallback data
-								
-								container.appendChild(createCard(safeData, entry));
-							});
-
-						} catch (err) {
-							console.error(err);
-						}
-					}
-
-					// function createCard(data, originalUrl) {
-					// 	const card = document.createElement('a');
-					// 	card.href = originalUrl;
-					// 	card.target = "_blank";
-					// 	// We use 'p-card' class to ensure styles don't clash with other frameworks (like Bootstrap)
-					// 	card.className = 'p-card';
-						
-					// 	const title = data.title || 'Untitled Project';
-					// 	const desc = data.description || 'No description available.';
-					// 	const hasImage = data.image && data.image.url;
-
-					// 	const imageHtml = hasImage 
-					// 		? `<img src="${data.image.url}" alt="${title}" class="p-card-image" onerror="this.style.display='none'">`
-					// 		: ''; 
-
-					// 	card.innerHTML = `
-					// 		<div class="p-card-image-wrapper">
-					// 			${imageHtml}
-					// 		</div>
-					// 		<div class="p-card-content">
-					// 			<h2 class="p-card-title">${title}</h2>
-					// 			<p class="p-card-desc">${desc}</p>
-					// 		</div>
-					// 	`;
-					// 	return card;
-					// }
-
-					// async function init() {
-					// 	try {
-					// 		const response = await fetch(jsonPath);
-							
-					// 		if (!response.ok) {
-					// 			throw new Error(`Could not load ${jsonPath} (Status: ${response.status}).`);
-					// 		}
-							
-					// 		const projectLinks = await response.json();
-
-					// 		// Render Skeletons
-					// 		projectLinks.forEach(() => {
-					// 			const skeleton = document.createElement('div');
-					// 			skeleton.className = 'p-card p-skeleton';
-					// 			container.appendChild(skeleton);
-					// 		});
-
-					// 		// Fetch Previews
-					// 		const cardDataPromises = projectLinks.map(url => fetchLinkData(url));
-					// 		const results = await Promise.all(cardDataPromises);
-
-					// 		// Clear and Render Real Cards
-					// 		container.innerHTML = '';
-					// 		results.forEach((data, index) => {
-					// 			if (data) {
-					// 				container.appendChild(createCard(data, projectLinks[index]));
-					// 			} else {
-					// 				const errorCard = document.createElement('div');
-					// 				errorCard.className = 'p-card p-error-msg';
-					// 				errorCard.innerText = `Could not preview: ${projectLinks[index]}`;
-					// 				container.appendChild(errorCard);
-					// 			}
-					// 		});
-
-					// 	} catch (err) {
-					// 		container.innerHTML = `<div class="p-error-msg"><strong>Error loading projects:</strong> ${err.message}</div>`;
-					// 		console.error(err);
-					// 	}
-					// }
-
-					// Run
-					init();
-				})();
-				</script>
-
 				<div id="education">
 					<header>
 						<h2>Education</h2>
 					</header>
-					<style>
-						#education tbody tr {
-							background-color: transparent;
-						}
-					</style>
 					<table>
 						<tbody>
 							<tr>
@@ -374,11 +103,6 @@
 					<header>
 						<h2>Research Experience</h2>
 					</header>
-					<style>
-						#research tbody tr {
-							background-color: transparent;
-						}
-					</style>
 					<table>
 						<tbody>
 							<tr>
@@ -414,13 +138,6 @@
 								</td>
 								<td>2024.01 - 2024.08</td>
 							</tr>
-							<!-- <tr>
-								<td>
-									<b>Undergraduate Research Assistant at <a href="http://hyke.snu.ac.kr/">HYKE Group</a></b>
-									(Hyperbolic Conservation Laws with Nonlocal Relaxation)
-								</td>
-								<td>2023.03 - 2023.07</td>
-							</tr> -->
 							<tr>
 								<td>
 									<details>
@@ -432,18 +149,13 @@
 							</tr>
 						</tbody>
 					</table>
-				<hr>
+					<hr>
 				</div>
 
 				<div id="awards">
 					<header>
-						<h2>Honors & Fellowships</h2>
+						<h2>Honors &amp; Fellowships</h2>
 					</header>
-					<style>
-						#awards tbody tr {
-							background-color: transparent;
-						}
-					</style>
 					<table>
 						<tbody>
 							<tr>
@@ -496,21 +208,13 @@
 							</tr>
 						</tbody>
 					</table>
+					<hr>
 				</div>
-				<hr>
 
 				<div id="teaching">
 					<header>
 						<h2>Teaching Experience</h2>
 					</header>
-					<style>
-						#teaching tbody tr {
-							background-color: transparent;
-						}
-						details {
-							margin: 0;
-						}
-					</style>
 					<table>
 						<tbody>
 							<tr>
@@ -560,12 +264,12 @@
 							</tr>
 						</tbody>
 					</table>
-				<hr>
+					<hr>
 				</div>
 
-				<div id="awards">
+				<div id="funding">
 					<header>
-						<h2>Grants & Funding</h2>
+						<h2>Grants &amp; Funding</h2>
 					</header>
 					<table>
 						<tbody>
@@ -585,16 +289,14 @@
 							</tr>
 						</tbody>
 					</table>
+					<hr>
 				</div>
-				<hr>
-
-
 
 				<div id="contact">
 					<h2>Contact</h2>
 					<div class="row">
 						<div class="column">
-							<form onsubmit="sendEmail(event)">
+							<form id="contact-form">
 								<div class="row gtr-uniform gtr-50">
 									<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Your Name" /></div>
 									<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Your Email" /></div>
@@ -611,36 +313,28 @@
 			</section>
 		</div>
 
-		
-
-
-
-		
-
 		<!-- Footer -->
 		<footer id="footer">
 			<div class="inner">
 				<ul class="icons">
 					<li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 					<li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&hl=en" class="icon solid fa-graduation-cap"><span class="label">Scholar</span></a></li>
+					<li><a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&amp;hl=en" class="icon solid fa-graduation-cap"><span class="label">Scholar</span></a></li>
 				</ul>
 				<ul class="copyright">
 					<li>&copy; Ziseok Lee</li>
-					<!-- <li><a class="theme-toggle">Theme</a></li> -->
 					<li><a href="http://html5up.net">HTML5 UP</a></li>
 				</ul>
 			</div>
 		</footer>
 
 		<script src="/assets/js/jquery.min.js"></script>
-		<script src="/assets/js/jquery.poptrox.min.js"></script>
 		<script src="/assets/js/browser.min.js"></script>
 		<script src="/assets/js/breakpoints.min.js"></script>
 		<script src="/assets/js/util.js"></script>
 		<script src="/assets/js/main.js"></script>
+		<script src="/assets/js/home-projects.js"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 		<script src="/assets/js/emailjs.js"></script>
-		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 	</body>
 </html>

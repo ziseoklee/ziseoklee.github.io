@@ -1,0 +1,159 @@
+#home h1 {
+	margin: 0;
+}
+
+#education table,
+#research table,
+#teaching table,
+#awards table,
+#funding table {
+	width: min(100%, 70rem);
+	table-layout: fixed;
+}
+
+#education th:nth-child(1),
+#education td:nth-child(1),
+#research th:nth-child(1),
+#research td:nth-child(1),
+#teaching th:nth-child(1),
+#teaching td:nth-child(1),
+#awards th:nth-child(1),
+#awards td:nth-child(1),
+#funding th:nth-child(1),
+#funding td:nth-child(1) {
+	width: calc(100% - 10rem);
+}
+
+#education th:nth-child(2),
+#education td:nth-child(2),
+#research th:nth-child(2),
+#research td:nth-child(2),
+#teaching th:nth-child(2),
+#teaching td:nth-child(2),
+#awards th:nth-child(2),
+#awards td:nth-child(2),
+#funding th:nth-child(2),
+#funding td:nth-child(2) {
+	width: 10rem;
+	padding: 0 0 0 1rem;
+}
+
+#education tbody tr,
+#research tbody tr,
+#teaching tbody tr,
+#awards tbody tr,
+#funding tbody tr {
+	background-color: transparent;
+}
+
+#home details {
+	margin: 0;
+}
+
+#project-card-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+	gap: 1.5rem;
+	width: 100%;
+	margin: 0 auto;
+}
+
+#project-card-grid > * {
+	min-width: 0;
+}
+
+#project-card-grid > .p-card {
+	height: 100%;
+}
+
+#project-card-grid .p-card-image {
+	object-position: top;
+}
+
+@media screen and (max-width: 980px) {
+	#education table,
+	#research table,
+	#teaching table,
+	#awards table,
+	#funding table {
+		width: 100%;
+		table-layout: auto;
+	}
+}
+
+@media screen and (max-width: 580px) {
+	#education th:nth-child(1),
+	#education td:nth-child(1),
+	#research th:nth-child(1),
+	#research td:nth-child(1),
+	#teaching th:nth-child(1),
+	#teaching td:nth-child(1),
+	#awards th:nth-child(1),
+	#awards td:nth-child(1),
+	#funding th:nth-child(1),
+	#funding td:nth-child(1) {
+		width: calc(100% - 6rem);
+	}
+
+	#education th:nth-child(2),
+	#education td:nth-child(2),
+	#research th:nth-child(2),
+	#research td:nth-child(2),
+	#teaching th:nth-child(2),
+	#teaching td:nth-child(2),
+	#awards th:nth-child(2),
+	#awards td:nth-child(2),
+	#funding th:nth-child(2),
+	#funding td:nth-child(2) {
+		width: 6rem;
+	}
+
+	#project-card-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/*
+ * Previous horizontal carousel layout.
+ * To restore it, comment out the active #project-card-grid rules above and
+ * uncomment this block.
+ *
+#project-card-grid {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: 300px;
+	gap: 30px;
+	width: 100%;
+	margin: 0 auto;
+	overflow-x: auto;
+	padding-bottom: 15px;
+	scroll-snap-type: x mandatory;
+}
+
+#project-card-grid > * {
+	scroll-snap-align: start;
+}
+
+:root[data-theme="dark"] #project-card-grid {
+	scrollbar-width: thin;
+	scrollbar-color: #5a5a5a #202020;
+}
+
+:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar {
+	height: 10px;
+}
+
+:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-track {
+	background: #202020;
+	border-radius: 999px;
+}
+
+:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb {
+	background: #5a5a5a;
+	border-radius: 999px;
+}
+
+:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb:hover {
+	background: #6e6e6e;
+}
+*/

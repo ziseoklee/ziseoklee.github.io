@@ -113,6 +113,8 @@ document.addEventListener('click', function (event) {
 		// Lightbox gallery.
 			$window.on('load', function() {
 
+				if (!$('#two').length || !$.fn.poptrox) return;
+
 				$('#two').poptrox({
 					caption: function($a) { return $a.next('h3').text(); },
 					overlayColor: '#2c2c2c',
