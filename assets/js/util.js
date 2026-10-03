@@ -641,7 +641,16 @@ window.MathJax = {
 // }
 
 const toggles = document.querySelectorAll(".theme-toggle");
+const favicons = document.querySelectorAll('link[rel="icon"]');
 const root = document.documentElement;
+const themeImages = {
+  light: "/assets/images/lovebulb_full.png",
+  dark: "/assets/images/lovebulb.svg"
+};
+const themePageIcons = {
+  light: { href: "/assets/images/pageicon_full.png", type: "image/png" },
+  dark: { href: "/assets/images/pageicon.svg", type: "image/svg+xml" }
+};
 
 let theme = localStorage.getItem("theme") || "light";
 applyTheme(theme);
@@ -658,6 +667,16 @@ toggles.forEach(btn => {
 function applyTheme(mode) {
   root.removeAttribute("data-theme");
   if (mode !== "system") root.setAttribute("data-theme", mode);
-  
-  // I removed the code block here that was changing the text content
+
+  const pageIcon = mode === "light" ? themePageIcons.light : themePageIcons.dark;
+
+  toggles.forEach(toggle => {
+    const image = toggle.querySelector("img");
+    if (image) image.src = mode === "light" ? themeImages.light : themeImages.dark;
+  });
+
+  favicons.forEach(favicon => {
+    favicon.href = pageIcon.href;
+    favicon.type = pageIcon.type;
+  });
 }
