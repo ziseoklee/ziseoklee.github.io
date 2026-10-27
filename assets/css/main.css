@@ -3563,8 +3563,16 @@ input, select, textarea {
 		code {
 			background-color: #f7f7f7;
 		}
+		/*
+		 * Previous light-mode link palettes:
+		 * Green: default #11644b, hover #49bf9d
+		 * Gold: default #a3632b, hover #deb083
+		 */
         a {
-            color: #11644b; /* Link color for light mode */
+            color: #2f6f9f;
+        }
+		a:hover {
+			color: #88ccff !important;
         }
 		hr {
 			border: 0;
