@@ -50,6 +50,7 @@
 	margin: 0;
 }
 
+/* Alternative wrapping project grid (preserved for easy restoration).
 #project-card-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
@@ -57,6 +58,7 @@
 	width: 100%;
 	margin: 0 auto;
 }
+*/
 
 #project-card-grid > * {
 	min-width: 0;
@@ -108,17 +110,18 @@
 		width: 6rem;
 	}
 
+	/* Used with the alternative wrapping project grid above.
 	#project-card-grid {
 		grid-template-columns: 1fr;
 	}
+	*/
 }
 
-/*
- * Previous horizontal carousel layout.
- * To restore it, comment out the active #project-card-grid rules above and
- * uncomment this block.
- *
+/* Horizontal scrolling project cards. */
 #project-card-grid {
+	--scrollbar-track: #f1ede7;
+	--scrollbar-thumb: #aaa49c;
+	--scrollbar-thumb-hover: #8e8880;
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: 300px;
@@ -128,6 +131,8 @@
 	overflow-x: auto;
 	padding-bottom: 15px;
 	scroll-snap-type: x mandatory;
+	scrollbar-width: thin;
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 #project-card-grid > * {
@@ -135,25 +140,25 @@
 }
 
 :root[data-theme="dark"] #project-card-grid {
-	scrollbar-width: thin;
-	scrollbar-color: #5a5a5a #202020;
+	--scrollbar-track: #202020;
+	--scrollbar-thumb: #5a5a5a;
+	--scrollbar-thumb-hover: #6e6e6e;
 }
 
-:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar {
+#project-card-grid::-webkit-scrollbar {
 	height: 10px;
 }
 
-:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-track {
-	background: #202020;
+#project-card-grid::-webkit-scrollbar-track {
+	background: var(--scrollbar-track);
 	border-radius: 999px;
 }
 
-:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb {
-	background: #5a5a5a;
+#project-card-grid::-webkit-scrollbar-thumb {
+	background: var(--scrollbar-thumb);
 	border-radius: 999px;
 }
 
-:root[data-theme="dark"] #project-card-grid::-webkit-scrollbar-thumb:hover {
-	background: #6e6e6e;
+#project-card-grid::-webkit-scrollbar-thumb:hover {
+	background: var(--scrollbar-thumb-hover);
 }
-*/
