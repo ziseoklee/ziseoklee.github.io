@@ -100,9 +100,26 @@
         </p>
         <p class="project-note"><sup>*</sup>Equal contribution · <sup>†</sup>Corresponding author</p>
         <div class="project-actions">
-          <a class="project-button project-button-primary" href="https://openreview.net/forum?id=emv2qsi3TG">OpenReview</a>
-          <a class="project-button" href="https://github.com/ziseoklee/ACE">Code</a>
-          <a class="project-button" href="https://arxiv.org/abs/2512.10339">arXiv</a>
+          <a class="project-button project-button-primary" href="https://openreview.net/forum?id=emv2qsi3TG">
+            <img class="project-resource-icon" src="/assets/images/openreview-mark.png" width="18" height="18" alt="">
+            OpenReview
+          </a>
+          <a class="project-button" href="https://github.com/ziseoklee/ACE">
+            <span class="icon brands fa-github project-resource-icon" aria-hidden="true"></span>
+            Code
+          </a>
+          <a class="project-button" href="https://arxiv.org/abs/2512.10339">
+            <img class="project-resource-icon" src="/assets/images/arxiv-mark.png" width="18" height="18" alt="">
+            arXiv
+          </a>
+          <a class="project-button" href="https://slideslive.com/39067115/on-the-collapse-of-generative-paths-a-criterion-and-correction-for-diffusion-steering">
+            <span class="icon solid fa-play-circle project-resource-icon" aria-hidden="true"></span>
+            Video
+          </a>
+          <a class="project-button" href="https://icml.cc/media/PosterPDFs/ICML%202026/62637.png">
+            <span class="icon solid fa-image project-resource-icon" aria-hidden="true"></span>
+            Poster
+          </a>
         </div>
         <nav class="project-toc" aria-label="On this page">
           <a href="#abstract">Abstract</a>
@@ -161,7 +178,22 @@
         </div>
 
         <h2 class="project-subsection">Understanding ACE</h2>
-        <p class="project-prose">ACE detects invalid composed paths with the Path Existence Criterion and corrects exponent schedules so that \(C_k(t)&gt;0\) on the sampling timesteps.</p>
+        <p class="project-prose">Start with the checkerboard experiment, where both runs aim for the same target. In the animation, follow the samples from \(p_0\) toward \(p_1\) and watch when the two paths begin to diverge.</p>
+
+        <figure class="project-figure" data-project-animation="static/images/ACE-results-2d_synthetic.gif">
+          <div class="project-section-header project-animation-heading">
+            <h3>Synthetic Checker Animation</h3>
+            <button class="project-button" type="button" data-animation-toggle hidden>Play animation</button>
+          </div>
+          <div data-animation-status role="status"></div>
+          <div class="project-figure-image">
+            <img src="static/images/ACE-results-2d_synthetic-preview.png" width="1040" height="520" alt="Side-by-side comparison of marginal path collapse and the ACE-corrected path over time" decoding="async">
+          </div>
+          <figcaption>Follow the synthetic checker samples over time. The path on the left collapses, while ACE recovers the checkerboard on the right.</figcaption>
+        </figure>
+
+        <p class="project-prose">Figure 1 connects that divergence to the sign of the Path Existence Criterion. Figure 2 shows how the intermediate density can become non-normalizable even when the endpoints are valid. Figure 3 shows how changing the exponent schedule keeps the criterion positive across different combinations of noise schedules.</p>
+
         <div class="project-grid project-figure-grid">
           <figure class="project-figure">
             <h3>Marginal Path Collapse &amp; ACE Correction</h3>
@@ -208,6 +240,7 @@
 
       <section class="project-section" id="applications">
         <h2>Applications of ACE</h2>
+        <p class="project-prose">The two applications test different aspects of ACE. Scaffold decoration asks whether ACE can repair collapse caused by mismatched expert schedules. Compositional image generation asks whether adjusting the exponents can improve prompt alignment when the path is already valid.</p>
         <div class="project-grid project-figure-grid">
           <figure class="project-figure">
             <h3>Flexible-Pose Scaffold Decoration</h3>
@@ -224,6 +257,7 @@
             <figcaption><strong>Figure E.9:</strong> Impact of Marginal Path Collapse on molecular generation. On scaffold decoration at \(\omega=1.3\), FKC enters a collapsed regime near the end of sampling where \(C(t)&lt;0\), producing disjoint fragments. ACE applies the bump correction to keep \(C(t)&gt;0\) throughout the trajectory and produces connected, chemically valid molecules.</figcaption>
           </figure>
         </div>
+        <p class="project-prose">The left image uses the global prompt alone. The right adds region-wise guidance with ACE. Start with the two-chair example and check which color each chair receives, then compare object placement and attributes across the remaining prompts.</p>
         <div class="project-figure">
           <h3>Compositional Image Generation</h3>
           <div class="project-gallery project-gallery-comparison" data-project-gallery role="group" aria-label="Compositional image generation examples">
@@ -329,7 +363,8 @@
         </div>
 
         <h2 class="project-subsection">Quantitative Results</h2>
-        <p class="project-prose">Scroll within wide tables to see all metrics. Method names stay visible as you scroll.</p>
+        <p class="project-prose">Table 3 shows how path validity and docking scores vary with guidance weight. Table 4 compares against fixed-pose baselines, and Table 5 shows the runtime trade-off between ACE and ACE-lite. For image generation, use Table E.16 to compare attribute success as the number of region prompts increases.</p>
+        <p class="project-note">Scroll within wide tables to see all metrics. Method names stay visible as you scroll.</p>
         <div class="project-table-block" id="table-3">
           <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="table-3-title">
             <table class="project-table" aria-describedby="table-3-note">

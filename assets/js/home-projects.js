@@ -32,7 +32,6 @@
 
 		card.className = 'p-card';
 		card.href = entry.url;
-		card.target = '_blank';
 		card.rel = 'noopener noreferrer';
 
 		const imageWrapper = document.createElement('div');
@@ -83,6 +82,9 @@
 
 			const cards = await Promise.all(
 				projects.map(async (project) => {
+					if (project.title && project.description && project.image) {
+						return createCard(project, project);
+					}
 					const url = typeof project === 'string' ? project : project.url;
 					const metadata = await fetchLinkData(url);
 					return createCard(metadata, project);

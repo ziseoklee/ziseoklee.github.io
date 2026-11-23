@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Update the title, description, and citation metadata when publishing a project. -->
+  <!-- For a published project, update the title and description, add citation metadata, and remove the template's noindex tag. -->
   <meta name="robots" content="noindex, follow">
   <meta name="description" content="Reusable research project page template for Ziseok Lee’s portfolio.">
   <title>Academic Project Page Template | Ziseok Lee</title>
@@ -17,6 +17,8 @@
   <script defer src="/assets/js/util.js"></script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="/assets/js/project.js"></script>
+  <!-- Keep MathJax for projects with equations. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body class="project-page">
   <a class="project-skip" href="#main-content">Skip to content</a>
@@ -30,6 +32,7 @@
       <nav id="nav-menu" aria-label="Project contents">
         <p class="project-sidebar-label" aria-hidden="true">Contents</p>
         <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
         <a href="#results">Results</a>
         <a href="#presentation">Presentation</a>
         <a href="#BibTeX">BibTeX</a>
@@ -42,6 +45,7 @@
       <header class="project-hero">
         <!-- Replace the sample venue, title, authors, affiliations, and links. -->
         <p class="project-venue">Conference · Year</p>
+        <!-- Add data-fit-title to a long h1 to fit it to two lines on wide screens. -->
         <h1>Academic Project Page</h1>
         <ul class="project-authors" aria-label="Authors">
           <li>First Author<sup>*</sup></li>
@@ -51,11 +55,31 @@
         <p class="project-affiliations">Institution Name</p>
         <p class="project-note"><sup>*</sup>Equal contribution</p>
         <div class="project-actions">
-          <a class="project-button project-button-primary" href="static/pdfs/sample.pdf">Sample paper</a>
-          <!-- Add working links to your code, preprint, and supplementary material. -->
+          <!-- These links use ACE as an example. Replace the URLs and keep only the resources your project offers. -->
+          <a class="project-button project-button-primary" href="https://openreview.net/forum?id=emv2qsi3TG">
+            <img class="project-resource-icon" src="/assets/images/openreview-mark.png" width="18" height="18" alt="">
+            OpenReview
+          </a>
+          <a class="project-button" href="https://github.com/ziseoklee/ACE">
+            <span class="icon brands fa-github project-resource-icon" aria-hidden="true"></span>
+            Code
+          </a>
+          <a class="project-button" href="https://arxiv.org/abs/2512.10339">
+            <img class="project-resource-icon" src="/assets/images/arxiv-mark.png" width="18" height="18" alt="">
+            arXiv
+          </a>
+          <a class="project-button" href="https://slideslive.com/39067115/on-the-collapse-of-generative-paths-a-criterion-and-correction-for-diffusion-steering">
+            <span class="icon solid fa-play-circle project-resource-icon" aria-hidden="true"></span>
+            Video
+          </a>
+          <a class="project-button" href="https://icml.cc/media/PosterPDFs/ICML%202026/62637.png">
+            <span class="icon solid fa-image project-resource-icon" aria-hidden="true"></span>
+            Poster
+          </a>
         </div>
         <nav class="project-toc" aria-label="On this page">
           <a href="#abstract">Abstract</a>
+          <a href="#method">Method</a>
           <a href="#results">Results</a>
           <a href="#presentation">Presentation</a>
           <a href="#BibTeX">BibTeX</a>
@@ -65,7 +89,9 @@
       <section class="project-section" id="abstract">
         <h2>Abstract</h2>
         <div class="project-prose">
-          <p>Summarize the research question, the method, and the main finding.</p>
+          <!-- Use project-callout for an optional one-paragraph summary or key insight. -->
+          <p class="project-callout"><strong class="project-summary-label">TL;DR</strong> ACE corrects <strong>Marginal Path Collapse</strong> when combining pretrained generative models.</p>
+          <p>Say what the paper studies and what it finds. The examples below use figures and results from <a href="/projects/ACE/">the ACE project</a>.</p>
         </div>
         <figure class="project-figure">
           <video controls playsinline preload="metadata" aria-label="Example teaser video" src="static/videos/banner_video.mp4"></video>
@@ -73,46 +99,143 @@
         </figure>
       </section>
 
+      <section class="project-section" id="method">
+        <h2>Method</h2>
+        <!-- Place project-card elements directly inside the grid to get equal heights within a row and centered cards when they wrap. -->
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Synthetic Checker</h3>
+            <p>Two coordinates \(X,Y\) are generated from heterogeneous marginal and joint experts.</p>
+            <div class="project-equation">\(p(X,Y\mid A,B) \propto \dfrac{p(X\mid A)\,p(X,Y\mid B)}{p(X)}\)</div>
+          </div>
+          <div class="project-card">
+            <h3>Flexible-Pose Scaffold Decoration</h3>
+            <p>Topology acts locally on the scaffold, while binding acts globally.</p>
+            <!-- Use an aligned MathJax block to break a long expression across lines. -->
+            <div class="project-equation">
+              \(\begin{aligned}
+                p(M^{sc},M^R\mid &amp;A,B)\\
+                &amp;\propto \dfrac{p(M^{sc}\mid A)\,p(M\mid B)}{p(M^{sc})}
+              \end{aligned}\)
+            </div>
+          </div>
+          <div class="project-card">
+            <h3>Multi-Instance Image Generation</h3>
+            <p>Region prompts constrain local foregrounds, while a global prompt constrains the full image.</p>
+          </div>
+        </div>
+
+        <h2 class="project-subsection">Understanding Path Collapse</h2>
+        <!-- Use one project-figure per column for a simple pair, or wrap two panels in project-figure-stack for a stacked column.
+             Replace the demo image paths, alt text, captions, and intrinsic dimensions together. -->
+        <div class="project-grid project-figure-grid">
+          <figure class="project-figure">
+            <h3>Marginal Path Collapse and ACE Correction</h3>
+            <a class="project-figure-image" href="/projects/ACE/static/images/figure1.png" aria-label="Open Figure 1 at full size">
+              <img src="/projects/ACE/static/images/figure1.png" width="1458" height="1454" alt="Checkerboard samples comparing heuristic steering, path collapse, and ACE correction" loading="lazy" decoding="async">
+            </a>
+            <figcaption><strong>ACE Figure 1.</strong> Adaptive exponents recover the target checkerboard when standard steering follows an invalid path.</figcaption>
+          </figure>
+          <div class="project-figure-stack">
+            <figure class="project-figure">
+              <h3>Understanding Path Collapse</h3>
+              <a class="project-figure-image" href="/projects/ACE/static/images/figure2.png" aria-label="Open Figure 2 at full size">
+                <img src="/projects/ACE/static/images/figure2.png" width="1470" height="751" alt="Non-integrable region in a ratio-of-Gaussians path" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>ACE Figure 2.</strong> The intermediate variance diverges even though the endpoints are valid.</figcaption>
+            </figure>
+            <figure class="project-figure">
+              <h3>Schedule Mismatch and Criterion Repair</h3>
+              <a class="project-figure-image" href="/projects/ACE/static/images/figure3.png" aria-label="Open Figure 3 at full size">
+                <img src="/projects/ACE/static/images/figure3.png" width="1435" height="596" alt="Path Existence Criterion curves with and without ACE correction" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>ACE Figure 3.</strong> Corrected exponents keep the Path Existence Criterion positive.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <section class="project-section" id="results">
         <h2>Results</h2>
-        <div class="project-table-block project-table-compact">
-          <div class="project-table-scroll">
-            <table class="project-table" aria-describedby="example-table-note">
-              <caption><span class="project-table-title">Example benchmark results</span></caption>
+        <!-- Use project-table-wide for a scrollable table with a sticky method column.
+             Give its caption a unique ID and reference it from the keyboard-focusable wrapper. -->
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="example-wide-table-title">
+            <table class="project-table" aria-describedby="example-wide-table-note">
+              <caption id="example-wide-table-title"><span class="project-table-title"><span>ACE Table 3</span> CrossDocked results by guidance weight</span></caption>
+              <colgroup span="4"></colgroup>
+              <colgroup span="4"></colgroup>
+              <colgroup span="3"></colgroup>
               <thead>
-                <tr><th scope="col">Method</th><th scope="col">Accuracy ↑</th><th scope="col">Error ↓</th></tr>
+                <tr>
+                  <th scope="col" rowspan="2">Method</th><th scope="col" rowspan="2">ω</th>
+                  <th scope="col" rowspan="2"><abbr title="Path Existence Criterion">PEC</abbr></th><th scope="col" rowspan="2">OSR ↑</th>
+                  <th scope="colgroup" colspan="4">Vina Score ↓</th><th scope="colgroup" colspan="3">QED ↑</th>
+                </tr>
+                <tr>
+                  <th scope="col">Pocket-Worst</th><th scope="col">Top 25%</th><th scope="col">Avg</th><th scope="col">Std</th>
+                  <th scope="col">Top 25%</th><th scope="col">Top 50%</th><th scope="col">Avg</th>
+                </tr>
               </thead>
+              <!-- Use project-table-highlight on rows, strong for bold values, and project-runner-up for underlined values. -->
               <tbody>
-                <tr><th scope="row">Baseline A</th><td>81.8%</td><td>0.23</td></tr>
-                <tr><th scope="row">Baseline B</th><td><span class="project-runner-up">83.9%</span></td><td><span class="project-runner-up">0.19</span></td></tr>
-                <tr class="project-table-highlight"><th scope="row">Proposed method</th><td><strong>87.4%</strong></td><td><strong>0.14</strong></td></tr>
+                <tr>
+                  <th scope="rowgroup" rowspan="2">ACE</th><th scope="row" class="project-table-weight">1.1</th>
+                  <td>Yes</td><td><span class="project-runner-up">0.71</span></td>
+                  <td>−6.74</td><td>−8.30</td><td>−7.02</td><td>0.19</td>
+                  <td><strong>0.65</strong></td><td><span class="project-runner-up">0.50</span></td><td><span class="project-runner-up">0.51</span></td>
+                </tr>
+                <tr class="project-table-highlight">
+                  <th scope="row" class="project-table-weight">1.4</th>
+                  <td>Yes</td><td><strong>0.75</strong></td>
+                  <td><strong>−6.84</strong></td><td><strong>−8.70</strong></td><td><strong>−7.10</strong></td><td>0.19</td>
+                  <td><span class="project-runner-up">0.64</span></td><td><strong>0.54</strong></td><td><strong>0.53</strong></td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <th scope="row">FKC</th><td>1.1</td><td>No</td><td>0.52</td>
+                  <td>−5.99</td><td>−7.90</td><td>−6.54</td><td>0.37</td>
+                  <td>0.62</td><td>0.45</td><td>0.47</td>
+                </tr>
               </tbody>
             </table>
           </div>
-          <p class="project-note" id="example-table-note">Illustrative data. Bold marks the best value and an underline marks the runner-up.</p>
+          <p class="project-note" id="example-wide-table-note">Selected rows and metrics from ACE Table 3. Bold and underlined values follow the original table.</p>
         </div>
+
+        <!-- Use project-table-compact for a small, centered table. -->
+        <div class="project-table-block project-table-compact">
+          <div class="project-table-scroll">
+            <table class="project-table" aria-describedby="example-compact-table-note">
+              <caption><span class="project-table-title"><span>ACE Table 5</span> Computational cost</span></caption>
+              <thead>
+                <tr><th scope="col">Method</th><th scope="col">VRAM (GB)</th><th scope="col">Time (min/molecule)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">ACE</th><td>1.57</td><td>0.34</td></tr>
+                <tr><th scope="row">ACE-lite</th><td>1.54</td><td>0.19</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="example-compact-table-note">Selected rows from ACE Table 5.</p>
+        </div>
+
+        <!-- Put each slide in a data-slide element. Use project-gallery-comparison for the 2:1 layout used in ACE. -->
         <div class="project-figure">
-          <h3>Image Examples</h3>
-          <div class="project-gallery" data-project-gallery role="group" aria-label="Example research images">
+          <h3>Compositional Image Generation</h3>
+          <div class="project-gallery project-gallery-comparison" data-project-gallery role="group" aria-label="Examples from ACE Figure E.18">
             <figure class="project-slide" data-slide>
-              <a class="project-figure-image" href="static/images/carousel1.jpg" aria-label="Open example image 1 at full size">
-                <img src="static/images/carousel1.jpg" width="1920" height="1080" alt="Example research image 1" loading="lazy" decoding="async">
+              <a class="project-figure-image" href="/projects/ACE/static/images/gallery/e18_1.png" aria-label="Open example image 1 at full size">
+                <img src="/projects/ACE/static/images/gallery/e18_1.png" width="1000" height="500" alt="Red chair, yellow chair, white teddy bear, and brown dining table" loading="lazy" decoding="async">
               </a>
+              <figcaption>A red chair, a yellow chair, a white teddy bear, and a brown dining table.</figcaption>
             </figure>
             <figure class="project-slide" data-slide>
-              <a class="project-figure-image" href="static/images/carousel2.jpg" aria-label="Open example image 2 at full size">
-                <img src="static/images/carousel2.jpg" width="1920" height="1280" alt="Example research image 2" loading="lazy" decoding="async">
+              <a class="project-figure-image" href="/projects/ACE/static/images/gallery/e18_2.png" aria-label="Open example image 2 at full size">
+                <img src="/projects/ACE/static/images/gallery/e18_2.png" width="1000" height="498" alt="Black cup, black donut, green dining table, and blue donut" loading="lazy" decoding="async">
               </a>
-            </figure>
-            <figure class="project-slide" data-slide>
-              <a class="project-figure-image" href="static/images/carousel3.jpg" aria-label="Open example image 3 at full size">
-                <img src="static/images/carousel3.jpg" width="1920" height="1440" alt="Example research image 3" loading="lazy" decoding="async">
-              </a>
-            </figure>
-            <figure class="project-slide" data-slide>
-              <a class="project-figure-image" href="static/images/carousel4.jpg" aria-label="Open example image 4 at full size">
-                <img src="static/images/carousel4.jpg" width="1920" height="1080" alt="Example research image 4" loading="lazy" decoding="async">
-              </a>
+              <figcaption>A black cup, a black donut, a green dining table, and a blue donut.</figcaption>
             </figure>
             <div class="project-gallery-controls" hidden>
               <button class="project-button" type="button" data-previous>Previous</button>
@@ -154,6 +277,7 @@
       </section>
 
       <section id="BibTeX" class="project-section">
+        <!-- Replace the citation inside bibtex-code. Keep the button and status attributes for copying. -->
         <div class="project-section-header">
           <h2>BibTeX</h2>
           <button class="project-button" type="button" data-copy-bibtex hidden>Copy BibTeX</button>

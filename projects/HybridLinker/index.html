@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A model that proposes diverse bonding patterns and a model that checks their 3D fit can together generate a wider range of valid linkers for the same two fragments.">
+  <meta name="citation_title" content="HybridLinker: Topology-Guided Posterior Sampling for Enhanced Diversity and Validity in 3D Molecular Linker Generation">
+  <meta name="citation_author" content="Minyeong Hwang">
+  <meta name="citation_author" content="Ziseok Lee">
+  <meta name="citation_author" content="Kwang-Soo Kim">
+  <meta name="citation_author" content="Kyungsu Kim">
+  <meta name="citation_author" content="Eunho Yang">
+  <meta name="citation_conference_title" content="ICML 2025 Generative AI and Biology (GenBio) Workshop">
+  <meta name="citation_publication_date" content="2025">
+  <meta name="citation_url" content="https://openreview.net/forum?id=Hwp7BC37i8">
+  <meta property="og:title" content="HybridLinker: Topology-Guided Posterior Sampling for Enhanced Diversity and Validity in 3D Molecular Linker Generation">
+  <meta property="og:description" content="A model that proposes diverse bonding patterns and a model that checks their 3D fit can together generate a wider range of valid linkers for the same two fragments.">
+  <meta property="og:image" content="https://ziseoklee.github.io/projects/HybridLinker/static/images/tradeoff.png">
+  <link rel="canonical" href="https://ziseoklee.github.io/projects/HybridLinker/">
+  <title>HybridLinker: Topology-Guided Posterior Sampling for Enhanced Diversity and Validity in 3D Molecular Linker Generation | ICML 2025 Generative AI and Biology (GenBio) Workshop</title>
+  <link rel="icon" href="/assets/images/pageicon_full.png" type="image/png">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/project.css">
+  <link rel="stylesheet" href="/assets/css/scrollbars.css">
+  <script defer src="/assets/js/jquery.min.js"></script>
+  <script defer src="/assets/js/browser.min.js"></script>
+  <script defer src="/assets/js/breakpoints.min.js"></script>
+  <script defer src="/assets/js/util.js"></script>
+  <script defer src="/assets/js/main.js"></script>
+  <script defer src="/assets/js/project.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="project-page">
+  <a class="project-skip" href="#main-content">Skip to content</a>
+  <header id="header">
+    <div class="inner project-sidebar">
+      <div class="project-sidebar-controls">
+        <a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb_full.png" alt=""></a>
+        <button type="button" id="menu-toggle-button" aria-controls="nav-menu" aria-expanded="false">Contents</button>
+      </div>
+      <nav id="nav-menu" aria-label="Project contents">
+        <p class="project-sidebar-label" aria-hidden="true">Contents</p>
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#BibTeX">BibTeX</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="project" id="main-content" tabindex="-1">
+      <header class="project-hero">
+        <p class="project-venue">ICML 2025 Generative AI and Biology (GenBio) Workshop</p>
+        <h1 data-fit-title>HybridLinker: Topology-Guided Posterior Sampling for Enhanced Diversity and Validity in 3D Molecular Linker Generation</h1>
+        <ul class="project-authors" aria-label="Authors">
+          <li>Minyeong Hwang<sup>1</sup></li>
+          <li><a href="/">Ziseok Lee</a><sup>2</sup></li>
+          <li>Kwang-Soo Kim<sup>3,4</sup></li>
+          <li>Kyungsu Kim<sup>2†</sup></li>
+          <li>Eunho Yang<sup>1†</sup></li>
+        </ul>
+        <p class="project-affiliations">
+          <span><sup>1</sup>KAIST</span>
+          <span><sup>2</sup>Seoul National University</span>
+          <span><sup>3</sup>Harvard Medical School</span>
+          <span><sup>4</sup>McLean Hospital</span>
+       </p>
+        <p class="project-note"><sup>†</sup> Corresponding author</p>
+        <div class="project-actions">
+          <a class="project-button project-button-primary" href="https://openreview.net/forum?id=Hwp7BC37i8">
+            <img class="project-resource-icon" src="/assets/images/openreview-mark.png" width="18" height="18" alt=""> OpenReview
+          </a>
+          <a class="project-button" href="https://arxiv.org/abs/2502.17349">
+            <img class="project-resource-icon" src="/assets/images/arxiv-mark.png" width="18" height="18" alt=""> arXiv
+          </a>
+          <a class="project-button" href="https://icml.cc/virtual/2025/51294">
+            <span class="icon solid fa-calendar-alt project-resource-icon" aria-hidden="true"></span> Workshop
+          </a>
+        </div>
+        <nav class="project-toc" aria-label="On this page">
+          <a href="#abstract">Abstract</a>
+          <a href="#method">Method</a>
+          <a href="#results">Results</a>
+          <a href="#BibTeX">BibTeX</a>
+        </nav>
+      </header>
+
+      <section class="project-section" id="abstract">
+        <h2 id="overview">Abstract</h2>
+        <div class="project-prose">
+          <p class="project-callout"><strong class="project-summary-label">TL;DR</strong> A model that proposes diverse bonding patterns and a model that checks their 3D fit can together generate a wider range of valid linkers for the same two fragments.</p>
+          <p>Linker generation is critical in drug discovery applications such as lead optimization and PROTAC design, where molecular fragments are assembled into diverse drug candidates via molecular linker. Existing methods fall into point cloud-free and point cloud-aware categories based on their use of fragments' 3D poses alongside their topologies in sampling the linker's topology. Point cloud-free models prioritize sample diversity but suffer from lower validity due to overlooking fragments' spatial constraints, while point cloud-aware models ensure higher validity but restrict diversity by enforcing strict spatial constraints.</p>
+          <p>To overcome these trade-offs without additional training, we propose HybridLinker, a framework that enhances point cloud-aware inference by providing diverse bonding topologies from a pretrained point cloud-free model as guidance. At its core, we propose LinkerDPS, the first diffusion posterior sampling (DPS) method operating across point cloud-free and point cloud-aware spaces, bridging molecular topology with 3D point clouds via an energy-inspired function. By transferring the diverse sampling distribution of point cloud-free models into the point cloud-aware distribution, HybridLinker significantly surpasses baselines, improving both validity and diversity in foundational molecular design and applied drug optimization tasks, establishing a new DPS framework in the molecular domains beyond imaging.</p>
+        </div>
+
+        <figure class="project-figure project-figure-wide">
+          <h3>How many different linkers are valid?</h3>
+          <a class="project-figure-image" href="static/images/tradeoff.png" aria-label="Open full-size figure: Radar plot of five diversity metrics beside candidate linkers for fixed fragments">
+            <img src="static/images/tradeoff.png" width="1680" height="556" alt="Radar plot of five diversity metrics beside candidate linkers for fixed fragments" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Figure 1.</strong> The radar plot counts diversity among valid molecules. The structures on the right illustrate why proposing more topologies alone can leave few usable candidates.</figcaption>
+        </figure>
+      </section>
+
+      <section class="project-section" id="method">
+        <h2>Method and Theory</h2>
+        <div class="project-prose">
+          <p>Follow one pair of fragments through the two diagrams. Their positions stay fixed. The model first explores connections between them, then checks whether each proposed connection fits in 3D.</p>
+        </div>
+
+        <figure class="project-figure project-figure-wide">
+          <h3>What stays fixed</h3>
+          <a class="project-figure-image" href="static/images/fragment-task.png" aria-label="Open full-size figure: A reference molecule is split into fragments with fixed poses and a linker to replace">
+            <img src="static/images/fragment-task.png" width="1680" height="488" alt="A reference molecule is split into fragments with fixed poses and a linker to replace" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Figure 3.</strong> The two fragments provide the starting geometry. Different linkers can complete the molecule.</figcaption>
+        </figure>
+
+        <figure class="project-figure project-figure-wide">
+          <h3>When LinkerDPS intervenes</h3>
+          <a class="project-figure-image" href="static/images/linkerdps.png" aria-label="Open full-size figure: Two-stage pipeline with a validity check and a LinkerDPS refinement branch">
+            <img src="static/images/linkerdps.png" width="1680" height="702" alt="Two-stage pipeline with a validity check and a LinkerDPS refinement branch" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Appendix pipeline.</strong> A valid proposal passes through directly. An invalid proposal guides a second sampling step in a pretrained 3D model.</figcaption>
+        </figure>
+
+        <div class="project-prose">
+          <h3>How a bonding pattern guides a 3D sampler</h3>
+          <p>Let \(\mathcal F\) denote the fixed fragments and \(\widetilde G\) the molecule proposed by the topology model. If that proposal fails the validity check, LinkerDPS models the atom types and coordinates \(X=(V,R)\) from a posterior. All probabilities below condition on \(\mathcal F\). Writing that condition implicitly makes the two roles in the posterior easier to see.</p>
+          <div class="project-equation">\[
+            p(X\mid\widetilde G)
+              = \frac{p(X)\,p(\widetilde G\mid X)}{p(\widetilde G)} .
+          \]</div>
+          <p>The 3D prior \(p(X)\) favors conformations compatible with the fixed fragments. The likelihood rewards agreement with the proposed atom types \(\widetilde V\), bonds \(\widetilde E\), and coordinates \(\widetilde R\).</p>
+          <div class="project-equation">\[
+            \begin{aligned}
+              p(\widetilde G\mid X)
+                &amp;\propto \mathbf 1_{V=\widetilde V}\, e^{-D-U}, \\
+              D &amp;= \|R-\widetilde R\|^2, \\
+              U &amp;= \sum_{i,j:\,\widetilde E_{ij}\ne 0}\|R_i-R_j\|.
+            \end{aligned}
+          \]</div>
+          <p>The indicator fixes atom identities. The displacement cost \(D\) penalizes moving far from the proposal. The bond cost \(U\) penalizes placing atoms far apart when the proposed topology connects them. During denoising, LinkerDPS evaluates this guidance at the predicted clean coordinates, so a graph proposed in 2D can influence a trajectory in 3D.</p>
+        </div>
+
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Propose a topology</h3>
+            <p>FFLOM or DeLinker samples a bonding pattern from the fragments’ connectivity. This first stage can explore alternatives before committing to a linker conformation.</p>
+          </div>
+          <div class="project-card">
+            <h3>Refine in 3D</h3>
+            <p>LinkerDPS guides DiffLinker with the proposed atom types, bonds, and conformation. The two pretrained models can be combined at inference time.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="project-section" id="results">
+        <h2>Results</h2>
+        <div class="project-prose">
+          <p>On ZINC-250K, the authors generated 50 samples for each of 400 fragment pairs. With FFLOM alone, 31.25% of samples are valid and unique. HybridLinker raises that figure to 55.10% using the same topology generator. With DeLinker, overall validity rises from 57.44% to 77.27%. The two comparisons show what 3D refinement adds to each generator.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="comparisondiversity-title">
+            <table class="project-table" aria-describedby="comparisondiversity-note">
+              <caption id="comparisondiversity-title"><span class="project-table-title"><span>Table 2</span> ZINC-250K linker generation</span></caption>
+              <colgroup span="1"></colgroup>
+              <colgroup span="1"></colgroup>
+              <colgroup span="5"></colgroup>
+              <colgroup span="1"></colgroup>
+              <colgroup span="2"></colgroup>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="col" rowspan="2">F/A</th><th scope="colgroup" colspan="5">Diversity among valid samples ↑</th><th scope="col" rowspan="2">Validity (%)</th><th scope="colgroup" colspan="2">Diversity before 3D validity checks ↑</th></tr>
+                <tr><th scope="col">V+U (%)</th><th scope="col">V+N (%)</th><th scope="col">V+HD</th><th scope="col">V+FG</th><th scope="col">V+BM</th><th scope="col">Uniqueness (%)</th><th scope="col">Novelty (%)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">FFLOM</th><td>F</td><td>31.25</td><td>31.32</td><td>6.38</td><td>16.37</td><td>14.48</td><td>37.07</td><td><strong>84.04</strong></td><td><strong>58.29</strong></td></tr>
+                <tr><th scope="row">DeLinker</th><td>F</td><td>38.57</td><td>38.53</td><td>7.32</td><td>16.20</td><td>17.33</td><td>57.44</td><td>63.78</td><td>31.63</td></tr>
+                <tr><th scope="row">DiffLinker</th><td>A</td><td>26.90</td><td>26.90</td><td>5.08</td><td>11.37</td><td>10.91</td><td><span class="project-runner-up">71.08</span></td><td>34.94</td><td>16.32</td></tr>
+                <tr><th scope="row">3DLinker</th><td>A</td><td>32.61</td><td>32.64</td><td>6.14</td><td>15.40</td><td>14.23</td><td>65.31</td><td>44.31</td><td>21.83</td></tr>
+                <tr class="project-table-highlight"><th scope="row">HybridLinker (FFLOM)</th><td>F+A</td><td><strong>55.10</strong></td><td><span class="project-runner-up">55.09</span></td><td><strong>10.81</strong></td><td><strong>23.92</strong></td><td><strong>24.59</strong></td><td>69.03</td><td><span class="project-runner-up">68.39</span></td><td><span class="project-runner-up">44.67</span></td></tr>
+                <tr class="project-table-highlight"><th scope="row">HybridLinker (DeLinker)</th><td>F+A</td><td><span class="project-runner-up">55.02</span></td><td><strong>55.28</strong></td><td><span class="project-runner-up">10.21</span></td><td><span class="project-runner-up">21.82</span></td><td><span class="project-runner-up">24.23</span></td><td><strong>77.27</strong></td><td>68.09</td><td>35.70</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="comparisondiversity-note">F = point cloud-free, A = point cloud-aware. U and N denote uniqueness and novelty. HD, FG, and BM measure fingerprint diversity, functional groups, and Bemis–Murcko scaffolds. Bold, underlines, and shaded rows follow the manuscript.</p>
+        </div>
+
+        <div class="project-prose">
+          <p>Does a larger set of usable linkers help when optimizing a reference molecule? For each fragment pair, the next table asks whether any candidate improves the indicated drug-likeness scores together. The last column requires all three criteria.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="comparisondruglikeness-title">
+            <table class="project-table" aria-describedby="comparisondruglikeness-note">
+              <caption id="comparisondruglikeness-title"><span class="project-table-title"><span>Table 3</span> Drug-likeness optimization on ZINC</span></caption>
+              <thead>
+                <tr><th scope="col">Method</th><th scope="col">QED (%)</th><th scope="col">SA (%)</th><th scope="col">PLogP (%)</th><th scope="col">Q &amp; S (%)</th><th scope="col">S &amp; P (%)</th><th scope="col">Q &amp; P (%)</th><th scope="col">Q &amp; S &amp; P (%)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">DiffLinker</th><td>64.7</td><td>46.2</td><td>77.5</td><td>29.5</td><td>36.0</td><td>38.7</td><td>17.0</td></tr>
+                <tr><th scope="row">FFLOM</th><td>60.7</td><td>42.7</td><td>83.5</td><td>21.5</td><td>35.5</td><td>38.7</td><td>11.7</td></tr>
+                <tr class="project-table-highlight"><th scope="row">HybridLinker (FFLOM)</th><td>74.0 (+21.8%)</td><td>51.0 (+19.3%)</td><td>85.7 (+2.6%)</td><td>30.5 (+41.8%)</td><td>41.7 (+17.6%)</td><td>48.5 (+25.1%)</td><td>17.7 (+51.0%)</td></tr>
+                <tr><th scope="row">DeLinker</th><td>74.2</td><td>59.7</td><td>83.2</td><td>41.5</td><td>49.2</td><td>49.7</td><td>24.7</td></tr>
+                <tr class="project-table-highlight"><th scope="row">HybridLinker (DeLinker)</th><td><strong>76.7 (+3.3%)</strong></td><td><strong>61.7 (+3.3%)</strong></td><td><strong>84.7 (+1.8%)</strong></td><td><strong>43.2 (+4.2%)</strong></td><td><strong>52.2 (+6.0%)</strong></td><td><strong>54.0 (+8.5%)</strong></td><td><strong>27.0 (+9.0%)</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="comparisondruglikeness-note">Q, S, and P denote quantitative estimate of drug-likeness, synthetic accessibility, and penalized logP. Parentheses report relative improvement over the corresponding topology generator. Emphasis follows the source.</p>
+        </div>
+
+        <div class="project-prose">
+          <p>Changing the source of fragments tests whether the trade-off carries over. On GEOM-DRUG, the FFLOM hybrid leads on valid novelty, while the DeLinker hybrid produces the largest fraction of valid, unique molecules.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="geom-drug-fragments-title">
+            <table class="project-table" aria-describedby="geom-drug-fragments-note">
+              <caption id="geom-drug-fragments-title"><span class="project-table-title"><span>Appendix</span> GEOM-DRUG fragment benchmark</span></caption>
+              <colgroup span="1"></colgroup>
+              <colgroup span="1"></colgroup>
+              <colgroup span="5"></colgroup>
+              <colgroup span="1"></colgroup>
+              <colgroup span="2"></colgroup>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="col" rowspan="2">F/A</th><th scope="colgroup" colspan="5">Diversity among valid samples ↑</th><th scope="col" rowspan="2">Validity (%)</th><th scope="colgroup" colspan="2">Diversity before 3D validity checks ↑</th></tr>
+                <tr><th scope="col">V+U (%)</th><th scope="col">V+N (%)</th><th scope="col">V+HD</th><th scope="col">V+FG</th><th scope="col">V+BM</th><th scope="col">Uniqueness (%)</th><th scope="col">Novelty (%)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">FFLOM</th><td>F</td><td>29.39</td><td>28.30</td><td>6.95</td><td>21.65</td><td>15.87</td><td>30.02</td><td><strong>95.07</strong></td><td><strong>91.73</strong></td></tr>
+                <tr><th scope="row">DeLinker</th><td>F</td><td>40.52</td><td>26.18</td><td>8.29</td><td>19.51</td><td>20.32</td><td>52.22</td><td>75.90</td><td>52.31</td></tr>
+                <tr><th scope="row">DiffLinker</th><td>A</td><td>42.24</td><td>30.77</td><td>9.15</td><td>19.26</td><td>21.65</td><td>64.32</td><td>62.32</td><td>46.54</td></tr>
+                <tr><th scope="row">HybridLinker (FFLOM)</th><td>F+A</td><td><span class="project-runner-up">54.64</span></td><td><strong>49.81</strong></td><td><strong>12.82</strong></td><td><strong>33.77</strong></td><td><strong>28.91</strong></td><td><span class="project-runner-up">56.19</span></td><td><span class="project-runner-up">79.29</span></td><td><span class="project-runner-up">72.22</span></td></tr>
+                <tr><th scope="row">HybridLinker (DeLinker)</th><td>F+A</td><td><strong>56.41</strong></td><td>38.67</td><td><span class="project-runner-up">11.33</span></td><td><span class="project-runner-up">25.44</span></td><td><span class="project-runner-up">27.18</span></td><td><strong>71.85</strong></td><td>75.33</td><td>54.48</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="geom-drug-fragments-note">All five methods in the source table are shown. The percentages and emphasis follow the GEOM-DRUG evaluation.</p>
+        </div>
+      </section>
+
+      <section id="BibTeX" class="project-section">
+        <div class="project-section-header">
+          <h2>BibTeX</h2>
+          <button class="project-button" type="button" data-copy-bibtex hidden>Copy BibTeX</button>
+          <span class="project-visually-hidden" data-copy-status role="status"></span>
+        </div>
+        <pre id="bibtex-code" tabindex="0" aria-label="BibTeX citation"><code>@inproceedings{hwang2025hybridlinker,
+  title     = {{HybridLinker: Topology-Guided Posterior Sampling for Enhanced Diversity and Validity in 3D Molecular Linker Generation}},
+  author    = {Minyeong Hwang and Ziseok Lee and Kwang-Soo Kim and Kyungsu Kim and Eunho Yang},
+  booktitle = {ICML 2025 Generative AI and Biology (GenBio) Workshop},
+  year      = {2025},
+  url       = {https://openreview.net/forum?id=Hwp7BC37i8}
+}</code></pre>
+      </section>
+
+      <footer class="project-credits">
+        <p>Adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>. The original template was based on <a href="https://nerfies.github.io">Nerfies</a> and is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+      </footer>
+    </article>
+  </main>
+
+  <footer id="footer">
+    <div class="inner">
+      <ul class="icons">
+        <li><a href="/" class="icon solid fa-home" aria-label="Home"></a></li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; 2026 Ziseok Lee</li>
+        <li><a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

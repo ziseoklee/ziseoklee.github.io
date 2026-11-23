@@ -26,6 +26,54 @@ if (fittedTitle) {
   document.fonts.ready.then(fitTitle);
 }
 
+document.querySelectorAll('[data-project-animation]').forEach((figure) => {
+  const image = figure.querySelector('img');
+  const button = figure.querySelector('[data-animation-toggle]');
+  const status = figure.querySelector('[data-animation-status]');
+  const preview = image.src;
+  let animation;
+  let playingUrl;
+
+  function showPreview() {
+    image.src = preview;
+    if (playingUrl) URL.revokeObjectURL(playingUrl);
+    playingUrl = undefined;
+    button.textContent = 'Play animation';
+  }
+
+  button.hidden = false;
+  button.addEventListener('click', async () => {
+    status.textContent = '';
+    if (playingUrl) {
+      showPreview();
+      return;
+    }
+
+    button.disabled = true;
+    status.classList.add('project-visually-hidden');
+    status.textContent = 'Loading animation…';
+    try {
+      if (!animation) {
+        const response = await fetch(figure.dataset.projectAnimation);
+        if (!response.ok) throw new Error('Animation could not be loaded.');
+        animation = await response.blob();
+      }
+      playingUrl = URL.createObjectURL(animation);
+      image.src = playingUrl;
+      await image.decode();
+      button.textContent = 'Stop animation';
+      status.textContent = '';
+    } catch {
+      animation = undefined;
+      showPreview();
+      status.textContent = 'Could not load the animation. Try again.';
+    } finally {
+      status.classList.remove('project-visually-hidden');
+      button.disabled = false;
+    }
+  });
+});
+
 document.querySelectorAll('[data-project-gallery]').forEach((gallery) => {
   const slides = [...gallery.querySelectorAll('[data-slide]')];
   const controls = gallery.querySelector('.project-gallery-controls');

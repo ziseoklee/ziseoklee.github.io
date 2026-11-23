@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A diffusion steering update can fit a small particle population almost perfectly and still fail on fresh samples. RCPT estimates how much of that update to keep, using the particles already in memory.">
+  <meta name="citation_title" content="Risk-Calibrated Proposal Transport for Finite-Particle Diffusion Steering">
+  <meta name="citation_author" content="Ziseok Lee">
+  <meta name="citation_author" content="Jaehyeon Kim">
+  <meta name="citation_author" content="Seungwon Kim">
+  <meta name="citation_author" content="Seunghyun Moon">
+  <meta name="citation_author" content="Haneul Choi">
+  <meta name="citation_author" content="Wooyeol Lee">
+  <meta name="citation_author" content="Minhyeong Lee">
+  <meta name="citation_author" content="Kyungsu Kim">
+  <meta name="citation_conference_title" content="NeurIPS 2026 Workshop on AI for Stochastic Dynamics (STODY)">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_url" content="https://openreview.net/forum?id=Nit8NPJ5aL">
+  <meta property="og:title" content="Risk-Calibrated Proposal Transport for Finite-Particle Diffusion Steering">
+  <meta property="og:description" content="A diffusion steering update can fit a small particle population almost perfectly and still fail on fresh samples. RCPT estimates how much of that update to keep, using the particles already in memory.">
+  <meta property="og:image" content="https://ziseoklee.github.io/projects/RCPT/static/images/fitting-risk.png">
+  <link rel="canonical" href="https://ziseoklee.github.io/projects/RCPT/">
+  <title>Risk-Calibrated Proposal Transport for Finite-Particle Diffusion Steering | NeurIPS 2026 Workshop on AI for Stochastic Dynamics (STODY)</title>
+  <link rel="icon" href="/assets/images/pageicon_full.png" type="image/png">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/project.css">
+  <link rel="stylesheet" href="/assets/css/scrollbars.css">
+  <script defer src="/assets/js/jquery.min.js"></script>
+  <script defer src="/assets/js/browser.min.js"></script>
+  <script defer src="/assets/js/breakpoints.min.js"></script>
+  <script defer src="/assets/js/util.js"></script>
+  <script defer src="/assets/js/main.js"></script>
+  <script defer src="/assets/js/project.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="project-page">
+  <a class="project-skip" href="#main-content">Skip to content</a>
+  <header id="header">
+    <div class="inner project-sidebar">
+      <div class="project-sidebar-controls">
+        <a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb_full.png" alt=""></a>
+        <button type="button" id="menu-toggle-button" aria-controls="nav-menu" aria-expanded="false">Contents</button>
+      </div>
+      <nav id="nav-menu" aria-label="Project contents">
+        <p class="project-sidebar-label" aria-hidden="true">Contents</p>
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#applications">Applications</a>
+        <a href="#results">Results</a>
+        <a href="#BibTeX">BibTeX</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="project" id="main-content" tabindex="-1">
+      <header class="project-hero">
+        <p class="project-venue">NeurIPS 2026 Workshop on AI for Stochastic Dynamics (STODY)</p>
+        <h1 data-fit-title>Risk-Calibrated Proposal Transport for Finite-Particle Diffusion Steering</h1>
+        <ul class="project-authors" aria-label="Authors">
+          <li><a href="/">Ziseok Lee</a><sup>1†</sup></li>
+          <li>Jaehyeon Kim<sup>1</sup></li>
+          <li>Seungwon Kim<sup>2,1</sup></li>
+          <li>Seunghyun Moon<sup>2,1†</sup></li>
+          <li>Haneul Choi<sup>2,1</sup></li>
+          <li>Wooyeol Lee<sup>1</sup></li>
+          <li>Minhyeong Lee<sup>2,1†</sup></li>
+          <li>Kyungsu Kim<sup>1†</sup></li>
+        </ul>
+        <p class="project-affiliations">
+          <span><sup>1</sup>Seoul National University</span>
+          <span><sup>2</sup>Asteromorph</span>
+       </p>
+        <p class="project-note"><sup>†</sup> Corresponding author</p>
+        <div class="project-actions">
+          <a class="project-button project-button-primary" href="https://openreview.net/forum?id=Nit8NPJ5aL">
+            <img class="project-resource-icon" src="/assets/images/openreview-mark.png" width="18" height="18" alt=""> OpenReview
+          </a>
+          <a class="project-button" href="https://arxiv.org/abs/2610.04171">
+            <img class="project-resource-icon" src="/assets/images/arxiv-mark.png" width="18" height="18" alt=""> arXiv
+          </a>
+          <a class="project-button" href="https://neurips.cc/virtual/2026/loc/sydney/170299">
+            <span class="icon solid fa-calendar-alt project-resource-icon" aria-hidden="true"></span> Workshop
+          </a>
+        </div>
+        <nav class="project-toc" aria-label="On this page">
+          <a href="#abstract">Abstract</a>
+          <a href="#method">Method</a>
+          <a href="#applications">Applications</a>
+          <a href="#results">Results</a>
+          <a href="#BibTeX">BibTeX</a>
+        </nav>
+      </header>
+
+      <section class="project-section" id="abstract">
+        <h2 id="overview">Abstract</h2>
+        <div class="project-prose">
+          <p class="project-callout"><strong class="project-summary-label">TL;DR</strong> A diffusion steering update can fit a small particle population almost perfectly and still fail on fresh samples. RCPT estimates how much of that update to keep, using the particles already in memory.</p>
+          <p>Inference-time steering combines pretrained diffusion experts or rewards without retraining by changing the dynamics that transport noise to data. Feynman–Kac correction compensates for proposal mismatch through importance-weighted sequential Monte Carlo (SMC), whose finite-particle behavior depends on the proposal. Variance-controlling guidance (VCG) improves that proposal by fitting a linear drift correction to minimize empirical log-weight-rate variance. Although its population optimum cannot worsen residual variance, finite-particle VCG can nearly eliminate its fitting residual while increasing residual risk on new states by orders of magnitude.</p>
+          <p>We explain this failure through population headroom and coefficient-estimation penalty, and connect the residual to transport error and local weight variance. Risk-Calibrated Proposal Transport (RCPT) uses deletion leave-one-out residuals to scale the fitted update, with no additional model calls. Experiments on Checker, scaffold decoration, QM9, and CIFAR-10 identify regimes where this inexpensive control repairs harmful updates or improves upon the initial guided proposal (Anchor). Together, these results establish finite-particle proposal fitting as a deployment-risk problem and provide an inexpensive framework for controlling the fitted correction.</p>
+        </div>
+
+        <figure class="project-figure">
+          <h3>A good fit can travel poorly</h3>
+          <a class="project-figure-image" href="static/images/fitting-risk.png" aria-label="Open full-size figure: Log-scale scatter plots of fitting risk against independent risk for VCG and RCPT">
+            <img src="static/images/fitting-risk.png" width="1680" height="774" alt="Log-scale scatter plots of fitting risk against independent risk for VCG and RCPT" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Figure 1.</strong> Each axis is normalized to Anchor. Points far left have low fitting error. Their height shows whether that apparent gain survives evaluation on fresh samples.</figcaption>
+        </figure>
+      </section>
+
+      <section class="project-section" id="method">
+        <h2>Method and Theory</h2>
+        <div class="project-prose">
+          <h3>Why measure the Feynman–Kac residual?</h3>
+          <p>At a fixed time, let \(V(0)\) be Anchor’s residual risk, the variance of its Feynman–Kac log-weight rate under the target distribution. For any proposal drift \(v\), subtracting the mean from its log-weight rate \(g_t^v\) gives the residual \(r_t^v\).</p>
+          <div class="project-equation">\[
+            \begin{aligned}
+              r_t^v &amp;= g_t^v-\mathbb E_{p_t}[g_t^v], \\
+              \partial_t p_t &amp;= \mathcal L_{t,v}^{*}p_t+p_t r_t^v .
+            \end{aligned}
+          \]</div>
+          <p>The term \(p_t r_t^v\) is the change in density that the proposal’s dynamics leave unaccounted for. The residual risk \(V_t(v)=\mathbb E_{p_t}[(r_t^v)^2]\) measures the mean squared mismatch in relative growth rate across target states.</p>
+          <p>In proposal-only sampling, this mismatch can accumulate as particles move, taking their final distribution away from the target. In corrected SMC, particles in regions with a larger residual gain weight faster. The first card below bounds the error in the final distribution. The second gives the leading term in the variance of the correction weights over a short step.</p>
+        </div>
+
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Proposal-only</h3>
+            <p>Start the unweighted proposal from the target’s initial law. Under the paper’s regularity assumptions, its terminal Wasserstein distance from the target is bounded by the accumulated cost of correcting its drift.</p>
+            <div class="project-equation">\[
+              \begin{gathered}
+                W_2(p_1,\rho_1^v)
+                \le \int_0^1 K_v(t,1)\sqrt{\mathcal E_t(v)}\,dt,\\
+                \mathcal E_t(v)\le C_P(t)\,V_t(v).
+              \end{gathered}
+            \]</div>
+            <p>\(K_v\) measures how drift can amplify an earlier error. When the target has Poincaré constant \(C_P(t)\), residual risk bounds the correction energy \(\mathcal E_t(v)\). Keeping risk small along the path therefore controls an upper bound on endpoint error. <a href="https://arxiv.org/pdf/2610.04171v1#page=6">Eq. (14)</a></p>
+          </div>
+          <div class="project-card">
+            <h3>Corrected SMC</h3>
+            <p>Start a short proposal step of length \(\Delta\) at the target law \(p_t\). For the exact FK correction weight \(\overline W\), normalized to mean one, the local weight expansion gives</p>
+            <div class="project-equation">\[
+              \begin{gathered}
+                \mathbb E_{\mathbb Q}[\overline W^2]-1
+                =\Delta^2 V_t(v)+o(\Delta^2).
+              \end{gathered}
+            \]</div>
+            <p>The left side is the weight variance under the proposal. Thus \(V_t(v)\) is the leading coefficient of the spread in particle weights over a short step. Smaller risk means less local weight dispersion before resampling. <a href="https://arxiv.org/pdf/2610.04171v1#page=6">Eq. (15)</a></p>
+          </div>
+        </div>
+
+        <div class="project-prose">
+          <h3>When does a fitted correction help?</h3>
+          <p>An ideal drift correction can reduce the risk by an amount \(H\), the population headroom. Fitting its coefficients on a finite sample incurs an estimation penalty \(P\). For the fitted coefficients \(\widehat\lambda\), the paper gives an exact identity for risk averaged over fits and evaluated on fresh target states.</p>
+          <div class="project-equation">\[
+            \mathcal R(\widehat\lambda)-V(0)=P-H .
+          \]</div>
+          <p>When \(P&gt;H\), applying the full update increases expected risk even if the training residual is nearly zero. This explains the points in Figure 1 that sit far left but high above Anchor.</p>
+        </div>
+
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Fit the direction</h3>
+            <p>Use VCG to find a linear correction to the base drift. The finite-particle question is how much of that fitted direction will help on new states.</p>
+          </div>
+          <div class="project-card">
+            <h3>Estimate the risk</h3>
+            <p>Use deletion leave-one-out residuals to estimate the cost of fitting the coefficients. The estimate reuses particle and expert evaluations.</p>
+          </div>
+          <div class="project-card">
+            <h3>Scale the update</h3>
+            <p>Retain a fraction between zero and one. Zero gives Anchor, and one applies the full VCG correction. The scale can vary over generation time.</p>
+          </div>
+        </div>
+
+        <div class="project-prose">
+          <h3>From the risk identity to a steering rule</h3>
+          <p>When the mean coefficient error has zero alignment with the ideal correction in the residual-risk geometry, the optimal fixed fraction is \(H/(H+P)\) for \(H+P&gt;0\). RCPT estimates a fraction during sampling. It uses the fitted correction’s empirical variation \(S\) and estimates its penalty from leave-one-out prediction errors.</p>
+          <div class="project-equation">\[
+            \begin{aligned}
+              \widehat P &amp;= \widehat\sigma_{\rm LOO}^2
+                   \frac{\widehat r_{\rm eff}}{\widehat N_{\rm eff}}, \\
+              \widehat H &amp;= \max(0,S-\widehat P), \\
+              \widehat\alpha &amp;= \frac{\widehat H}
+                    {\widehat H+\widehat P+\varepsilon}.
+            \end{aligned}
+          \]</div>
+          <p>The deployed coefficients are \(\widetilde\lambda=\widehat\alpha\widehat\lambda\). The penalty grows with the held-out error and effective number of fitted directions, and shrinks with effective particle count. If it exhausts the estimated gain, the positive part sets the correction to zero. The small positive \(\varepsilon\) stabilizes the fraction.</p>
+          <p>The fitted fraction varies by task. Follow each panel through its native time coordinate. The thick curve summarizes the chosen fractions, and the shaded band shows their interquartile range.</p>
+        </div>
+
+        <figure class="project-figure project-figure-wide">
+          <h3>How much correction survives?</h3>
+          <a class="project-figure-image" href="static/images/trust.png" aria-label="Open full-size figure: Time-dependent retained correction for scaffold decoration, reward-SMC, and Checker">
+            <img src="static/images/trust.png" width="1680" height="489" alt="Time-dependent retained correction for scaffold decoration, reward-SMC, and Checker" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Figure 4.</strong> Values near zero keep the base drift. Values near one retain almost the entire fitted update.</figcaption>
+        </figure>
+      </section>
+
+      <section class="project-section" id="applications">
+        <h2>Applications</h2>
+        <div class="project-prose">
+          <p>Each task specifies a target distribution and an Anchor that proposes samples. RCPT adjusts how much of a fitted drift correction to apply. The four experiments differ in what defines the target and which directions the correction can take.</p>
+        </div>
+
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Synthetic Checker</h3>
+            <p>On the alternating checkerboard, keep points satisfying both \(A=\{x\ge 0\}\) and \(B=\{x+y\ge 0\}\). Since \(A\) depends only on \(x\), the endpoint density factors as</p>
+            <div class="project-equation">\[
+              \begin{gathered}
+                p(x,y\mid A,B) 
+                {}\propto \frac{p(x\mid A)\,p(x,y\mid B)}{p(x)} .
+              \end{gathered}
+            \]</div>
+            <p>The three learned experts define the ACE path. The joint expert conditioned on \(B\) supplies the Anchor velocity. RCPT fits six quadratic-or-lower monomials per coordinate, giving 12 directions. The exact checkerboard law lets us measure how close fresh samples come to the target. <a href="#six-baseline-2d-title">Table 2</a></p>
+          </div>
+          <div class="project-card">
+            <h3>Scaffold decoration</h3>
+            <p>Generate a ligand that retains a given scaffold and fits a protein pocket. Four experts describe fragment and full-ligand densities (EDM), scaffold conformation (GeoDiff), and the pocket-conditioned ligand (DiffSBDD). Their densities \(q_{i,t}\) form the ACE target path.</p>
+            <div class="project-equation">\[
+              p_t\propto\prod_{i=1}^{4} q_{i,t}^{\gamma_i(t)}.
+            \]</div>
+            <p>The ACE schedule fixes the exponents \(\gamma_i(t)\). RCPT fits a correction from each expert velocity multiplied by three gates based on relative log density. The 12 coefficients are fitted per pocket and frozen before generating fresh ligands. <a href="#scaffold-simple-main-title">Table 3</a></p>
+          </div>
+        </div>
+
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>QM9 molecular properties</h3>
+            <p>Start with an EEGSDE molecular density \(q_t\) conditioned on dipole moment. Two rewards favor a requested polarizability and HOMO–LUMO energy gap. With \(j\) indexing these properties, the target is</p>
+            <div class="project-equation">\[
+              \begin{gathered}
+                p_t(x)\propto q_t(x)\,e^{S_t(x)}, \\
+                S_t(x)=\sum_{j=1}^{2}\beta_{j,t}R_{j,t}(x).
+              \end{gathered}
+            \]</div>
+            <p>The weights \(\beta_{j,t}\) set the strength of each reward. RCPT fits 12 directions built from the two reward gradients and gates that depend on time and molecular state. Independent evaluators count a success when both property errors fall within one validation-set mean absolute deviation. <a href="#reward-qm9-title">Table 4</a></p>
+          </div>
+          <div class="project-card">
+            <h3>Class-conditional CIFAR-10</h3>
+            <p>For a requested class \(c\), the DLSM image density \(q_t(x)\) is weighted by the probability that a noise-conditioned classifier assigns to that class.</p>
+            <div class="project-equation">\[
+              p_t(x\mid c)\propto q_t(x)\,p_\phi(c\mid x,t).
+            \]</div>
+            <p>The classifier probability enters the target to the first power. The Anchor uses a guidance scale of 1.5 during sampling. RCPT keeps that scale fixed and adjusts a correction built from ten classifier-gradient fields. The evaluation measures class accuracy alongside image quality. <a href="#image-main-title">Table 5</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="project-section" id="results">
+        <h2>Results</h2>
+        <div class="project-prose">
+          <p>Checker makes the failure visible because its target distribution is known. With 16 fitting particles, the unscaled correction reaches 174.0 times Anchor’s independent risk. Calibrating that same direction brings the ratio to 0.4931.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="ray-risk-title">
+            <table class="project-table" aria-describedby="ray-risk-note">
+              <caption id="ray-risk-title"><span class="project-table-title"><span>Table 1</span> Independent Checker risk relative to Anchor</span></caption>
+              <thead>
+                <tr><th scope="col">Fit particles</th><th scope="col">Anchor</th><th scope="col">VCG</th><th scope="col">Direct LOO</th><th scope="col">LOO ridge</th><th scope="col">LOO PCR</th><th scope="col">Binary LOO</th><th scope="col">RCPT</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">8</th><td>1.0000</td><td>244.5</td><td>0.9239</td><td>0.9211</td><td>1.0300</td><td>0.8193</td><td><strong>0.8013</strong></td></tr>
+                <tr><th scope="row">16</th><td>1.0000</td><td>174.0</td><td>1.1260</td><td>0.8306</td><td>1.1740</td><td>0.7837</td><td><strong>0.4931</strong></td></tr>
+                <tr><th scope="row">32</th><td>1.0000</td><td>2.797</td><td>0.3821</td><td>0.3705</td><td>0.6127</td><td>0.4332</td><td><strong>0.3589</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="ray-risk-note">Mean integrated risk over ten paired fits. Lower is better. LOO denotes leave-one-out and PCR denotes principal component regression.</p>
+        </div>
+
+        <figure class="project-figure project-figure-wide">
+          <h3>Where fresh samples land</h3>
+          <a class="project-figure-image" href="static/images/checker.png" aria-label="Open full-size figure: Target checker distribution alongside Anchor, VCG, ECG, and RCPT samples">
+            <img src="static/images/checker.png" width="1680" height="476" alt="Target checker distribution alongside Anchor, VCG, ECG, and RCPT samples" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Figure 2.</strong> This separate illustrative run deploys frozen schedules on 10,000 fresh trajectories without resampling. The labels use a fixed 2,000-sample endpoint audit.</figcaption>
+        </figure>
+
+        <div class="project-prose">
+          <p>The ten-seed experiment below compares endpoints both with and without particle resampling. Under corrected sequential Monte Carlo (SMC), RCPT yields the smallest distribution distances and the most surviving ancestral lineages.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="six-baseline-2d-title">
+            <table class="project-table" aria-describedby="six-baseline-2d-note">
+              <caption id="six-baseline-2d-title"><span class="project-table-title"><span>Table 2</span> Checker transport and particle ancestry</span></caption>
+              <colgroup span="1"></colgroup>
+              <colgroup span="3"></colgroup>
+              <colgroup span="4"></colgroup>
+              <thead>
+                <tr><th scope="col" rowspan="2">Controller</th><th scope="colgroup" colspan="3">Proposal only</th><th scope="colgroup" colspan="4">Corrected SMC</th></tr>
+                <tr><th scope="col">W₁ ↓</th><th scope="col">W₂ ↓</th><th scope="col">MMD² ↓</th><th scope="col">W₁ ↓</th><th scope="col">W₂ ↓</th><th scope="col">MMD² ↓</th><th scope="col">Lineages ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Anchor</th><td>0.474</td><td>0.646</td><td><strong>0.048</strong></td><td>0.367</td><td>0.510</td><td>0.048</td><td>338.7</td></tr>
+                <tr><th scope="row">VCG</th><td>0.814</td><td>1.019</td><td>0.226</td><td>2.637</td><td>3.033</td><td>5.123</td><td>381.6</td></tr>
+                <tr><th scope="row">ECG</th><td>1.394</td><td>1.636</td><td>0.325</td><td>0.833</td><td>1.113</td><td>0.214</td><td>233.7</td></tr>
+                <tr class="project-table-highlight"><th scope="row">RCPT</th><td><strong>0.442</strong></td><td><strong>0.575</strong></td><td>0.073</td><td><strong>0.316</strong></td><td><strong>0.464</strong></td><td><strong>0.042</strong></td><td><strong>568.5</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="six-baseline-2d-note">Each method fits on 16 particles where applicable and deploys 2,000. W₁ and W₂ are Wasserstein distances. MMD² is squared maximum mean discrepancy.</p>
+        </div>
+
+        <div class="project-prose">
+          <p>For molecules, the endpoint matters as much as the fitting diagnostic. The examples below contrast preserving a scaffold with reaching property targets. The QM9 table counts how many distinct molecules actually meet both targets.</p>
+        </div>
+
+        <figure class="project-figure project-figure-wide">
+          <h3>Steering molecules toward a target</h3>
+          <a class="project-figure-image" href="static/images/molecules.png" aria-label="Open full-size figure: Matched scaffold and QM9 molecules produced by Anchor, VCG, and RCPT">
+            <img src="static/images/molecules.png" width="1680" height="452" alt="Matched scaffold and QM9 molecules produced by Anchor, VCG, and RCPT" loading="lazy" decoding="async">
+          </a>
+          <figcaption><strong>Figure 3.</strong> For the scaffold example, compare docking score and QED. For QM9, smaller property error means closer agreement with the requested values.</figcaption>
+        </figure>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="scaffold-simple-main-title">
+            <table class="project-table" aria-describedby="scaffold-simple-main-note">
+              <caption id="scaffold-simple-main-title"><span class="project-table-title"><span>Table 3</span> Scaffold decoration on CrossDocked2020</span></caption>
+              <thead>
+                <tr><th scope="col">Fit particles</th><th scope="col">Controller</th><th scope="col">Validity ↑</th><th scope="col">Unique useful ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">–</th><td>Anchor</td><td>0.425</td><td>0.236</td></tr>
+                <tr><th scope="row">16</th><td>VCG</td><td>0.229</td><td>0.118</td></tr>
+                <tr><th scope="row">16</th><td>ECG†</td><td>0.221</td><td>0.126</td></tr>
+                <tr class="project-table-highlight"><th scope="row">16</th><td>RCPT</td><td><strong>0.434</strong></td><td><strong>0.251</strong></td></tr>
+                <tr><th scope="row">64</th><td>VCG</td><td>0.335</td><td>0.200</td></tr>
+                <tr><th scope="row">64</th><td>ECG†</td><td>0.222</td><td>0.102</td></tr>
+                <tr class="project-table-highlight"><th scope="row">64</th><td>RCPT</td><td><strong>0.441</strong></td><td><strong>0.271</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="scaffold-simple-main-note">Means over 76 pockets, with 16 fresh outputs per pocket. Unique useful yield counts distinct valid, scaffold-retaining molecules that beat the reference docking score per output slot. † ECG uses four log-expert potentials.</p>
+        </div>
+
+        <div class="project-prose">
+          <p>QM9 asks for two properties at once. At an online population of 36, calibrated steering improves mean target success over both Anchor and VCG, while retaining the same number of distinct successes as VCG.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="reward-qm9-title">
+            <table class="project-table" aria-describedby="reward-qm9-note">
+              <caption id="reward-qm9-title"><span class="project-table-title"><span>Table 4</span> QM9 multi-property steering</span></caption>
+              <thead>
+                <tr><th scope="col">Protocol</th><th scope="col">Controller</th><th scope="col">Evaluation MAE ↓</th><th scope="col">Target success (%) ↑</th><th scope="col">Unique success ↑</th><th scope="col">Lineages / N ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Split 16+8×16</th><td>Anchor</td><td>0.9171</td><td><strong>34.73</strong></td><td>20.75/128</td><td>0.3311</td></tr>
+                <tr><th scope="row">Split 16+8×16</th><td>VCG</td><td>0.9281</td><td>33.31</td><td>13.88/128</td><td>0.1611</td></tr>
+                <tr class="project-table-highlight"><th scope="row">Split 16+8×16</th><td>RCPT</td><td><strong>0.8997</strong></td><td>34.66</td><td><strong>23.00/128</strong></td><td><strong>0.3525</strong></td></tr>
+                <tr><th scope="row">Online N=36</th><td>Anchor</td><td>0.9403</td><td>29.18</td><td>4.38/36</td><td>0.2326</td></tr>
+                <tr><th scope="row">Online N=36</th><td>VCG</td><td>0.8238</td><td>45.60</td><td><strong>12.88/36</strong></td><td><strong>1.0000</strong></td></tr>
+                <tr class="project-table-highlight"><th scope="row">Online N=36</th><td>RCPT</td><td><strong>0.7926</strong></td><td><strong>50.13</strong></td><td><strong>12.88/36</strong></td><td><strong>1.0000</strong></td></tr>
+                <tr><th scope="row">Online N=144</th><td>Anchor</td><td>1.0570</td><td>18.11</td><td>0.75/144</td><td>0.0069</td></tr>
+                <tr><th scope="row">Online N=144</th><td>VCG</td><td>0.8027</td><td>45.21</td><td>45.25/144</td><td><strong>1.0000</strong></td></tr>
+                <tr class="project-table-highlight"><th scope="row">Online N=144</th><td>RCPT</td><td><strong>0.7994</strong></td><td><strong>45.83</strong></td><td><strong>45.50/144</strong></td><td><strong>1.0000</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="reward-qm9-note">Eight-seed means. Split fits a schedule and deploys it on fresh samples. Online fits during generation. Error and target success use terminal SMC weights.</p>
+        </div>
+
+        <div class="project-prose">
+          <p>On CIFAR-10, RCPT improves every reported mean over the raw VCG update. Its mean FID is close to Anchor’s, and the paired experiment does not resolve a difference between the two.</p>
+        </div>
+
+        <div class="project-table-block">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="image-main-title">
+            <table class="project-table" aria-describedby="image-main-note">
+              <caption id="image-main-title"><span class="project-table-title"><span>Table 5</span> Class-conditional CIFAR-10 generation</span></caption>
+              <thead>
+                <tr><th scope="col">Controller</th><th scope="col">FID ↓</th><th scope="col">DINO FD ↓</th><th scope="col">Independent accuracy ↑</th><th scope="col">DLSM accuracy ↑</th><th scope="col">KID ↓</th><th scope="col">DINO MMD ↓</th><th scope="col">CLIP margin ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr class="project-table-group"><th colspan="8"><span>Proposals without fitted correction</span></th></tr>
+                <tr><th scope="row">DLSM</th><td>79.4644</td><td>0.20049</td><td>0.5350</td><td>0.8384</td><td>0.4239</td><td>0.02029</td><td>-0.00225</td></tr>
+                <tr><th scope="row">Anchor</th><td><strong>78.5015</strong></td><td><strong>0.19585</strong></td><td><strong>0.6250</strong></td><td><strong>0.9291</strong></td><td><strong>0.2135</strong></td><td><strong>0.01335</strong></td><td><strong>0.00569</strong></td></tr>
+                <tr class="project-table-group"><th colspan="8"><span>Fitted controls</span></th></tr>
+                <tr><th scope="row">VCG</th><td>79.5578</td><td>0.20046</td><td>0.5566</td><td>0.8809</td><td>0.3652</td><td>0.01908</td><td>-0.00036</td></tr>
+                <tr><th scope="row">Direct LOO</th><td>78.7275</td><td>0.19714</td><td>0.5969</td><td>0.9097</td><td>0.2690</td><td>0.01518</td><td>0.00317</td></tr>
+                <tr><th scope="row">Binary LOO</th><td>78.7313</td><td>0.19794</td><td>0.6019</td><td>0.9009</td><td>0.2617</td><td>0.01524</td><td>0.00369</td></tr>
+                <tr><th scope="row">LOO ridge</th><td>78.9628</td><td>0.19769</td><td>0.6000</td><td>0.9084</td><td>0.2620</td><td>0.01477</td><td>0.00323</td></tr>
+                <tr class="project-table-highlight"><th scope="row">RCPT</th><td><strong>78.5020</strong></td><td><strong>0.19701</strong></td><td><strong>0.6091</strong></td><td><strong>0.9138</strong></td><td><strong>0.2381</strong></td><td><strong>0.01457</strong></td><td><strong>0.00445</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="image-main-note">Ten paired runs of 320 images per method. Bold marks the best mean within each group. KID uses independent ResNet features.</p>
+        </div>
+      </section>
+
+      <section id="BibTeX" class="project-section">
+        <div class="project-section-header">
+          <h2>BibTeX</h2>
+          <button class="project-button" type="button" data-copy-bibtex hidden>Copy BibTeX</button>
+          <span class="project-visually-hidden" data-copy-status role="status"></span>
+        </div>
+        <pre id="bibtex-code" tabindex="0" aria-label="BibTeX citation"><code>@inproceedings{lee2026riskcalibratedproposaltransport,
+  title     = {{Risk-Calibrated Proposal Transport for Finite-Particle Diffusion Steering}},
+  author    = {Ziseok Lee and Jaehyeon Kim and Seungwon Kim and Seunghyun Moon and Haneul Choi and Wooyeol Lee and Minhyeong Lee and Kyungsu Kim},
+  booktitle = {NeurIPS 2026 Workshop on AI for Stochastic Dynamics (STODY)},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=Nit8NPJ5aL}
+}</code></pre>
+      </section>
+
+      <footer class="project-credits">
+        <p>Adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>. The original template was based on <a href="https://nerfies.github.io">Nerfies</a> and is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+      </footer>
+    </article>
+  </main>
+
+  <footer id="footer">
+    <div class="inner">
+      <ul class="icons">
+        <li><a href="/" class="icon solid fa-home" aria-label="Home"></a></li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; 2026 Ziseok Lee</li>
+        <li><a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

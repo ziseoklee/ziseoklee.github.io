@@ -10,7 +10,6 @@
   --project-highlight: #e6eff7;
   --project-button-ink: #fff;
   --project-nav-background: rgb(28 27 26 / 76%);
-  line-height: 1.65;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -22,7 +21,7 @@
   --project-link-hover: #b7e0ff;
   --project-line: #414141;
   --project-surface: #282828;
-  --project-panel-background: #232c36;
+  --project-panel-background: #292a2b;
   --project-highlight: #273e50;
   --project-button-ink: #101820;
   --project-nav-background: rgb(16 16 16 / 72%);
@@ -32,27 +31,10 @@
 .project-page #header {
   z-index: 10;
   overflow-y: auto;
-  padding-top: clamp(2.5rem, 9vh, 6rem);
-}
-
-.project-page #header #footer {
-  background: transparent;
-}
-
-.project-page #header #footer .copyright {
-  background: transparent;
-  color: #d7d4d1;
-}
-
-.project-page #footer .icons a {
-  display: inline-grid;
-  place-items: center;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
-  color: #d7d4d1;
 }
 
 .project-page #header > .project-sidebar {
+  line-height: 1.65;
   margin-bottom: 0;
 }
 
@@ -148,6 +130,7 @@
 }
 
 .project-page #main {
+  line-height: 1.65;
   padding: clamp(3.25rem, 7vw, 6rem) clamp(2rem, 4vw, 4rem) 4rem;
 }
 
@@ -262,6 +245,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.45rem;
   min-height: 2.75rem;
   padding: 0.38rem 0.9rem;
   border: 1px solid var(--project-line);
@@ -272,6 +256,22 @@
   font-weight: 700;
   text-align: center;
   cursor: pointer;
+}
+
+.project-resource-icon {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  object-fit: contain;
+}
+
+.project-resource-icon.icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.project-resource-icon.brands {
+  color: var(--project-ink);
 }
 
 .project-page .project .project-button:hover {
@@ -424,8 +424,12 @@
   margin: 1rem auto 0;
 }
 
+.project-figure + .project-prose {
+  margin-top: 1rem;
+}
+
 .project :is(.project-embed, .project-details, .project-table-compact),
-.project > .project-section > .project-figure {
+.project > .project-section > .project-figure:not(.project-figure-wide) {
   max-width: var(--project-media-width);
   margin-inline: auto;
 }
@@ -646,8 +650,21 @@
   margin-bottom: 0.9rem;
 }
 
-.project-section-header h2 {
+.project-section-header :is(h2, h3) {
   margin: 0;
+}
+
+.project-animation-heading {
+  flex-wrap: nowrap;
+}
+
+.project-animation-heading .project-button {
+  flex: none;
+}
+
+.project-animation-heading .project-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .project-page .project pre code {
