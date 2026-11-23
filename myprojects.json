@@ -1,11 +1,5 @@
 [
   {
-    "url": "/projects/RCPT/",
-    "image": "/projects/RCPT/static/images/fitting-risk.png",
-    "title": "Risk-Calibrated Proposal Transport for Finite-Particle Diffusion Steering",
-    "description": "A diffusion steering update can fit a small particle population almost perfectly and still fail on fresh samples. RCPT estimates how much of that update to keep, using the particles already in memory."
-  },
-  {
     "url": "https://ziseoklee.github.io/projects/ACE/",
     "image": "https://ziseoklee.github.io/projects/ACE/static/images/figure1.png"
   },
@@ -14,20 +8,8 @@
       "image": "https://shjo-april.github.io/TRACE/static/images/observation.png"
   },
   {
-    "url": "/projects/SurfSpec/",
-    "image": "/projects/SurfSpec/static/images/target-specificity.png",
-    "title": "SurfSpec: Enhancing Off-Target-Agnostic Specificity by Bounding Pocket-Ligand Geometric Mismatch",
-    "description": "Growing a ligand into unoccupied regions of its target pocket improves average docking-based specificity on CrossDocked2020, with off-target pockets used only for evaluation."
-  },
-  {
     "url": "https://shjo-april.github.io/ISAC/",
     "image": "https://shjo-april.github.io/ISAC/static/images/method.png"
-  },
-  {
-    "url": "/projects/HybridLinker/",
-    "image": "/projects/HybridLinker/static/images/tradeoff.png",
-    "title": "HybridLinker: Topology-Guided Posterior Sampling for Enhanced Diversity and Validity in 3D Molecular Linker Generation",
-    "description": "A model that proposes diverse bonding patterns and a model that checks their 3D fit can together generate a wider range of valid linkers for the same two fragments."
   },
   {
     "url": "https://elect-diffusion.github.io/",
