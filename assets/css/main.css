@@ -3100,6 +3100,16 @@ input, select, textarea {
 					display: none;
 				}
 
+			#header:has(> #menu-toggle) {
+				position: sticky;
+				top: 0;
+				z-index: 10;
+			}
+
+			:root:has(#header > #menu-toggle) {
+				scroll-padding-top: 4.5rem;
+			}
+
 				#header h1 {
 					font-size: 1.75em;
 				}
@@ -3123,10 +3133,12 @@ input, select, textarea {
 				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 				/* border-radius: 0 0 1em 1em; */
 				position: absolute;
-				top: 3.5em; /* adjust as needed */
+				top: 100%;
 				left: 0;
 				right: 0;
 				z-index: 1000;
+				max-height: calc(100dvh - 3.75rem);
+				overflow-y: auto;
 				padding: 1em 0;
 			}
 
@@ -3141,19 +3153,43 @@ input, select, textarea {
 				margin: 0.5em 0;
 			}
 
-			/* Show hamburger icon */
+			/* Mobile header controls */
 			#menu-toggle {
-				display: block;
-				font-size: 1.5rem;
-				/* cursor: pointer; */
-				background: transparent;
-				border: none;
-				text-align: right;
-				padding: 0.5em 1em;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				min-height: 3.75rem;
+				padding: 0.5rem clamp(1rem, 4vw, 2.5rem);
 			}
 
-			#menu-toggle-button{
+			#header #menu-toggle .theme-toggle {
+				display: inline-flex;
+				margin: 0;
+			}
+
+			#header #menu-toggle img {
+				display: block;
+				width: 2.75rem;
+				margin: 0;
+			}
+
+			#menu-toggle #menu-toggle-button {
+				min-width: 2.75rem;
+				min-height: 2.75rem;
+				padding: 0.15rem 0.5rem;
+				border: 1px solid #ffffff45;
+				border-radius: 0.35rem;
+				background: transparent;
+				color: #fff;
+				font: inherit;
+				font-size: 1.4rem;
+				line-height: 1;
 				cursor: pointer;
+			}
+
+			#menu-toggle :focus-visible {
+				outline: 2px solid #88ccff;
+				outline-offset: 3px;
 			}
 
 			#nav-menu.open {
