@@ -1,6 +1,12 @@
 @import url("fontawesome-all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic");
 
+@media (prefers-reduced-motion: no-preference) {
+	:root {
+		scroll-behavior: smooth;
+	}
+}
+
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, big, cite,
@@ -3105,12 +3111,14 @@ input, select, textarea {
 					#header h1 br {
 						display: inline;
 					}
-			/* Hide menu by default */
+			/* Keep the menu in place while its closing transition runs. */
 			#nav-menu {
-				display: none;
-				padding: 2.5em;
-				transform: translateY(-20px);
-				transition: opacity 0.3s ease, transform 0.3s ease;
+				display: block;
+				visibility: hidden;
+				pointer-events: none;
+				opacity: 0;
+				transform: translateY(-0.5rem);
+				transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
 				background: rgb(30, 30, 30); /* semi-transparent dark background */
 				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 				/* border-radius: 0 0 1em 1em; */
@@ -3148,11 +3156,12 @@ input, select, textarea {
 				cursor: pointer;
 			}
 
-			/* Optional: animate open/close */
 			#nav-menu.open {
-				display: block;
+				visibility: visible;
+				pointer-events: auto;
 				opacity: 1;
-			    transform: translateY(0);
+				transform: translateY(0);
+				transition-delay: 0s;
 			}
 
 		/* Footer */
@@ -3196,6 +3205,14 @@ input, select, textarea {
 			}
 
 	}
+
+@media (max-width: 980px) and (prefers-reduced-motion: reduce) {
+	#nav-menu,
+	#nav-menu.open {
+		transform: none;
+		transition: none;
+	}
+}
 
 /* Small */
 

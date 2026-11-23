@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
   <!-- Primary Meta Tags -->
   <meta name="title" content="On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering">
   <meta name="description" content="ACE diagnoses and corrects Marginal Path Collapse, enabling reliable no-retraining composition of pretrained diffusion and flow experts for multi-constraint generation tasks.">
@@ -11,7 +10,7 @@
   <meta name="author" content="Ziseok Lee, Minyeong Hwang, Wooyeol Lee, Sanghyun Jo, Jihyung Ko, Young Bin Park, Jae-Mun Choi, Eunho Yang, Kyungsu Kim">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ACE Project">
@@ -38,1130 +37,631 @@
   <meta name="citation_conference_title" content="ICML 2026">
   <meta name="citation_url" content="https://openreview.net/forum?id=emv2qsi3TG">
   <meta name="citation_code_url" content="https://github.com/ziseoklee/ACE">
-  
-  <!-- Additional SEO -->
-  <meta name="theme-color" content="#2563eb">
-  
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
+  <meta property="og:url" content="https://ziseoklee.github.io/projects/ACE/">
+  <meta property="og:image" content="https://ziseoklee.github.io/projects/ACE/static/images/figure1.png">
+  <meta name="twitter:image" content="https://ziseoklee.github.io/projects/ACE/static/images/figure1.png">
+  <link rel="canonical" href="https://ziseoklee.github.io/projects/ACE/">
   <title>On the Collapse of Generative Paths | ICML 2026</title>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="data:,">
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- JavaScript -->
-  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/index.js"></script>
-  
-  <!-- MathJax -->
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  
-  <style>
-    /* TL;DR Banner Style */
-    .tldr-banner {
-      background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%);
-      color: white;
-      padding: 1.5rem 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .tldr-banner::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.3;
-    }
-    
-    .tldr-content {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    
-    .tldr-badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      letter-spacing: 0.5px;
-    }
-    
-    .tldr-text {
-      font-size: 1.15rem;
-      line-height: 1.6;
-      margin: 0;
-      font-weight: 400;
-    }
-    
-    .tldr-text strong {
-      color: #7dd3fc;
-      font-weight: 600;
-    }
-    
-    .tldr-highlight {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(125, 211, 252, 0.15);
-      padding: 0.25rem 0.75rem;
-      border-radius: 6px;
-      margin: 0 0.25rem;
-      border: 1px solid rgba(125, 211, 252, 0.3);
-    }
-
-    /* Abstract Box Style */
-    .abstract-box {
-      background: #ffffff;
-      border: 2px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 2.5rem;
-      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
-      margin: 2rem auto;
-      max-width: 900px;
-    }
-    
-    .abstract-box .abstract-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      position: relative;
-      padding-bottom: 1rem;
-    }
-    
-    .abstract-box .abstract-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      border-radius: 2px;
-    }
-    
-    .abstract-box .abstract-content {
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: #475569;
-      text-align: justify;
-    }
-    
-    .abstract-box .abstract-content p {
-      margin-bottom: 1rem;
-    }
-    
-    .abstract-box .abstract-content p:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Criterion Box */
-    .criterion-box {
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      text-align: center;
-    }
-    
-    .criterion-box .equation {
-      font-size: 1.3rem;
-      color: #1e293b;
-      margin: 1rem 0;
-    }
-    
-    /* Comparison Table */
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 2rem 0;
-      font-size: 0.95rem;
-    }
-    
-    .comparison-table th,
-    .comparison-table td {
-      padding: 1rem;
-      text-align: center;
-      border: 1px solid #e2e8f0;
-    }
-    
-    .comparison-table th {
-      background: #f1f5f9;
-      font-weight: 600;
-      color: #1e293b;
-    }
-    
-    .comparison-table tr:nth-child(even) {
-      background: #f8fafc;
-    }
-    
-    .checkmark {
-      color: #10b981;
-      font-weight: bold;
-    }
-    
-    .crossmark {
-      color: #ef4444;
-      font-weight: bold;
-    }
-    
-    /* Result Cards */
-    .result-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-      margin-bottom: 1.5rem;
-      border: 1px solid #e2e8f0;
-    }
-    
-    .result-card h4 {
-      color: #1e293b;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-    }
-    
-    .metric-highlight {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #2563eb;
-    }
-    
-    .metric-label {
-      color: #64748b;
-      font-size: 0.9rem;
-    }
-    
-    /* Key Insight Box */
-    .key-insight {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-      border-left: 4px solid #f59e0b;
-      padding: 1rem 1.5rem;
-      border-radius: 0 12px 12px 0;
-      margin: 1.5rem 0;
-    }
-    
-    .key-insight strong {
-      color: #92400e;
-    }
-    
-    /* Section Divider */
-    .section-divider {
-      height: 4px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      border-radius: 2px;
-      margin: 3rem auto;
-      width: 100px;
-    }
-    
-    /* Figure Placeholder */
-    .figure-placeholder {
-      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-      border-radius: 16px;
-      padding: 3rem;
-      text-align: center;
-      color: #64748b;
-      border: 2px dashed #cbd5e1;
-    }
-    
-    .figure-placeholder i {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      display: block;
-      color: #94a3b8;
-    }
-    
-    .figure-caption {
-      font-size: 0.95rem;
-      color: #64748b;
-      text-align: center;
-      margin-top: 1rem;
-      line-height: 1.6;
-    }
-
-    /* Understanding ACE Section */
-    .understanding-section {
-      /* background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); */
-      padding: 4rem 0;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .understanding-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
-      pointer-events: none;
-    }
-    
-    .understanding-section .section-title {
-      color: white;
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    
-    .understanding-section .section-subtitle {
-      color: #94a3b8;
-      text-align: center;
-      font-size: 1.1rem;
-      margin-bottom: 3rem;
-    }
-
-    /* Applications Showcase Section */
-    .applications-section {
-      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-      padding: 4rem 0;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .applications-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
-      pointer-events: none;
-    }
-    
-    .applications-section .section-title {
-      color: white;
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    
-    .applications-section .section-subtitle {
-      color: #94a3b8;
-      text-align: center;
-      font-size: 1.1rem;
-      margin-bottom: 3rem;
-    }
-    
-    /* Application Cards Grid */
-    .app-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    
-    @media (max-width: 968px) {
-      .app-cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    .app-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .app-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      border-color: rgba(99, 102, 241, 0.3);
-    }
-    
-    .app-card-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    
-    .app-card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-    }
-    
-    .app-card-icon.molecular {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-    }
-    
-    .app-card-icon.image {
-      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-      color: white;
-    }
-    
-    .app-card-icon.theory {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: white;
-    }
-    
-    .app-card-title {
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin: 0;
-    }
-    
-    .app-card-badge {
-      margin-left: auto;
-      background: rgba(99, 102, 241, 0.2);
-      color: #a5b4fc;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-    
-    .app-card-image {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .app-card-content {
-      padding: 1.25rem 1.5rem;
-    }
-    
-    .app-card-description {
-      color: #94a3b8;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .app-card-description strong {
-      color: #94a3b8;
-      font-weight: 1000;
-    }
-
-    /* Full-width application card */
-    .app-card.full-width {
-      grid-column: 1 / -1;
-    }
-    
-    .app-card.full-width .app-card-image {
-      max-height: 400px;
-      object-fit: contain;
-      background: #0a0f1a;
-    }
-
-    /* Slider styles for multiple images */
-    .app-slider {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-    
-    .app-slider-track {
-      display: flex;
-      transition: transform 0.5s ease;
-    }
-    
-    .app-slider-slide {
-      min-width: 100%;
-      flex-shrink: 0;
-    }
-    
-    .app-slider-slide img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .app-slider-nav {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.3);
-    }
-    
-    .app-slider-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-    
-    .app-slider-dot.active {
-      background: #6366f1;
-      transform: scale(1.3);
-    }
-    
-    .app-slider-dot:hover {
-      background: rgba(255, 255, 255, 0.6);
-    }
-    
-    .slider-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
-      z-index: 10;
-    }
-    
-    .slider-btn:hover {
-      background: rgba(99, 102, 241, 0.8);
-    }
-    
-    .slider-btn.prev {
-      left: 10px;
-    }
-    
-    .slider-btn.next {
-      right: 10px;
-    }
-
-    /* Feature Pills */
-    .feature-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-    
-    .feature-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #e2e8f0;
-      padding: 0.5rem 1rem;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .feature-pill i {
-      color: #6366f1;
-    }
-
-    .app-card-desc {
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-      line-height: 1.6;
-    }
-
-    /* Image Gallery */
-    .gallery-container {
-      position: relative;
-      background: #0a0f1a;
-    }
-
-    .gallery-wrapper {
-      overflow: hidden;
-    }
-
-    .gallery-track {
-      display: flex;
-      transition: transform 0.5s ease;
-    }
-
-    .gallery-slide {
-      min-width: 100%;
-      flex-shrink: 100;
-    }
-
-    .gallery-slide img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .gallery-nav {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: rgba(0,0,0,0.5);
-    }
-
-    .gallery-dots {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .gallery-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .gallery-dot.active {
-      background: var(--color-accent);
-      transform: scale(1.2);
-    }
-
-    .gallery-dot:hover {
-      background: rgba(255,255,255,0.6);
-    }
-
-    .gallery-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .gallery-btn:hover {
-      background: var(--color-accent);
-      border-color: var(--color-accent);
-    }
-
-    .gallery-counter {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      /* color: var(--color-text); */
-      color: #94a3b8;
-    }
-
-    .gallery-prompt {
-      padding: 1rem 1.25rem;
-      background: rgba(0,0,0,0.3);
-      border-top: 1px solid var(--color-border);
-    }
-
-    .gallery-prompt-text {
-      font-size: 0.9rem;
-      /* color: var(--color-text); */
-      text-align: center;
-      color: #94a3b8;
-      font-style: italic;
-    }
-
-
-    /* Problem formulation section */
-    .formulation-section {
-      background: #ffffff;
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-    }
-
-    .formula-intro {
-      color: #475569;
-      font-size: 1.03rem;
-      line-height: 1.75;
-      text-align: center;
-      max-width: 900px;
-      margin: 0 auto 1.5rem auto;
-    }
-
-    .problem-equation {
-      background: #f8fafc;
-      border: 1px solid #dbeafe;
-      max-width: 850px;
-      margin: 1.5rem auto;
-    }
-
-    .problem-equation .equation {
-      font-size: 1.15rem;
-      line-height: 2.0;
-    }
-
-    .formula-card {
-      height: 100%;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 1.25rem;
-      box-shadow: 0 4px 16px -8px rgba(15, 23, 42, 0.2);
-    }
-
-    .formula-card h4 {
-      color: #1e293b;
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-
-    .formula-card p {
-      color: #64748b;
-      font-size: 0.92rem;
-      line-height: 1.65;
-      margin-bottom: 0.65rem;
-    }
-
-    .formula-card .mini-equation {
-      color: #1e293b;
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 0.65rem;
-      font-size: 0.85rem;
-      line-height: 1.6;
-      overflow-x: auto;
-    }
-
-
-  </style>
+  <link rel="icon" href="/assets/images/pageicon_full.png" type="image/png">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/project.css">
+  <link rel="stylesheet" href="/assets/css/scrollbars.css">
+  <script defer src="/assets/js/jquery.min.js"></script>
+  <script defer src="/assets/js/browser.min.js"></script>
+  <script defer src="/assets/js/breakpoints.min.js"></script>
+  <script defer src="/assets/js/util.js"></script>
+  <script defer src="/assets/js/main.js"></script>
+  <script defer src="/assets/js/project.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body>
-
-  <!-- Scroll to Top Button -->
-  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
-
-  <main id="main-content">
-
-  <!-- TL;DR Banner -->
-  <div class="tldr-banner">
-    <div class="tldr-content">
-      
-      <p class="tldr-text">
-        <span class="tldr-badge">TL;DR</span>
-          &nbsp;ACE diagnoses and corrects <strong>Marginal Path Collapse</strong>, a hidden failure mode in multi-constraint ratio-of-densities steering.
-        <span class="tldr-highlight"><i class="fas fa-plug"></i> Plug-and-play</span> steering for
-        <span class="tldr-highlight"><i class="fas fa-atom"></i> Molecules</span> and
-        <span class="tldr-highlight"><i class="fas fa-image"></i> Images</span>
-        with <strong>no retraining required</strong>.
-      </p>
-    </div>
-  </div>
-  
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">On the Collapse of Generative Paths:<br/> A Criterion and Correction for Diffusion Steering</h1>
-            
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><a href="https://ziseoklee.github.io/" target="_blank">Ziseok Lee</a><sup>1*†</sup>,</span>
-              <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=eq41pd8AAAAJ" target="_blank">Minyeong Hwang</a><sup>2*</sup>,</span>
-              <span class="author-block"><a href="https://thisiswooyeol.github.io/" target="_blank">Wooyeol Lee</a><sup>1</sup>,</span>
-              <span class="author-block"><a href="https://shjo-april.github.io/" target="_blank">Sanghyun Jo</a><sup>3,4</sup>,</span>
-              <span class="author-block"><a href="https://jihyungko.github.io/" target="_blank">Jihyung Ko</a><sup>4</sup>,</span>
-              <span class="author-block"><a href="https://calici.co.kr/" target="_blank">Young Bin Park</a><sup>5</sup>,</span>
-              <span class="author-block"><a href="https://calici.co.kr/" target="_blank">Jae-Mun Choi</a><sup>5</sup>,</span>
-              <span class="author-block"><a href="https://mli.kaist.ac.kr/" target="_blank">Eunho Yang</a><sup>2,6†</sup>,</span>
-              <span class="author-block"><a href="https://aibl.snu.ac.kr/" target="_blank">Kyungsu Kim</a><sup>1,4,7†</sup></span>
-            </div>
-
-            <div class="is-size-6 publication-authors" style="margin-top: 1rem;">
-              <span class="author-block"><sup>1</sup>SNU Biomedical Sciences, <sup>2</sup>KAIST AI, <sup>3</sup>OGQ, <sup>4</sup>SNU IPAI, <sup>5</sup>Calici, <sup>6</sup>AITRICS, <sup>7</sup>SNU Transdisciplinary Innovations</span>
-              <br>
-              <span class="eql-cntrb"><small><sup>*</sup>Equal Contribution, <sup>†</sup>Corresponding Author</small></span>
-            </div>
-            
-            <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
-              <span class="author-block" style="font-weight: 600;">ICML 2026</span>
-            </div>
-
-            <div class="column has-text-centered" style="margin-top: 1.5rem;">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="https://openreview.net/forum?id=emv2qsi3TG" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                    <span>OpenReview</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a href="https://github.com/ziseoklee/ACE" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fab fa-github"></i></span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/2512.10339" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="ai ai-arxiv"></i></span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+<body class="project-page">
+  <a class="project-skip" href="#main-content">Skip to content</a>
+  <header id="header">
+    <div class="inner project-sidebar">
+      <div class="project-sidebar-controls">
+        <a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb_full.png" alt=""></a>
+        <button type="button" id="menu-toggle-button" aria-controls="nav-menu" aria-expanded="false">Contents</button>
       </div>
+      <nav id="nav-menu" aria-label="Project contents">
+        <p class="project-sidebar-label" aria-hidden="true">Contents</p>
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#applications">Applications</a>
+        <a href="#results">Results</a>
+        <a href="#BibTeX">BibTeX</a>
+      </nav>
     </div>
-  </section>
+  </header>
 
-
-  <!-- Abstract -->
-  <section class="section" style="padding-top: 3rem; padding-bottom: 3rem; margin-top: -6rem;">
-    <div class="container is-max-desktop">
-      <div class="abstract-box" style="background-color: rgb(234, 234, 234);">
-        <h2 class="abstract-title">Abstract</h2>
-        <div class="abstract-content">
-          <p>
-            Inference-time steering adapts pretrained diffusion and flow models to new tasks without retraining, often using ratio-of-densities constructions that reweight time-indexed marginals with fixed exponents. We identify <strong>Marginal Path Collapse</strong>, a failure mode in which the intermediate density defined by such compositions becomes non-normalizable despite valid endpoints. This collapse can arise when composing heterogeneous experts trained with mismatched noise schedules, negative exponents, or partial supports.
-          </p>
-          <p>
-            To address this, we provide a sharp sufficient <strong>Path Existence Criterion</strong> that certifies well-defined composed intermediate densities when \(C(t)>0\) and detects collapse when \(C(t)<0\), together with <strong>Adaptive Path Correction with Exponents (ACE)</strong>. ACE generalizes Feynman–Kac steering to time-varying exponents and dynamically adjusts expert weights to keep the path valid. On flexible-pose scaffold decoration and compositional image generation, ACE prevents collapse and improves sample reliability over constant-exponent baselines.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Problem Formulation -->
-  <section class="section formulation-section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">What Problems Does ACE Solve?</h2>
-      <p class="formula-intro">
-        ACE targets modular generation problems where a sample must satisfy several constraints at once. A simple template is a joint object \(X,Y\) with a local condition \(A\) on \(X\) and a joint condition \(B\) on \((X,Y)\). Under the conditional-independence structure used in the paper, Bayes' rule gives a ratio-of-densities target:
-      </p>
-      <div class="criterion-box problem-equation">
-        <div class="equation">
-          \[
-          p(X,Y\mid A,B) \propto p(X\mid A)\,\frac{p(X,Y\mid B)}{p(X)}.
-          \]
-        </div>
-        <p style="font-size: 0.95rem; color: #64748b;">
-          This decomposition lets us combine pretrained experts instead of retraining a monolithic model. ACE solves the missing piece: making the entire intermediate generative path valid when these experts have different schedules, supports, or exponent signs.
+  <main id="main">
+    <article class="project" id="main-content" tabindex="-1">
+      <header class="project-hero">
+        <p class="project-venue">ICML 2026</p>
+        <h1 data-fit-title>On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering</h1>
+        <ul class="project-authors" aria-label="Authors">
+          <li><a href="https://ziseoklee.github.io/">Ziseok Lee</a><sup>1*†</sup></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=eq41pd8AAAAJ">Minyeong Hwang</a><sup>2*</sup></li>
+          <li><a href="https://thisiswooyeol.github.io/">Wooyeol Lee</a><sup>1</sup></li>
+          <li><a href="https://shjo-april.github.io/">Sanghyun Jo</a><sup>3,4</sup></li>
+          <li><a href="https://jihyungko.github.io/">Jihyung Ko</a><sup>4</sup></li>
+          <li><a href="https://calici.co.kr/">Young Bin Park</a><sup>5</sup></li>
+          <li><a href="https://calici.co.kr/">Jae-Mun Choi</a><sup>5</sup></li>
+          <li><a href="https://mli.kaist.ac.kr/">Eunho Yang</a><sup>2,6†</sup></li>
+          <li><a href="https://aibl.snu.ac.kr/">Kyungsu Kim</a><sup>1,4,7†</sup></li>
+        </ul>
+        <p class="project-affiliations">
+          <span><sup>1</sup>SNU Biomedical Sciences</span>
+          <span><sup>2</sup>KAIST AI</span>
+          <span><sup>3</sup>OGQ</span>
+          <span><sup>4</sup>SNU IPAI</span>
+          <span><sup>5</sup>Calici</span>
+          <span><sup>6</sup>AITRICS</span>
+          <span><sup>7</sup>SNU Transdisciplinary Innovations</span>
         </p>
-      </div>
+        <p class="project-note"><sup>*</sup>Equal contribution · <sup>†</sup>Corresponding author</p>
+        <div class="project-actions">
+          <a class="project-button project-button-primary" href="https://openreview.net/forum?id=emv2qsi3TG">OpenReview</a>
+          <a class="project-button" href="https://github.com/ziseoklee/ACE">Code</a>
+          <a class="project-button" href="https://arxiv.org/abs/2512.10339">arXiv</a>
+        </div>
+        <nav class="project-toc" aria-label="On this page">
+          <a href="#abstract">Abstract</a>
+          <a href="#method">Method</a>
+          <a href="#applications">Applications</a>
+          <a href="#results">Results</a>
+          <a href="#BibTeX">BibTeX</a>
+        </nav>
+      </header>
 
-      <div class="columns is-multiline">
-        <div class="column is-4">
-          <div class="formula-card">
-            <h4>Synthetic Checker</h4>
+      <section class="project-section" id="abstract">
+        <h2>Abstract</h2>
+        <div class="project-prose">
+          <p class="project-callout"><strong class="project-summary-label">TL;DR</strong> ACE diagnoses and corrects <strong>Marginal Path Collapse</strong>, a failure mode in multi-constraint ratio-of-densities steering. It supports plug-and-play steering for molecules and images <strong>without retraining</strong>.</p>
+          <p>Inference-time steering adapts pretrained diffusion and flow models to new tasks without retraining, often using ratio-of-densities constructions that reweight time-indexed marginals with fixed exponents. We identify <strong>Marginal Path Collapse</strong>, a failure mode in which the intermediate density defined by such compositions becomes non-normalizable despite valid endpoints. This collapse can arise when composing heterogeneous experts trained with mismatched noise schedules, negative exponents, or partial supports.</p>
+          <p>To address this, we provide a sharp sufficient <strong>Path Existence Criterion</strong> that certifies well-defined composed intermediate densities when \(C(t)&gt;0\) and detects collapse when \(C(t)&lt;0\), together with <strong>Adaptive Path Correction with Exponents (ACE)</strong>. ACE generalizes Feynman–Kac steering to time-varying exponents and dynamically adjusts expert weights to keep the path valid. On flexible-pose scaffold decoration and compositional image generation, ACE prevents collapse and improves sample reliability over constant-exponent baselines.</p>
+        </div>
+      </section>
+
+      <section class="project-section" id="method">
+        <h2>What Problems Does ACE Solve?</h2>
+        <div class="project-prose">
+          <p>ACE targets modular generation problems where a sample must satisfy several constraints at once. A simple template is a joint object \(X,Y\) with a local condition \(A\) on \(X\) and a joint condition \(B\) on \((X,Y)\). Under the conditional-independence structure used in the paper, Bayes' rule gives a ratio-of-densities target:</p>
+          <div class="project-equation">\[ p(X,Y\mid A,B) \propto p(X\mid A)\,\frac{p(X,Y\mid B)}{p(X)} \]</div>
+          <p>This decomposition lets us combine pretrained experts instead of retraining a monolithic model. ACE solves the missing piece: making the entire intermediate generative path valid when these experts have different schedules, supports, or exponent signs.</p>
+        </div>
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Synthetic Checker</h3>
             <p>Two coordinates \(X,Y\) are generated from heterogeneous marginal and joint experts.</p>
-            <div class="mini-equation">\(p(X,Y\mid A,B) \propto p(X\mid A)\,p(X,Y\mid B)/p(X)\)</div>
-            <p style="margin-top: 0.75rem;">This controlled setting exposes Marginal Path Collapse and tests the Path Existence Criterion.</p>
+            <div class="project-equation">\(p(X,Y\mid A,B) \propto \dfrac{p(X\mid A)\,p(X,Y\mid B)}{p(X)}\)</div>
+            <p>This controlled setting exposes Marginal Path Collapse and tests the Path Existence Criterion.</p>
           </div>
-        </div>
-        <div class="column is-4">
-          <div class="formula-card">
-            <h4>Flexible-Pose Scaffold Decoration</h4>
+          <div class="project-card">
+            <h3>Flexible-Pose Scaffold Decoration</h3>
             <p>Let \(X=M^{sc}\) be the scaffold and \(Y=M^R\) the R-groups. Topology acts locally, while protein-pocket binding acts globally.</p>
-            <div class="mini-equation">\(p(M^{sc},M^R\mid A,B) \propto p(M^{sc}\mid A)\,p(M\mid B)/p(M^{sc})\)</div>
-            <p style="margin-top: 0.75rem;">ACE composes CONF, SBDD, and DN experts while repairing schedule-induced collapse.</p>
+            <div class="project-equation">
+              \(\begin{aligned}
+                p(M^{sc},M^R\mid &amp;A,B)\\
+                &amp;\propto \dfrac{p(M^{sc}\mid A)\,p(M\mid B)}{p(M^{sc})}
+              \end{aligned}\)
+            </div>
+            <p>ACE composes CONF, SBDD, and DN experts while repairing schedule-induced collapse.</p>
           </div>
-        </div>
-        <div class="column is-4">
-          <div class="formula-card">
-            <h4>Multi-Instance Image Generation</h4>
+          <div class="project-card">
+            <h3>Multi-Instance Image Generation</h3>
             <p>Region prompts \(c_i\) constrain local foregrounds \(F_i\), while a global prompt \(C\) constrains the full image.</p>
-            <div class="mini-equation">\(p(X\mid c_{1:n},C) \propto p(X\mid C)^{\gamma_0(t)}\prod_i [p(F_i\mid c_i)/p(F_i)]^{\gamma_i(t)}\)</div>
-            <p style="margin-top: 0.75rem;">Here the path is homogeneous and valid, but ACE still improves concentration and prompt alignment.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Understanding ACE -->
-  <section class="section hero is-light">
-    <div class="container">
-      <h2 class="title is-3 has-text-centered">Understanding ACE</h2>
-      <p class="section-subtitle" style="color: #3f443b; text-align: center; font-size: 1.1rem; margin-bottom: 3rem;">
-        ACE detects invalid composed paths with the Path Existence Criterion and corrects exponent schedules so that \(C_k(t)>0\) on the sampling timesteps.
-      </p> 
-      <div class="columns is-multiline">
-        <div class="column is-6">
-          <div class="result-card">
-            <h4>Marginal Path Collapse & ACE Correction</h4>
-            <div class="criterion-box" style="background-color: white;">
-              <img src="static/images/figure1.png" alt="Marginal Path Collapse and ACE Solution" class="app-card-image" style="background: white; padding: 1rem;">
+            <div class="project-equation">
+              \(\begin{aligned}
+                &p(X\mid c_{1:n},C) \\
+                &\propto p(X\mid C)^{\gamma_0(t)}\prod_i \left[\dfrac{p(F_i\mid c_i)}{p(F_i)}\right]^{\gamma_i(t)}
+              \end{aligned}\)
             </div>
-            <p>
-              <strong>Figure 1:</strong> Marginal Path Collapse breaks heterogeneous composition. In a 2D checkerboard built from two 1D priors and a 2D constraint, standard steering is biased and FKC fails when the path-existence criterion becomes negative. ACE dynamically adjusts exponents to ensure \(C(t)>0\), recovering the target path.
-            </p>
+            <p>Here the path is homogeneous and valid, but ACE still improves concentration and prompt alignment.</p>
           </div>
         </div>
 
-        <div class="column is-6">
-          <div class="result-card">
-            <h4>Understanding Path Collapse</h4>
-            <div class="criterion-box" style="background-color: white;">
-              <img src="static/images/figure2.png" alt="Non-integrable Region in Gaussian Path" class="app-card-image" style="background: white; padding: 1rem;">
-            </div>
-            <p>
-              <strong>Figure 2:</strong> Non-integrable region in the ratio-of-Gaussians example. The path is well-defined at the endpoints, but the intermediate variance explodes, causing Marginal Path Collapse. The sampler may still run numerically, but it no longer follows the intended probability path.
-            </p>
-          </div>
-          <div class="result-card">
-            <h4>Schedule Mismatch and Criterion Repair</h4>
-            <div class="criterion-box" style="background-color: white;">
-              <img src="static/images/figure3.png" alt="Common noise schedules and the path existence criterion with and without ACE" class="app-card-image" style="background: white; padding: 1rem;">
-            </div>
-            <p>
-              <strong>Figure 3:</strong> Common noise schedules and Marginal Path Collapse. Many heterogeneous three-expert compositions enter a region where \(C(t)<0\), implying non-normalizable intermediate densities. The corrected exponents of ACE ensure \(C(t)>0\) for all sampled times.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Applications of ACE Showcase -->
-  <section class="applications-section">
-    <div class="container">
-      <h2 class="section-title">Applications of ACE</h2>
-      <p class="section-subtitle">One ratio-of-densities framework, multiple domains — from drug discovery to multi-instance image generation</p>
-      
-      <div class="app-cards-grid">
-        
-
-        <!-- Card 1: Molecular Generation (Figure 6) -->
-        <div class="app-card">
-          <div class="app-card-header">
-            <div class="app-card-icon molecular">
-              <i class="fas fa-atom"></i>
-            </div>
-            <h3 class="app-card-title">Flexible-Pose Scaffold Decoration</h3>
-            <span class="app-card-badge">Drug Discovery</span>
-          </div>
-          <img src="static/images/figure6.png" alt="Scaffold Decoration Results" class="app-card-image" style="background: white; padding: 1rem;"/>
-          <div class="app-card-content">
-            <p class="app-card-description">
-              <strong>Figure 6:</strong> ACE enables high-guidance steering for flexible-pose scaffold decoration. ACE generates highly dockable molecules by accurately modeling the ratio-of-density path, whereas FKC and NR produce suboptimal results due to ill-defined probability paths. The flexible-pose formulation relaxes the fixed-pose constraint of Delete and explores a larger search space.
-            </p>
+        <h2 class="project-subsection">Understanding ACE</h2>
+        <p class="project-prose">ACE detects invalid composed paths with the Path Existence Criterion and corrects exponent schedules so that \(C_k(t)&gt;0\) on the sampling timesteps.</p>
+        <div class="project-grid project-figure-grid">
+          <figure class="project-figure">
+            <h3>Marginal Path Collapse &amp; ACE Correction</h3>
+            <a class="project-figure-image" href="static/images/figure1.png" aria-label="Open Figure 1 at full size">
+              <img src="static/images/figure1.png" width="1458" height="1454" alt="Marginal Path Collapse and ACE Solution" loading="lazy" decoding="async">
+            </a>
+            <figcaption><strong>Figure 1:</strong> Marginal Path Collapse breaks heterogeneous composition. In a 2D checkerboard built from two 1D priors and a 2D constraint, standard steering is biased and FKC fails when the path-existence criterion becomes negative. ACE dynamically adjusts exponents to ensure \(C(t)&gt;0\), recovering the target path.</figcaption>
+          </figure>
+          <div class="project-figure-stack">
+            <figure class="project-figure">
+              <h3>Understanding Path Collapse</h3>
+              <a class="project-figure-image" href="static/images/figure2.png" aria-label="Open Figure 2 at full size">
+                <img src="static/images/figure2.png" width="1470" height="751" alt="Non-integrable Region in Gaussian Path" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>Figure 2:</strong> Non-integrable region in the ratio-of-Gaussians example. The path is well-defined at the endpoints, but the intermediate variance explodes, causing Marginal Path Collapse. The sampler may still run numerically, but it no longer follows the intended probability path.</figcaption>
+            </figure>
+            <figure class="project-figure">
+              <h3>Schedule Mismatch and Criterion Repair</h3>
+              <a class="project-figure-image" href="static/images/figure3.png" aria-label="Open Figure 3 at full size">
+                <img src="static/images/figure3.png" width="1435" height="596" alt="Common noise schedules and the path existence criterion with and without ACE" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>Figure 3:</strong> Common noise schedules and Marginal Path Collapse. Many heterogeneous three-expert compositions enter a region where \(C(t)&lt;0\), implying non-normalizable intermediate densities. The corrected exponents of ACE ensure \(C(t)&gt;0\) for all sampled times.</figcaption>
+            </figure>
           </div>
         </div>
 
-        <div class="app-card">
-          <div class="app-card-header">
-            <div class="app-card-icon molecular">
-              <i class="fas fa-atom"></i>
-            </div>
-            <h3 class="app-card-title">Impact of Path Collapse on Molecules</h3>
-            <span class="app-card-badge">Drug Discovery</span>
+        <h2 class="project-subsection">Key Contributions</h2>
+        <div class="project-grid project-card-grid">
+          <div class="project-card">
+            <h3>Diagnosis: Path Existence Criterion</h3>
+            <p>We derive an easy-to-compute criterion that certifies path existence when \(C_k(t)&gt;0\) and detects collapse when \(C_k(t)&lt;0\), using only schedules and exponents.</p>
+            <div class="project-equation">\( C_k(t) := \sum_{i: k \in I_i} \frac{\gamma_i(t)}{(\alpha_t^{(i)})^2} &gt; 0 \)</div>
+            <p>Positive criterion certifies a valid path; negative criterion detects collapse.</p>
           </div>
-          <img src="static/images/figure_e9.png" alt="Impact of Marginal Path Collapse" class="app-card-image" style="background: white; padding: 1rem;"/>
-          <div class="app-card-content">
-            <p class="app-card-description">
-              <strong>Figure E.9:</strong> Impact of Marginal Path Collapse on molecular generation. On scaffold decoration at \(\omega=1.3\), FKC enters a collapsed regime near the end of sampling where \(C(t)<0\), producing disjoint fragments. ACE applies the bump correction to keep \(C(t)>0\) throughout the trajectory and produces connected, chemically valid molecules.
-            </p>
-          </div>
-        </div>
-
-        <!-- Card 6: Image Generation -->
-        <div class="app-card" style="grid-column: 1 / -1;">
-          <div class="app-card-header">
-            <div class="app-card-icon image">
-              <i class="fas fa-image"></i>
-            </div>
-            <span class="app-card-title">Compositional Image Generation</span>
-            <span class="app-card-badge image">Vision</span>
-          </div>
-          <div class="gallery-container" id="imageGallery">
-            <div class="gallery-wrapper">
-              <div class="gallery-track" id="galleryTrack">
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_1.png" alt="Red chair, yellow chair, white teddy bear, brown dining table">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_2.png" alt="Black cup, black donut, green dining table, blue donut">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_3.png" alt="Blue boat, red boat, white boat, green boat">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_4.png" alt="White couch, yellow dining table, white oven, brown chair">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_5.png" alt="Brown airplane, red airplane, blue airplane">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_6.png" alt="White bird, red boat, blue boat">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_7.png" alt="Blue dog, white bed, green tie">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_8.png" alt="Black dog, blue dog, brown dog">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_9.png" alt="White umbrella, red umbrella">
-                </div>
-                <div class="gallery-slide">
-                  <img src="static/images/gallery/e18_10.png" alt="Brown boat, brown boat, yellow boat, black boat, white boat, green boat">
-                </div>
-              </div>
-            </div>
-            <div class="gallery-nav">
-              <button class="gallery-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
-              <div class="gallery-dots" id="galleryDots"></div>
-              <span class="gallery-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></span>
-              <button class="gallery-btn" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="gallery-prompt">
-              <p class="gallery-prompt-text" id="galleryPrompt">"A photo of a red chair and a yellow chair and a white teddy bear and a brown dining table"</p>
-            </div>
-          </div>
-          <div class="app-card-content">
-            <p class="app-card-description">
-              <strong>Figure E.18:</strong> Qualitative results of compositional image generation with ACE. Compared to the base Stable Diffusion 2.1 model (left), simulating the same model with ACE (right) yields better prompt alignment and layout guidance without additional training or external models. Table E.16 quantifies the improvement on COCO-MIG.
-            </p>
+          <div class="project-card">
+            <h3>Solution: ACE Framework</h3>
+            <p>Building on this diagnosis, ACE extends Feynman–Kac steering to support time-varying exponents, dynamically adjusting expert weights throughout generation while preserving the final target distribution.</p>
+            <div class="project-equation">\( \tilde{\gamma}_i(t) = \gamma_i(t) + b_i(t)\)</div>
+            <p>Endpoint-preserving "bump" correction \(b_i(t)\) keeps the path-existence criterion positive (\(b_i(0)=b_i(t_{\mathrm{end}})=0\)). In the paper, we prove such corrections can always be constructed and empirically instantiate them with linear and quadratic bump components, selecting \(B_1,B_2\) to satisfy the criterion during sampling.</p>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+        <p class="project-callout project-prose"><strong>Key Insight:</strong> Marginal Path Collapse occurs when numerator and denominator experts shrink at incompatible rates, creating an intermediate imbalance where the combined density grows rather than decays at infinity. ACE repairs this by modifying the intermediate exponent path without changing the endpoint target.</p>
+      </section>
 
-  <!-- Key Contributions -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Key Contributions</h2>
-      
-      <div class="columns is-multiline">
-        <div class="column is-6">
-          <div class="result-card">
-            <h4><i class="fas fa-search" style="color: #ef4444; margin-right: 0.5rem;"></i> Diagnosis: Path Existence Criterion</h4>
-            <p style="color: #64748b;">We derive an easy-to-compute criterion that certifies path existence when \(C_k(t)>0\) and detects collapse when \(C_k(t)<0\), using only schedules and exponents.</p>
-            <div class="criterion-box">
-              <div class="equation">
-                \( C_k(t) := \sum_{i: k \in I_i} \frac{\gamma_i(t)}{(\alpha_t^{(i)})^2} > 0 \)
-              </div>
-              <p style="font-size: 0.9rem; color: #64748b;">Positive criterion certifies a valid path; negative criterion detects collapse.</p>
+      <section class="project-section" id="applications">
+        <h2>Applications of ACE</h2>
+        <div class="project-grid project-figure-grid">
+          <figure class="project-figure">
+            <h3>Flexible-Pose Scaffold Decoration</h3>
+            <a class="project-figure-image" href="static/images/figure6.png" aria-label="Open Figure 6 at full size">
+              <img src="static/images/figure6.png" width="1448" height="842" alt="Scaffold Decoration Results" loading="lazy" decoding="async">
+            </a>
+            <figcaption><strong>Figure 6:</strong> ACE enables high-guidance steering for flexible-pose scaffold decoration. ACE generates highly dockable molecules by accurately modeling the ratio-of-density path, whereas FKC and NR produce suboptimal results due to ill-defined probability paths. The flexible-pose formulation relaxes the fixed-pose constraint of Delete and explores a larger search space.</figcaption>
+          </figure>
+          <figure class="project-figure">
+            <h3>Impact of Path Collapse on Molecules</h3>
+            <a class="project-figure-image" href="static/images/figure_e9.png" aria-label="Open Figure E.9 at full size">
+              <img src="static/images/figure_e9.png" width="3157" height="1249" alt="Impact of Marginal Path Collapse" loading="lazy" decoding="async">
+            </a>
+            <figcaption><strong>Figure E.9:</strong> Impact of Marginal Path Collapse on molecular generation. On scaffold decoration at \(\omega=1.3\), FKC enters a collapsed regime near the end of sampling where \(C(t)&lt;0\), producing disjoint fragments. ACE applies the bump correction to keep \(C(t)&gt;0\) throughout the trajectory and produces connected, chemically valid molecules.</figcaption>
+          </figure>
+        </div>
+        <div class="project-figure">
+          <h3>Compositional Image Generation</h3>
+          <div class="project-gallery project-gallery-comparison" data-project-gallery role="group" aria-label="Compositional image generation examples">
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_1.png" aria-label="Open gallery example 1 at full size">
+                <img src="static/images/gallery/e18_1.png" width="1000" height="500" alt="Red chair, yellow chair, white teddy bear, brown dining table" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a red chair and a yellow chair and a white teddy bear and a brown dining table"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_2.png" aria-label="Open gallery example 2 at full size">
+                <img src="static/images/gallery/e18_2.png" width="1000" height="498" alt="Black cup, black donut, green dining table, blue donut" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a black cup and a black donut and a green dining table and a blue donut"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_3.png" aria-label="Open gallery example 3 at full size">
+                <img src="static/images/gallery/e18_3.png" width="1000" height="503" alt="Blue boat, red boat, white boat, green boat" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a blue boat and a red boat and a white boat and a green boat"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_4.png" aria-label="Open gallery example 4 at full size">
+                <img src="static/images/gallery/e18_4.png" width="1000" height="498" alt="White couch, yellow dining table, white oven, brown chair" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a white couch and a yellow dining table and a white oven and a brown chair"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_5.png" aria-label="Open gallery example 5 at full size">
+                <img src="static/images/gallery/e18_5.png" width="1000" height="503" alt="Brown airplane, red airplane, blue airplane" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a brown airplane and a red airplane and a blue airplane"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_6.png" aria-label="Open gallery example 6 at full size">
+                <img src="static/images/gallery/e18_6.png" width="1000" height="500" alt="White bird, red boat, blue boat" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a white bird and a red boat and a blue boat"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_7.png" aria-label="Open gallery example 7 at full size">
+                <img src="static/images/gallery/e18_7.png" width="1000" height="503" alt="Blue dog, white bed, green tie" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a blue dog and a white bed and a green tie"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_8.png" aria-label="Open gallery example 8 at full size">
+                <img src="static/images/gallery/e18_8.png" width="1000" height="499" alt="Black dog, blue dog, brown dog" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a black dog and a blue dog and a brown dog"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_9.png" aria-label="Open gallery example 9 at full size">
+                <img src="static/images/gallery/e18_9.png" width="1000" height="498" alt="White umbrella, red umbrella" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a white umbrella and a red umbrella"</figcaption>
+            </figure>
+            <figure class="project-slide" data-slide>
+              <a class="project-figure-image" href="static/images/gallery/e18_10.png" aria-label="Open gallery example 10 at full size">
+                <img src="static/images/gallery/e18_10.png" width="1000" height="499" alt="Brown boat, brown boat, yellow boat, black boat, white boat, green boat" loading="lazy" decoding="async">
+              </a>
+              <figcaption>"A photo of a brown boat and a brown boat and a yellow boat and a black boat and a white boat and a green boat"</figcaption>
+            </figure>
+            <div class="project-gallery-controls" hidden>
+              <button class="project-button" type="button" data-previous>Previous</button>
+              <span class="project-gallery-count" data-gallery-count role="status"></span>
+              <button class="project-button" type="button" data-next>Next</button>
             </div>
           </div>
+          <p class="project-note"><strong>Figure E.18:</strong> Qualitative results of compositional image generation with ACE. Compared to the base Stable Diffusion 2.1 model (left), simulating the same model with ACE (right) yields better prompt alignment and layout guidance without additional training or external models. Table E.16 quantifies the improvement on COCO-MIG.</p>
         </div>
-        
-        <div class="column is-6">
-          <div class="result-card">
-            <h4><i class="fas fa-tools" style="color: #10b981; margin-right: 0.5rem;"></i> Solution: ACE Framework</h4>
-            <p style="color: #64748b;">
-              Building on this diagnosis, ACE extends Feynman–Kac steering to support time-varying exponents, dynamically adjusting expert weights throughout generation while preserving the final target distribution.
-            </p>
-            <div class="criterion-box">
-              <div class="equation">
-                \( \tilde{\gamma}_i(t) = \gamma_i(t) + b_i(t)\)
-              </div>
-              <p style="font-size: 0.9rem; color: #64748b;">
-                Endpoint-preserving "bump" correction \(b_i(t)\) keeps the path-existence criterion positive (\(b_i(0)=b_i(t_{\mathrm{end}})=0\)).
-                In the paper, we prove such corrections can always be constructed and empirically instantiate them with linear and quadratic bump components, selecting \(B_1,B_2\) to satisfy the criterion during sampling.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="key-insight">
-        <strong>Key Insight:</strong> Marginal Path Collapse occurs when numerator and denominator experts shrink at incompatible rates, creating an intermediate imbalance where the combined density grows rather than decays at infinity. ACE repairs this by modifying the intermediate exponent path without changing the endpoint target.
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- Method Comparison -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Method Comparison</h2>
-      <img src="static/images/table1.png" alt="Method comparison" style="width: 100%; border-radius: 12px; ">
-      <p class="figure-caption">
-        <strong>Table 1:</strong> Comparison of steering methodologies. Unlike heuristics or standard correctors, which assume homogeneity or do not verify path existence, ACE provides an explicit criterion and adaptive correction for path validity under heterogeneous conditions.
-      </p>
-    </div>
-  </section>
-
-  <!-- Quantitative Results -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
-      
-      <!-- Detailed Table -->
-      <img src="static/images/table3.png" alt="Comparison of NR, FKC, and ACE" style="width: 100%; border-radius: 12px;">
-      <p class="figure-caption">
-        <strong>Table 3:</strong> Performance comparison on CrossDocked, evaluating docking affinity (Vina Score) and drug-likeness (QED, SA, and Lipinski). Higher is better for OSR and drug-likeness; lower, more negative Vina scores are preferred. NR and FKC suffer from path-existence-criterion violations, while ACE remains valid across the tested configurations.
-       </p>
-       <img src="static/images/table4.png" alt="CrossDock Results Table" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
-       <p class="figure-caption">
-        <strong>Table 4:</strong> Comparison against fixed-pose scaffold-decoration baselines on CrossDocked, evaluating docking affinity and drug-likeness. Higher is better for OSR and drug-likeness; lower, more negative Vina scores are preferred. Asterisks denote methods that require a reference ligand pose.
-        </p>
-
-        <div class="columns is-vcentered" style="margin-top: 2rem;">
-          <div class="column is-6">
-            <img src="static/images/table5.png" alt="Computational cost of ACE, ACE-lite, and baselines" style="width: 100%; border-radius: 12px; background: white;">
+      <section class="project-section" id="results">
+        <h2>Method Comparison</h2>
+        <div class="project-table-block" id="table-1">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="table-1-title">
+            <table class="project-table" aria-describedby="table-1-note">
+              <caption id="table-1-title"><span class="project-table-title"><span>Table 1</span> Steering method comparison</span></caption>
+              <thead>
+            <tr>
+              <th scope="col">Methodology</th><th scope="col">Primary goal</th><th scope="col">Handles heterogeneity?</th><th scope="col">Handles time-varying or negative exponents?</th>
+              <th scope="col">Guarantees path existence?</th>
+            </tr>
+              </thead>
+              <tbody>
+            <tr>
+              <th scope="row">Heuristic Guidance (e.g., CFG)</th><td>Improve sample quality</td><td>Heuristically</td><td>Heuristically</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <th scope="row">Feynman–Kac Correctors (FKC)</th><td>Provide unbiased samples</td><td>No</td><td>No</td>
+              <td>No</td>
+            </tr>
+            <tr class="project-table-highlight">
+              <th scope="row"><strong>Our Work (Criterion + ACE)</strong></th><td>Guarantee a valid, stable path</td><td>Yes</td><td>Yes</td>
+              <td>Yes</td>
+            </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="column is-6">
-            <p class="figure-caption" style="text-align: left; margin-top: 0;">
-              <strong>Table 5:</strong> Computational cost reported in terms of VRAM usage (GB) and runtime (min/molecule). ACE-lite significantly reduces the runtime overhead while maintaining performance, showing that the path-validity correction can be deployed efficiently alongside task-specific baselines.
-            </p>
-          </div>
+          <p class="project-note" id="table-1-note">ACE provides an explicit criterion and adaptive correction for path validity under heterogeneous conditions.</p>
         </div>
 
-        <img src="static/images/table_e16.png" alt="COCO-MIG Benchmark Results for Compositional Image Generation" style="width: 100%; border-radius: 12px; margin-top: 2rem;">
-       <p class="figure-caption">
-        <strong>Table E.16:</strong> Instance attribute success ratio (%) on COCO-MIG, with the corresponding mIoU (%) shown in parentheses. L2–L6 denote tasks with 2 to 6 region-wise guidance conditions. CLIP is computed on the full image and prompt, while Local CLIP is computed on local crops and their corresponding local prompts.</p>
-    </div>
-  </section>
+        <h2 class="project-subsection">Quantitative Results</h2>
+        <p class="project-prose">Scroll within wide tables to see all metrics. Method names stay visible as you scroll.</p>
+        <div class="project-table-block" id="table-3">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="table-3-title">
+            <table class="project-table" aria-describedby="table-3-note">
+              <caption id="table-3-title"><span class="project-table-title"><span>Table 3</span> CrossDocked results by guidance weight</span></caption>
+              <colgroup span="4"></colgroup>
+              <colgroup span="4"></colgroup>
+              <colgroup span="3"></colgroup>
+              <colgroup span="3"></colgroup>
+              <colgroup span="3"></colgroup>
+              <thead>
+            <tr>
+              <th scope="col" rowspan="2">Method</th><th scope="col" rowspan="2">ω</th><th scope="col" rowspan="2"><abbr title="Path Existence Criterion">PEC</abbr></th><th scope="col" rowspan="2">OSR ↑</th>
+              <th colspan="4" scope="colgroup">Vina Score ↓</th><th colspan="3" scope="colgroup">QED ↑</th><th colspan="3" scope="colgroup">SA ↑</th><th colspan="3" scope="colgroup">Lipinski ↑</th>
+            </tr>
+            <tr>
+              <th scope="col">Pocket-Worst</th><th scope="col">Top 25%</th><th scope="col">Avg</th><th scope="col">Std</th>
+              <th scope="col">Top 25%</th><th scope="col">Top 50%</th><th scope="col">Avg</th><th scope="col">Top 25%</th>
+              <th scope="col">Top 50%</th><th scope="col">Avg</th><th scope="col">Top 25%</th><th scope="col">Top 50%</th>
+              <th scope="col">Avg</th>
+            </tr>
+              </thead>
+              <tbody>
+            <tr>
+              <th scope="row">Ref.</th><td>—</td><td>—</td><td>—</td>
+              <td>—</td><td>−8.0</td><td>−6.77</td><td>1.89</td>
+              <td>0.62</td><td>0.47</td><td>0.48</td><td>0.73</td>
+              <td>0.66</td><td>0.67</td><td>1.0</td><td>1.0</td>
+              <td>0.95</td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr>
+              <th scope="rowgroup" rowspan="4">ACE</th><th scope="row" class="project-table-weight">1.1</th><td>Yes</td><td><span class="project-runner-up">0.71</span></td>
+              <td>−6.74</td><td>−8.30</td><td>−7.02</td><td>0.19</td>
+              <td><strong>0.65</strong></td><td><span class="project-runner-up">0.50</span></td><td><span class="project-runner-up">0.51</span></td><td><strong>0.69</strong></td>
+              <td>0.56</td><td><strong>0.57</strong></td><td>1.00</td><td>1.00</td>
+              <td><strong>0.99</strong></td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.2</th><td>Yes</td><td>0.65</td><td><span class="project-runner-up">−6.78</span></td>
+              <td><span class="project-runner-up">−8.40</span></td><td><span class="project-runner-up">−7.08</span></td><td>0.20</td><td>0.63</td>
+              <td>0.49</td><td>0.51</td><td>0.65</td><td>0.55</td>
+              <td>0.55</td><td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.3</th><td>Yes</td><td>0.68</td><td>−6.64</td>
+              <td>−8.20</td><td>−6.91</td><td>0.19</td><td>0.62</td>
+              <td>0.49</td><td>0.50</td><td>0.67</td><td><strong>0.58</strong></td>
+              <td><strong>0.57</strong></td><td>1.00</td><td>1.00</td><td>0.97</td>
+            </tr>
+            <tr class="project-table-highlight">
+              <th scope="row" class="project-table-weight">1.4</th><td>Yes</td><td><strong>0.75</strong></td><td><strong>−6.84</strong></td>
+              <td><strong>−8.70</strong></td><td><strong>−7.10</strong></td><td>0.19</td><td><span class="project-runner-up">0.64</span></td>
+              <td><strong>0.54</strong></td><td><strong>0.53</strong></td><td>0.65</td><td><span class="project-runner-up">0.57</span></td>
+              <td>0.56</td><td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr>
+              <th scope="rowgroup" rowspan="4">FKC</th><th scope="row" class="project-table-weight">1.1</th><td>No</td><td>0.52</td>
+              <td>−5.99</td><td>−7.90</td><td>−6.54</td><td>0.37</td>
+              <td>0.62</td><td>0.45</td><td>0.47</td><td><span class="project-runner-up">0.68</span></td>
+              <td>0.55</td><td><strong>0.57</strong></td><td>1.00</td><td>1.00</td>
+              <td><span class="project-runner-up">0.98</span></td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.2</th><td>No</td><td>0.43</td><td>−5.56</td>
+              <td>−7.40</td><td>−6.21</td><td>0.45</td><td>0.61</td>
+              <td>0.47</td><td>0.47</td><td>0.64</td><td>0.54</td>
+              <td>0.55</td><td>1.00</td><td>1.00</td><td>0.97</td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.3</th><td>No</td><td>0.49</td><td>−5.90</td>
+              <td>−7.90</td><td>−6.45</td><td>0.40</td><td>0.54</td>
+              <td>0.42</td><td>0.41</td><td>0.67</td><td>0.56</td>
+              <td><strong>0.57</strong></td><td>1.00</td><td>1.00</td><td>0.97</td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.4</th><td>No</td><td>0.40</td><td>−5.53</td>
+              <td>−7.50</td><td>−6.24</td><td>0.46</td><td>0.56</td>
+              <td>0.46</td><td>0.44</td><td>0.65</td><td>0.55</td>
+              <td>0.56</td><td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr>
+              <th scope="rowgroup" rowspan="4">NR</th><th scope="row" class="project-table-weight">1.1</th><td>No</td><td>0.46</td>
+              <td>−4.98</td><td>−7.70</td><td>−6.32</td><td>0.82</td>
+              <td>0.54</td><td>0.42</td><td>0.42</td><td>0.62</td>
+              <td>0.52</td><td>0.53</td><td>1.00</td><td>1.00</td>
+              <td>0.97</td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.2</th><td>No</td><td>0.46</td><td>−5.13</td>
+              <td>−7.60</td><td>−6.33</td><td>0.77</td><td>0.52</td>
+              <td>0.42</td><td>0.41</td><td>0.64</td><td>0.54</td>
+              <td>0.54</td><td>1.00</td><td>1.00</td><td>0.96</td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.3</th><td>No</td><td>0.42</td><td>−5.19</td>
+              <td>−7.50</td><td>−6.23</td><td>0.73</td><td>0.56</td>
+              <td>0.45</td><td>0.44</td><td>0.62</td><td>0.54</td>
+              <td>0.54</td><td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.4</th><td>No</td><td>0.47</td><td>−5.10</td>
+              <td>−7.70</td><td>−6.35</td><td>0.82</td><td>0.54</td>
+              <td>0.39</td><td>0.40</td><td>0.64</td><td>0.55</td>
+              <td>0.54</td><td>1.00</td><td>1.00</td><td>0.97</td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="table-3-note">Higher OSR and drug-likeness scores are preferred. Lower, more negative Vina scores are preferred. ACE satisfies the Path Existence Criterion (PEC) across all tested guidance weights. Bold and underlined values indicate the best and second-best marked results.</p>
+        </div>
+        <div class="project-table-block" id="table-4">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="table-4-title">
+            <table class="project-table" aria-describedby="table-4-note">
+              <caption id="table-4-title"><span class="project-table-title"><span>Table 4</span> CrossDocked comparison with fixed-pose baselines</span></caption>
+              <colgroup span="3"></colgroup>
+              <colgroup span="4"></colgroup>
+              <colgroup span="3"></colgroup>
+              <colgroup span="3"></colgroup>
+              <colgroup span="3"></colgroup>
+              <thead>
+            <tr>
+              <th scope="col" rowspan="2">Method</th><th scope="col" rowspan="2">ω</th><th scope="col" rowspan="2">OSR ↑</th><th colspan="4" scope="colgroup">Vina Score ↓</th>
+              <th colspan="3" scope="colgroup">QED ↑</th><th colspan="3" scope="colgroup">SA ↑</th><th colspan="3" scope="colgroup">Lipinski ↑</th>
+            </tr>
+            <tr>
+              <th scope="col">Pocket-Worst</th><th scope="col">Top 25%</th><th scope="col">Avg</th><th scope="col">Std</th>
+              <th scope="col">Top 25%</th><th scope="col">Top 50%</th><th scope="col">Avg</th><th scope="col">Top 25%</th>
+              <th scope="col">Top 50%</th><th scope="col">Avg</th><th scope="col">Top 25%</th><th scope="col">Top 50%</th>
+              <th scope="col">Avg</th>
+            </tr>
+              </thead>
+              <tbody>
+            <tr>
+              <th scope="row">Reference</th><td>—</td><td>—</td><td>—</td>
+              <td>−8.0</td><td>−6.77</td><td>1.89</td><td>0.62</td>
+              <td>0.47</td><td>0.48</td><td>0.73</td><td>0.66</td>
+              <td>0.67</td><td>1.0</td><td>1.0</td><td>0.95</td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr>
+              <th scope="row">AutoFragDiff*</th><td>—</td><td>0.36</td><td>−5.14</td>
+              <td>−7.60</td><td>−6.01</td><td>0.61</td><td><span class="project-runner-up">0.70</span></td>
+              <td><strong>0.59</strong></td><td><strong>0.57</strong></td><td><strong>0.80</strong></td><td><strong>0.70</strong></td>
+              <td><strong>0.71</strong></td><td>1.00</td><td>1.00</td><td>0.97</td>
+            </tr>
+            <tr>
+              <th scope="row">Delete*</th><td>—</td><td>0.47</td><td>−3.78</td>
+              <td>−8.30</td><td>−5.07</td><td>1.26</td><td><strong>0.71</strong></td>
+              <td><span class="project-runner-up">0.55</span></td><td><span class="project-runner-up">0.55</span></td><td><span class="project-runner-up">0.75</span></td><td><span class="project-runner-up">0.65</span></td>
+              <td><span class="project-runner-up">0.66</span></td><td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr>
+              <th scope="rowgroup" rowspan="2">ACE</th><th scope="row" class="project-table-weight">1.1</th><td><span class="project-runner-up">0.71</span></td><td><span class="project-runner-up">−6.74</span></td>
+              <td>−8.30</td><td><span class="project-runner-up">−7.02</span></td><td>0.19</td><td>0.65</td>
+              <td>0.50</td><td>0.51</td><td>0.69</td><td>0.56</td>
+              <td>0.57</td><td>1.00</td><td>1.00</td><td><strong>0.99</strong></td>
+            </tr>
+            <tr class="project-table-highlight">
+              <th scope="row" class="project-table-weight">1.4</th><td><strong>0.75</strong></td><td><strong>−6.84</strong></td><td><strong>−8.70</strong></td>
+              <td><strong>−7.10</strong></td><td>0.19</td><td>0.64</td><td>0.54</td>
+              <td>0.53</td><td>0.65</td><td>0.57</td><td>0.56</td>
+              <td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr>
+              <th scope="rowgroup" rowspan="2">ACE-lite</th><th scope="row" class="project-table-weight">1.1</th><td>0.67</td><td>−6.42</td>
+              <td>−8.30</td><td>−6.99</td><td>0.42</td><td>0.61</td>
+              <td>0.48</td><td>0.50</td><td>0.67</td><td>0.55</td>
+              <td>0.55</td><td>1.00</td><td>1.00</td><td><span class="project-runner-up">0.98</span></td>
+            </tr>
+            <tr>
+              <th scope="row" class="project-table-weight">1.4</th><td>0.66</td><td>−6.30</td><td><span class="project-runner-up">−8.50</span></td>
+              <td>−7.00</td><td>0.52</td><td>0.62</td><td>0.50</td>
+              <td>0.50</td><td>0.66</td><td>0.55</td><td>0.56</td>
+              <td>1.00</td><td>1.00</td><td>0.97</td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="table-4-note">Asterisks indicate methods that require a reference ligand pose. Higher OSR and drug-likeness scores are preferred. Lower, more negative Vina scores are preferred. Bold and underlined values indicate the best and second-best marked results.</p>
+        </div>
+        <div class="project-table-block project-table-compact" id="table-5">
+          <div class="project-table-scroll">
+            <table class="project-table" aria-describedby="table-5-note">
+              <caption id="table-5-title"><span class="project-table-title"><span>Table 5</span> Computational cost</span></caption>
+              <thead>
+            <tr>
+              <th scope="col">Method</th><th scope="col">VRAM (GB)</th><th scope="col">Time (min/molecule)</th>
+            </tr>
+              </thead>
+              <tbody>
+            <tr>
+              <th scope="row">ACE</th><td>1.57</td><td>0.34</td>
+            </tr>
+            <tr>
+              <th scope="row">ACE-lite</th><td>1.54</td><td>0.19</td>
+            </tr>
+            <tr>
+              <th scope="row">AutoFragDiff</th><td>2.13</td><td>0.29</td>
+            </tr>
+            <tr>
+              <th scope="row">Delete</th><td>1.46</td><td>0.31</td>
+            </tr>
+            <tr>
+              <th scope="row">FKC</th><td>1.53</td><td>0.19</td>
+            </tr>
+            <tr>
+              <th scope="row">NR</th><td>1.54</td><td>0.19</td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="table-5-note">ACE-lite reduces runtime from 0.34 to 0.19 min/molecule while maintaining performance.</p>
+        </div>
+        <div class="project-table-block" id="table-e-16">
+          <div class="project-table-scroll project-table-wide" tabindex="0" role="region" aria-labelledby="table-e-16-title">
+            <table class="project-table" aria-describedby="table-e-16-note">
+              <caption id="table-e-16-title"><span class="project-table-title"><span>Table E.16</span> Compositional image generation on COCO-MIG</span></caption>
+              <thead>
+            <tr>
+              <th scope="col">Method</th><th scope="col">Backbone</th><th scope="col">L2</th><th scope="col">L3</th>
+              <th scope="col">L4</th><th scope="col">L5</th><th scope="col">L6</th><th scope="col">Avg</th>
+              <th scope="col">CLIP ↑</th><th scope="col">Local CLIP ↑</th>
+            </tr>
+              </thead>
+              <tbody>
+            <tr class="project-table-group">
+              <th scope="rowgroup" colspan="10"><span><em>Base Diffusion Model with global prompt</em></span></th>
+            </tr>
+            <tr>
+              <th scope="row">SD1.5</th><td>SD1.5</td><td>5.59 (18.83)</td><td>4.79 (17.43)</td>
+              <td>2.83 (14.95)</td><td>2.41 (13.93)</td><td>2.21 (15.94)</td><td>3.11 (15.75)</td>
+              <td>24.64</td><td>18.36</td>
+            </tr>
+            <tr>
+              <th scope="row">SDXL</th><td>SDXL</td><td>5.59 (19.78)</td><td>4.48 (18.54)</td>
+              <td>2.81 (16.67)</td><td>2.14 (15.72)</td><td>2.80 (18.42)</td><td>3.17 (17.55)</td>
+              <td>25.71</td><td>18.63</td>
+            </tr>
+            <tr>
+              <th scope="row">SD3.5-M</th><td>SD3.5-M</td><td>8.05 (21.57)</td><td>8.46 (21.37)</td>
+              <td>6.07 (18.98)</td><td>5.02 (17.39)</td><td>4.40 (17.80)</td><td>5.86 (18.85)</td>
+              <td>26.41</td><td>18.77</td>
+            </tr>
+            <tr>
+              <th scope="row">Flux.1-dev</th><td>Flux.1-dev</td><td>8.83 (22.00)</td><td>7.50 (20.93)</td>
+              <td>4.86 (17.75)</td><td>4.53 (16.77)</td><td>3.22 (16.49)</td><td>5.08 (18.03)</td>
+              <td>26.17</td><td>18.56</td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr class="project-table-group">
+              <th scope="rowgroup" colspan="10"><span><em>Inference-time Control using <strong>only</strong> the base Diffusion Model</em></span></th>
+            </tr>
+            <tr>
+              <th scope="row">NR</th><td>SD1.5</td><td>24.61 (30.50)</td><td>24.19 (29.81)</td>
+              <td>19.36 (25.64)</td><td>17.67 (24.42)</td><td>19.54 (25.91)</td><td>20.24 (26.53)</td>
+              <td>24.96</td><td>20.21</td>
+            </tr>
+            <tr>
+              <th scope="row">FKC</th><td>SD1.5</td><td>33.02 (34.43)</td><td>31.18 (33.34)</td>
+              <td>28.80 (31.53)</td><td>25.46 (29.63)</td><td>22.88 (28.61)</td><td>28.27 (31.51)</td>
+              <td>25.44</td><td>20.66</td>
+            </tr>
+            <tr class="project-table-highlight">
+              <th scope="row"><strong>ACE</strong></th><td>SD1.5</td><td>45.31 (41.48)</td><td>42.50 (40.60)</td>
+              <td>36.25 (35.20)</td><td>32.75 (32.66)</td><td>32.40 (33.40)</td><td>37.84 (36.67)</td>
+              <td>25.59</td><td>21.18</td>
+            </tr>
+            <tr>
+              <th scope="row">NR</th><td>SD2.1</td><td>26.52 (31.18)</td><td>25.76 (30.50)</td>
+              <td>20.94 (27.24)</td><td>18.83 (24.77)</td><td>18.78 (25.31)</td><td>21.04 (26.93)</td>
+              <td>24.89</td><td>19.96</td>
+            </tr>
+            <tr>
+              <th scope="row">FKC</th><td>SD2.1</td><td>39.69 (37.78)</td><td>34.93 (35.91)</td>
+              <td>31.98 (33.95)</td><td>28.42 (32.07)</td><td>24.93 (30.02)</td><td>31.99 (33.95)</td>
+              <td>25.27</td><td>20.64</td>
+            </tr>
+            <tr class="project-table-highlight">
+              <th scope="row"><strong>ACE</strong></th><td>SD2.1</td><td>46.25 (42.24)</td><td>41.04 (39.45)</td>
+              <td>41.72 (37.96)</td><td>38.38 (37.17)</td><td>34.90 (34.82)</td><td>40.46 (38.33)</td>
+              <td>24.94</td><td>21.09</td>
+            </tr>
+              </tbody>
+              <tbody>
+            <tr class="project-table-group">
+              <th scope="rowgroup" colspan="10"><span><em>Adapter rendering methods (requires additional training on new data or external models)</em></span></th>
+            </tr>
+            <tr>
+              <th scope="row">GLIGEN</th><td>SD1.4</td><td>38.36 (33.96)</td><td>32.79 (29.58)</td>
+              <td>28.67 (25.95)</td><td>25.02 (23.88)</td><td>26.98 (24.93)</td><td>28.84 (26.47)</td>
+              <td>24.91</td><td>20.78</td>
+            </tr>
+            <tr>
+              <th scope="row">InstanceDiffusion</th><td>SD1.5</td><td>68.24 (62.67)</td><td>60.47 (55.75)</td>
+              <td>59.88 (54.15)</td><td>53.92 (49.02)</td><td>57.14 (51.34)</td><td>58.49 (53.12)</td>
+              <td>25.97</td><td>21.90</td>
+            </tr>
+            <tr>
+              <th scope="row">MIGC</th><td>SD1.4</td><td>66.37 (57.02)</td><td>63.10 (54.47)</td>
+              <td>61.27 (52.48)</td><td>57.25 (49.49)</td><td>59.13 (51.38)</td><td>60.41 (52.16)</td>
+              <td>25.39</td><td>21.42</td>
+            </tr>
+            <tr>
+              <th scope="row">3DIS</th><td>SD1.5</td><td>58.09 (52.76)</td><td>51.48 (46.92)</td>
+              <td>46.15 (42.46)</td><td>40.39 (38.16)</td><td>41.22 (38.47)</td><td>45.23 (41.89)</td>
+              <td>24.02</td><td>21.24</td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="project-note" id="table-e-16-note">Instance attribute success ratio (%) with mIoU (%) in parentheses. L2–L6 denote tasks with 2 to 6 region-wise guidance conditions. CLIP uses the full image and prompt. Local CLIP uses the local crops and their prompts. Both ACE rows use <i>B</i><sub>1</sub> = 5 and <i>B</i><sub>2</sub> = 0.</p>
+        </div>
+      </section>
 
-  <!-- BibTeX -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <div class="bibtex-header">
-        <h2 class="title">BibTeX</h2>
-        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-          <i class="fas fa-copy"></i>
-          <span class="copy-text">Copy</span>
-        </button>
-      </div>
-      <pre id="bibtex-code"><code>@inproceedings{
+      <section id="BibTeX" class="project-section">
+        <div class="project-section-header">
+          <h2>BibTeX</h2>
+          <button class="project-button" type="button" data-copy-bibtex hidden>Copy BibTeX</button>
+          <span class="project-visually-hidden" data-copy-status role="status"></span>
+        </div>
+        <pre id="bibtex-code" tabindex="0" aria-label="BibTeX citation"><code>@inproceedings{
     lee2026collapse,
     title={On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering},
     author={Ziseok Lee and Minyeong Hwang and Wooyeol Lee and Sanghyun Jo and Jihyung Ko and Young Bin Park and Jae-Mun Choi and Eunho Yang and Kyungsu Kim},
@@ -1169,133 +669,24 @@
     year={2026},
     url={https://openreview.net/forum?id=emv2qsi3TG}
 }</code></pre>
-    </div>
-  </section>
+      </section>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content" style="text-align: center;">
-            <p>
-              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
-            </p>
-          </div>
-        </div>
-      </div>
+      <footer class="project-credits">
+        <p>Adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>.</p>
+      </footer>
+    </article>
+  </main>
+
+  <footer id="footer">
+    <div class="inner">
+      <ul class="icons">
+        <li><a href="/" class="icon solid fa-home" aria-label="Home"></a></li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; 2026 Ziseok Lee</li>
+        <li><a href="http://html5up.net">HTML5 UP</a></li>
+      </ul>
     </div>
   </footer>
-
-<script>
-function copyBibTeX() {
-  const bibtexCode = document.getElementById('bibtex-code').innerText;
-  navigator.clipboard.writeText(bibtexCode).then(() => {
-    const btn = document.querySelector('.copy-bibtex-btn');
-    btn.classList.add('copied');
-    btn.innerHTML = '<i class="fas fa-check"></i><span class="copy-text">Copied!</span>';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = '<i class="fas fa-copy"></i><span class="copy-text">Copy</span>';
-    }, 2000);
-  });
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-window.addEventListener('scroll', () => {
-  const btn = document.querySelector('.scroll-to-top');
-  if (window.pageYOffset > 300) {
-    btn.classList.add('visible');
-  } else {
-    btn.classList.remove('visible');
-  }
-});
-const galleryPrompts = [
-      '"A photo of a red chair and a yellow chair and a white teddy bear and a brown dining table"',
-      '"A photo of a black cup and a black donut and a green dining table and a blue donut"',
-      '"A photo of a blue boat and a red boat and a white boat and a green boat"',
-      '"A photo of a white couch and a yellow dining table and a white oven and a brown chair"',
-      '"A photo of a brown airplane and a red airplane and a blue airplane"',
-      '"A photo of a white bird and a red boat and a blue boat"',
-      '"A photo of a blue dog and a white bed and a green tie"',
-      '"A photo of a black dog and a blue dog and a brown dog"',
-      '"A photo of a white umbrella and a red umbrella"',
-      '"A photo of a brown boat and a brown boat and a yellow boat and a black boat and a white boat and a green boat"'
-    ];
-
-    let currentIndex = 0;
-    const totalSlides = galleryPrompts.length;
-
-    function initGallery() {
-      const dotsContainer = document.getElementById('galleryDots');
-      document.getElementById('totalSlides').textContent = totalSlides;
-      
-      for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
-      }
-    }
-
-    function updateGallery() {
-      const track = document.getElementById('galleryTrack');
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-      
-      document.getElementById('currentSlide').textContent = currentIndex + 1;
-      document.getElementById('galleryPrompt').textContent = galleryPrompts[currentIndex];
-      
-      const dots = document.querySelectorAll('.gallery-dot');
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
-      });
-    }
-
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % totalSlides;
-      updateGallery();
-    }
-
-    function prevSlide() {
-      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-      updateGallery();
-    }
-
-    function goToSlide(index) {
-      currentIndex = index;
-      updateGallery();
-    }
-
-    // Auto-advance gallery
-    let autoAdvance = setInterval(nextSlide, 5000);
-
-    document.getElementById('imageGallery').addEventListener('mouseenter', () => {
-      clearInterval(autoAdvance);
-    });
-
-    document.getElementById('imageGallery').addEventListener('mouseleave', () => {
-      autoAdvance = setInterval(nextSlide, 5000);
-    });
-
-    // Scroll to top
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    window.addEventListener('scroll', () => {
-      const btn = document.querySelector('.scroll-to-top');
-      if (window.pageYOffset > 300) {
-        btn.classList.add('visible');
-      } else {
-        btn.classList.remove('visible');
-      }
-    });
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', initGallery);
-</script>
-
 </body>
 </html>

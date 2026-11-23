@@ -1,17 +1,38 @@
-document.getElementById('menu-toggle-button').addEventListener('click', function () {
-    document.getElementById('nav-menu').classList.toggle('open');
-});
-
-document.addEventListener('click', function (event) {
+(function () {
     const navMenu = document.getElementById('nav-menu');
     const menuToggleButton = document.getElementById('menu-toggle-button');
 
-    // Check if the clicked element is not the nav menu or its descendants,
-    // and not the menu toggle button or its descendants.
-    if (!navMenu.contains(event.target) && !menuToggleButton.contains(event.target)) {
-        navMenu.classList.remove('open');
+    if (!navMenu || !menuToggleButton) return;
+
+    function setMenuOpen(open) {
+        navMenu.classList.toggle('open', open);
+        menuToggleButton.setAttribute('aria-expanded', String(open));
     }
-});
+
+    menuToggleButton.addEventListener('click', () => {
+        setMenuOpen(!navMenu.classList.contains('open'));
+    });
+
+    navMenu.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href^="#"]');
+        if (link && link.hash) {
+            setMenuOpen(false);
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!navMenu.contains(event.target) && !menuToggleButton.contains(event.target)) {
+            setMenuOpen(false);
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navMenu.classList.contains('open')) {
+            setMenuOpen(false);
+            menuToggleButton.focus();
+        }
+    });
+})();
 
 /*
 	Strata by HTML5 UP

@@ -119,9 +119,6 @@
 
 /* Horizontal scrolling project cards. */
 #project-card-grid {
-	--scrollbar-track: #f1ede7;
-	--scrollbar-thumb: #aaa49c;
-	--scrollbar-thumb-hover: #8e8880;
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: 300px;
@@ -131,34 +128,8 @@
 	overflow-x: auto;
 	padding-bottom: 15px;
 	scroll-snap-type: x mandatory;
-	scrollbar-width: thin;
-	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 #project-card-grid > * {
 	scroll-snap-align: start;
-}
-
-:root[data-theme="dark"] #project-card-grid {
-	--scrollbar-track: #202020;
-	--scrollbar-thumb: #5a5a5a;
-	--scrollbar-thumb-hover: #6e6e6e;
-}
-
-#project-card-grid::-webkit-scrollbar {
-	height: 10px;
-}
-
-#project-card-grid::-webkit-scrollbar-track {
-	background: var(--scrollbar-track);
-	border-radius: 999px;
-}
-
-#project-card-grid::-webkit-scrollbar-thumb {
-	background: var(--scrollbar-thumb);
-	border-radius: 999px;
-}
-
-#project-card-grid::-webkit-scrollbar-thumb:hover {
-	background: var(--scrollbar-thumb-hover);
 }
