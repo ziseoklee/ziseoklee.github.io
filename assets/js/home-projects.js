@@ -5,19 +5,17 @@
 	const container = homeGrid || document.getElementById('card-container');
 	if (!container) return;
 
-	const cardClass = homeGrid ? 'p-card' : 'card';
-
 	function createCard(project) {
 		const card = document.createElement('a');
-		card.className = cardClass;
+		card.className = 'p-card';
 		card.href = project.url;
 		card.rel = 'noopener noreferrer';
 
 		const imageWrapper = document.createElement('div');
-		imageWrapper.className = cardClass + '-image-wrapper';
+		imageWrapper.className = 'p-card-image-wrapper';
 		if (project.image) {
 			const image = document.createElement('img');
-			image.className = cardClass + '-image';
+			image.className = 'p-card-image';
 			image.src = project.image;
 			image.alt = project.title;
 			image.addEventListener('error', () => image.remove());
@@ -25,12 +23,12 @@
 		}
 
 		const body = document.createElement('div');
-		body.className = cardClass + '-content';
+		body.className = 'p-card-content';
 		const heading = document.createElement(homeGrid ? 'h3' : 'h2');
-		heading.className = cardClass + '-title';
+		heading.className = 'p-card-title';
 		heading.textContent = project.title;
 		const summary = document.createElement('p');
-		summary.className = cardClass + '-desc';
+		summary.className = 'p-card-desc';
 		summary.textContent = project.description;
 		body.append(heading, summary);
 		card.append(imageWrapper, body);

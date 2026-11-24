@@ -50,6 +50,34 @@
 	margin: 0;
 }
 
+#projects > header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.25rem 1rem;
+	margin-bottom: 1rem;
+}
+
+#projects-heading {
+	margin: 0;
+}
+
+.all-projects-link {
+	margin-inline-start: auto;
+}
+
+.all-projects-link::after {
+	content: "";
+	display: inline-block;
+	width: 0.42em;
+	height: 0.42em;
+	margin-inline-start: 0.35em;
+	vertical-align: 0.12em;
+	border-top: 0.1em solid currentColor;
+	border-right: 0.1em solid currentColor;
+	transform: rotate(45deg);
+}
+
 /* Alternative wrapping project grid (preserved for easy restoration).
 #project-card-grid {
 	display: grid;
@@ -66,10 +94,6 @@
 
 #project-card-grid > .p-card {
 	height: 100%;
-}
-
-#project-card-grid .p-card-image {
-	object-position: top;
 }
 
 @media screen and (max-width: 980px) {
@@ -124,7 +148,8 @@
 	grid-auto-columns: 300px;
 	gap: 30px;
 	width: 100%;
-	margin: 0 auto;
+	/* Use the heading gap for the hover lift and its shadow. */
+	margin: -15px auto 0;
 	overflow-x: auto;
-	padding-bottom: 15px;
+	padding-block: 15px;
 }

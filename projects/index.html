@@ -6,41 +6,74 @@
     <title>My Projects</title>
     <link rel="icon" href="/assets/images/pageicon_full.png" type="image/png">
     <link rel="apple-touch-icon" href="/assets/images/pageicon_full.png">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/scrollbars.css">
     <style>
-        /* --- Styles remain mostly the same --- */
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f4f9; padding: 40px; margin: 0; }
-        h1 { text-align: center; color: #333; margin-bottom: 40px; }
-        
+        h1 { text-align: center; margin-bottom: 40px; }
+
         #card-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, min(100%, 300px));
+            justify-content: center;
             gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
         }
-
-        .card {
-            background: white; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s;
-            display: flex; flex-direction: column; text-decoration: none; color: inherit;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-        .card-image-wrapper { width: 100%; height: 200px; background-color: #cfd8dc; /*#e0e0e0*/ overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
-        .card-image { width: 100%; height: 100%; object-fit: cover; }
-        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700; color: #2c3e50; }
-        .card-desc { font-size: 0.95rem; color: #666; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .skeleton { animation: skeleton-loading 1s linear infinite alternate; height: 350px; }
-        @keyframes skeleton-loading { 0% { background-color: #e0e0e0; } 100% { background-color: #f0f0f0; } }
-        .error-msg { padding: 20px; color: red; text-align: center; }
     </style>
 </head>
-<body>
-    <h1>Projects</h1>
-    <div id="card-container">
+<body class="is-preload">
+    <header id="header">
+        <div id="menu-toggle">
+            <a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb_full.png" alt=""></a>
+            <button type="button" id="menu-toggle-button" aria-label="Site menu" aria-controls="nav-menu" aria-expanded="false">☰</button>
         </div>
+        <div id="nav-menu">
+            <ul>
+                <li><a href="/index.html">HOME</a></li>
+                <li><a href="/bio.html">BIO</a></li>
+                <li><a href="/news.html">NEWS</a></li>
+                <li><a href="/publications.html">PUBLICATIONS</a></li>
+                <li><a href="https://aibl.snu.ac.kr/team">TEAM</a></li>
+                <li><a href="/assets/study/">STUDY</a></li>
+                <li><a href="/assets/cv/Ziseok_Lee_CV.pdf">CV</a></li>
+            </ul>
+        </div>
+        <div class="inner">
+            <a href="#" class="theme-toggle" aria-label="Toggle color theme"><img src="/assets/images/lovebulb.svg" alt="" /></a>
+            <p><a href="/index.html">HOME</a></p>
+            <p><a href="/bio.html">BIO</a></p>
+            <p><a href="/news.html">NEWS</a></p>
+            <p><a href="/publications.html">PUBLICATIONS</a></p>
+            <p><a href="https://aibl.snu.ac.kr/team">TEAM</a></p>
+            <p><a href="/assets/study/">STUDY</a></p>
+            <p><a href="/assets/cv/Ziseok_Lee_CV.pdf">CV</a></p>
+        </div>
+    </header>
 
+    <main id="main">
+        <h1>Projects</h1>
+        <div id="card-container"></div>
+    </main>
+
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                <li><a href="https://www.linkedin.com/in/ziseok-lee-b6a51734b" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                <li><a href="https://github.com/ziseoklee" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                <li><a href="https://scholar.google.com/citations?user=C3x_tewAAAAJ&amp;hl=en" class="icon solid fa-graduation-cap"><span class="label">Scholar</span></a></li>
+            </ul>
+            <ul class="copyright">
+                <li>&copy; 2026 Ziseok Lee</li>
+                <li><a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script src="/assets/js/home-projects.js"></script>
 </body>
 </html>

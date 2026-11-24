@@ -3086,6 +3086,13 @@ input, select, textarea {
 
 		/* Basic */
 
+			body:has(> #footer) {
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh;
+				min-height: 100dvh;
+			}
+
 			h1 br, h2 br, h3 br, h4 br, h5 br, h6 br {
 				display: none;
 			}
@@ -3107,6 +3114,7 @@ input, select, textarea {
 				position: relative;
 				text-align: center;
 				top: auto;
+				height: auto;
 				width: 100%;
 				display: block;
 			}
@@ -3225,6 +3233,7 @@ input, select, textarea {
 				background-size: auto, cover;
 				bottom: auto;
 				left: auto;
+				margin-top: auto;
 				padding: 4em 0em 6em 0em;
 				position: relative;
 				text-align: center;
@@ -3325,7 +3334,7 @@ input, select, textarea {
 		/* Main */
 
 			#main {
-				padding: 2.25em 1.5em 0.25em 1.5em;
+				padding: 2.25em 1.5em;
 			}
 
 				#main > section {
@@ -3422,6 +3431,7 @@ input, select, textarea {
 		width: 100%; 
 		height: 100%; 
 		object-fit: cover; 
+		object-position: top;
 	}
 
 	.p-card-content { 
