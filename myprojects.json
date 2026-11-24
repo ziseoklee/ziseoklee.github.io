@@ -1,19 +1,27 @@
 [
   {
     "url": "https://ziseoklee.github.io/projects/ACE/",
-    "image": "https://ziseoklee.github.io/projects/ACE/static/images/figure1.png"
+    "image": "/projects/ACE/static/images/figure1.png",
+    "title": "On the Collapse of Generative Paths: A Criterion and Correction for Diffusion Steering (ICML 2026)",
+    "description": "ACE detects when combining diffusion models makes a sampling path invalid and adjusts the guidance weights to repair it."
   },
   {
-      "url": "https://shjo-april.github.io/TRACE/",
-      "image": "https://shjo-april.github.io/TRACE/static/images/observation.png"
+    "url": "https://shjo-april.github.io/TRACE/",
+    "image": "/assets/images/project-cards/trace.webp",
+    "title": "TRACE: Your Diffusion Model is Secretly an Instance Edge Detector (ICLR 2026 Oral)",
+    "description": "TRACE locates the denoising step when object boundaries emerge and extracts instance edges from the model’s self-attention maps."
   },
   {
     "url": "https://shjo-april.github.io/ISAC/",
-    "image": "https://shjo-april.github.io/ISAC/static/images/method.png"
+    "image": "/assets/images/project-cards/isac.webp",
+    "title": "ISAC: Training-Free Instance-to-Semantic Attention Control for Improving Multi-Instance Generation (ECCV 2026)",
+    "description": "ISAC stabilizes object layouts in self-attention, then binds each object to its prompt to improve multi-instance image generation."
   },
   {
     "url": "https://elect-diffusion.github.io/",
-    "image": "https://elect-diffusion.github.io/static/images/ELECT_intro.png"
+    "image": "/assets/images/project-cards/elect.webp",
+    "title": "Early Timestep Zero-Shot Candidate Selection for Instruction-Guided Image Editing (ICCV 2025)",
+    "description": "ELECT ranks candidate seeds early in diffusion to preserve the background while applying the requested edit."
   },
   {
     "url": "/projects/spawtest/",

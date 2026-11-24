@@ -15,5 +15,5 @@ pip install playwright bibtexparser bs4
 python3 -m playwright install
 python3 -m playwright install-deps
 cd assets/cv
-python update_cv.py
+../../.venv/bin/python update_cv.py
 ```

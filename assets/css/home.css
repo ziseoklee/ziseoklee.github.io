@@ -127,9 +127,4 @@
 	margin: 0 auto;
 	overflow-x: auto;
 	padding-bottom: 15px;
-	scroll-snap-type: x mandatory;
-}
-
-#project-card-grid > * {
-	scroll-snap-align: start;
 }
